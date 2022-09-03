@@ -23,7 +23,7 @@ export const createDatabase = () => {
 
   client.query(`CREATE DATABASE ${RDS_DB_NAME}`, (err, res) => {
     if (err) {
-      log.error('Database already exists!')
+      log.info('Database already exists!')
     } else {
       log.info(res);
     }

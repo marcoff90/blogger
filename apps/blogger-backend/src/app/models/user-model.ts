@@ -1,8 +1,20 @@
-import sequelize from "../config/database-config";
-import DataTypes from "sequelize";
-import log from '../utils/logger';
+import sequelize from "../../config/database-config";
+import DataTypes, {InferAttributes, Model, InferCreationAttributes} from "sequelize";
 
-const User = sequelize.define('user', {
+export interface UserI extends Model<InferAttributes<UserI>, InferCreationAttributes<UserI>> {
+  id: number,
+  username: string,
+  email: string,
+  password: string,
+  active: boolean,
+  avatar?: string,
+  confirmationToken?: string,
+  confirmationTokenExpiration?: number,
+  forgottenPasswordToken?: string,
+  forgottenPasswordTokenExpiration?: number
+}
+
+const UserModel = sequelize.define<UserI>('user', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -24,13 +36,13 @@ const User = sequelize.define('user', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  active: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
   avatar: {
     type: DataTypes.STRING,
-    allowNull: true,
-    defaultValue: null
-  },
-  deletedAt: {
-    type: DataTypes.TIME,
     allowNull: true,
     defaultValue: null
   },
@@ -41,7 +53,7 @@ const User = sequelize.define('user', {
     unique: true
   },
   confirmationTokenExpiration: {
-    type: DataTypes.STRING,
+    type: DataTypes.DOUBLE,
     allowNull: true,
     defaultValue: null,
     unique: true
@@ -59,7 +71,4 @@ const User = sequelize.define('user', {
   }
 }, {timestamps: false});
 
-User.sync({alter: true})
-.then(res => log.info(res));
-
-export default User;
+export default UserModel;
