@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev:backend": "nx run blogger-backend:serve",
+    "dev:user-service": "nx run user-service:serve",
+    "dev:api-gateway": "nx run api-gateway:serve",
+    "dev:api-registry": "nx run api-registry:serve",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test"
   },
   "private": true,
   "dependencies": {
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "core-js": "^3.25.0",
     "cors": "^2.8.5",
-    "dayjs": "^1.11.5",
     "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",

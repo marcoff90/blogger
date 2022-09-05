@@ -1,0 +1,34 @@
+import ServerRepository from "../repositories/server-repository";
+import logger from '@blogger/util-logger';
+import { Interfaces } from "@blogger/global-interfaces";
+
+const create = async (server: Interfaces.ServerI) => {
+  const storedServer: Interfaces.ServerI = await ServerRepository.findByUrl(server.url);
+
+  if (storedServer) {
+    logger.info(`Updating server id: ${storedServer.id}`);
+    await storedServer.update({
+      name: server.name,
+      description: server.description,
+      apis: server.apis
+    });
+    logger.info(`Server updated successfully ${storedServer.id}`);
+    return storedServer;
+  } else {
+    const savedServer: Interfaces.ServerI = await ServerRepository.create(server);
+    logger.info(`Saved new server with id ${savedServer.id}, url: ${savedServer.url}`);
+    return savedServer;
+  }
+};
+
+const findAll = async () => {
+  logger.info('Loading all servers');
+  const servers: Interfaces.ServerI[] = await ServerRepository.findAll();
+  logger.info(`Found ${servers.length} servers`);
+  return servers;
+};
+
+export default {
+  create,
+  findAll
+};
