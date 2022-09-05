@@ -1,0 +1,13 @@
+version: "7.0"
+
+services:
+  redis:
+    image: redis
+    container_name: redis_blogger
+    command: --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./data:/data
+    ports:
+      - 6379:6379
+    env_file:
+      - .env

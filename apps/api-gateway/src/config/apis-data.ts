@@ -1,6 +1,7 @@
 import logger from "@blogger/util-logger";
 import axios, {AxiosResponse} from "axios";
 import {Interfaces} from '@blogger/global-interfaces';
+import RedisManager from "@blogger/redis-manager";
 
 const loadApisData = async () => {
   const registryUrl = process.env['REGISTRY_URL'];
@@ -13,7 +14,8 @@ const loadApisData = async () => {
       'x-api-key': apiKey
     }
   });
-  const serversData: Interfaces.ServerI[] = res.data
+  const serversData: Interfaces.ServerI[] = res.data;
+  await RedisManager.storeToCache('apiData', 86400, JSON.stringify(serversData));
   logger.info(`Successfully loaded data: ${JSON.stringify(serversData)}`);
   return serversData;
 };
