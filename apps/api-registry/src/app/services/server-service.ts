@@ -1,6 +1,8 @@
 import ServerRepository from "../repositories/server-repository";
 import logger from '@blogger/util-logger';
 import { Interfaces } from "@blogger/global-interfaces";
+import RabbitManager from "@blogger/rabbitmq-manager";
+import 'dotenv/config';
 
 const create = async (server: Interfaces.ServerI) => {
   const storedServer: Interfaces.ServerI = await ServerRepository.findByUrl(server.url);
@@ -28,7 +30,16 @@ const findAll = async () => {
   return servers;
 };
 
+const notifyApiGateway = async () => {
+  const routingKey = process.env['API_REGISTRY_ROUTING_KEY'];
+  const apiMessage: Interfaces.ApiRegistryMessage = {
+    serversUpdated: true
+  };
+  await RabbitManager.publishMessage(routingKey, apiMessage);
+};
+
 export default {
   create,
-  findAll
+  findAll,
+  notifyApiGateway
 };

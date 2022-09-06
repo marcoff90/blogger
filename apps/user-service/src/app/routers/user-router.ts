@@ -23,14 +23,14 @@ const UserRouter = Router();
  *      required: true
  *      content:
  *        application/json:
- *           schemas:
+ *           schema:
  *              $ref: '#/components/schemas/CreateUserInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/CreateUserResponse'
  *      409:
  *        description: Conflict
@@ -54,14 +54,14 @@ UserRouter.post(
  *      required: true
  *      content:
  *        application/json:
- *           schemas:
+ *           schema:
  *              $ref: '#/components/schemas/LoginUserInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/LoginUserResponse'
  *      401:
  *        description: One of the fields doesn't match
@@ -87,14 +87,14 @@ UserRouter.post(
  *      required: true
  *      content:
  *        application/json:
- *           schemas:
+ *           schema:
  *              $ref: '#/components/schemas/ForgottenPasswordUserSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
  *      400:
  *        description: Bad request - email is not filled or doesn't match any user
@@ -116,20 +116,20 @@ UserRouter.post(
  *      - in: query
  *        name: token
  *        required: true
- *        schemas:
+ *        schema:
  *          type: string
  *     requestBody:
  *      required: true
  *      content:
  *        application/json:
- *           schemas:
+ *           schema:
  *              $ref: '#/components/schemas/ResetPasswordUserSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
  *      400:
  *        description: Bad request
@@ -151,20 +151,20 @@ UserRouter.post(
  *      - in: query
  *        name: token
  *        required: true
- *        schemas:
+ *        schema:
  *          type: string
  *     requestBody:
  *      required: true
  *      content:
  *        application/json:
- *           schemas:
+ *           schema:
  *              $ref: '#/components/schemas/ActivateUserAccountSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/ActivationResponse'
  *      400:
  *        description: Bad request
@@ -190,14 +190,14 @@ UserRouter.post(
  *      - in: query
  *        name: token
  *        required: true
- *        schemas:
+ *        schema:
  *          type: string
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
  *      400:
  *        description: Bad request

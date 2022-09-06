@@ -1,4 +1,4 @@
-import { Interfaces } from "@blogger/global-interfaces";
+import {Interfaces} from "@blogger/global-interfaces";
 import {Request} from "express";
 import {AxiosRequestConfig} from "axios";
 import RedisManager from "@blogger/redis-manager";
@@ -26,20 +26,22 @@ const getAxiosConfig = (req: Request, server: Interfaces.ServerI, requestApiName
 const getApiData = async () => {
   const redisClient = RedisManager.redisClient();
 
+  let apiData = null;
+
   try {
-    const apiData = await redisClient.get('apiData');
-    if (apiData) {
-      logger.info(`Loaded api data from cache: ${apiData}`);
-      return JSON.parse(apiData);
-    } else {
-      const servers: Interfaces.ServerI[] = await loadApisData();
-      logger.info(`Loaded api data from api registry: ${JSON.stringify(servers)}`);
-      return servers;
-    }
+    apiData = await redisClient.get('apiData');
   } catch (e: any) {
     logger.error(e.message);
-    return null;
   }
+
+  if (apiData) {
+    logger.info(`Loaded api data from cache: ${apiData}`);
+    return JSON.parse(apiData);
+  }
+
+  const servers: Interfaces.ServerI[] = await loadApisData();
+  logger.info(`Loaded api data from api registry: ${JSON.stringify(servers)}`);
+  return servers;
 };
 
 export default {

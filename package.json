@@ -6,12 +6,14 @@
     "dev:user-service": "nx run user-service:serve",
     "dev:api-gateway": "nx run api-gateway:serve",
     "dev:api-registry": "nx run api-registry:serve",
+    "start:docker": "docker-compose start docker-compose.yml",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test"
   },
   "private": true,
   "dependencies": {
+    "amqplib": "^0.10.3",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "core-js": "^3.25.0",
@@ -39,6 +41,7 @@
     "@nrwl/linter": "14.6.2",
     "@nrwl/node": "14.6.2",
     "@nrwl/workspace": "14.6.2",
+    "@types/amqplib": "^0.8.2",
     "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.2",
     "@types/cors": "^2.8.12",

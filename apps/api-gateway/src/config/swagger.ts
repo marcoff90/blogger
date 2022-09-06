@@ -5,6 +5,7 @@ import Swagger from "@blogger/util-swagger-docs";
 import {Express} from "express";
 import loadApisData from "./apis-data";
 import {Interfaces} from '@blogger/global-interfaces';
+import 'dotenv/config';
 
 const generateSwaggerDocs = (app: Express, port: number) => {
   loadApisData()
@@ -20,6 +21,10 @@ const generateSwaggerDocs = (app: Express, port: number) => {
 
 const getServersData = (data: Interfaces.ServerI[]) => {
   const serversData: Interfaces.SwaggerDocsServer[] = [];
+  serversData.push({
+    url: process.env['GATEWAY_URL'],
+    description: 'API Gateway server'
+  })
   const apisData: string[] = [];
   data.map(server => {
     const {url, description} = server;
@@ -43,7 +48,13 @@ const generateSwaggerOptions = (serversData: Interfaces.SwaggerDocsServer[], api
       info: {
         title: 'API Gateway docs',
         description: 'API Gateway for microservices of Blogger microservices. ' +
-          '\n\nIn order to try out the endpoints in Swagger UI, switch the server to corresponding API and execute commands',
+          '\n\nIn order to try out the endpoints in Swagger UI, you can use Api gateway server or choose corresponding server from the dropdown\n\n' +
+        "The gateway is calling to api registry upon the start to retrieve the data of all the registered apis which " +
+          "it uses for creating the proxy -> it compares the apiname which is the path obtained from the docs of each registered api " +
+          " and if it finds match it makes the call to the corresponding server using the same path.\n\n" +
+          "The data is being cached for 24 hours using redis cache. In case of change, the application is listening on rabbitmq" +
+          " exchange queue specific for communication of api registry and gateway and if it recieves the message about update, " +
+          "it reloads the data directly",
         contact: {
           name: 'Marek Slavicek',
         },

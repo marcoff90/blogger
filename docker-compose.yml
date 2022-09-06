@@ -1,4 +1,4 @@
-version: "7.0"
+version: '3'
 
 services:
   redis:
@@ -8,6 +8,18 @@ services:
     volumes:
       - ./data:/data
     ports:
-      - 6379:6379
+      - '6379:6379'
     env_file:
       - .env
+
+  rabbitmq:
+    image: 'rabbitmq:3.10-management'
+    container_name: rabbitmq_blogger
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+      RABBITMQ_DEFAULT_USER: 'guest'
+      RABBITMQ_DEFAULT_PASS: 'guest'
+

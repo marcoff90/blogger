@@ -58,3 +58,6 @@ export interface SwaggerDocsServer {
   description: string
 }
 
+export interface ApiRegistryMessage {
+  serversUpdated: boolean
+}

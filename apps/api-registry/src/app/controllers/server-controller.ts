@@ -14,6 +14,9 @@ const storeServer = async (req: Request<CreateServerInput['body'], CreateServerI
   if (apiKey === process.env['API_REGISTRY_KEY']) {
     try {
       const savedServer: Interfaces.ServerI = await ServerService.create(req.body);
+      // when server updated publish message to blogger direct exchange to notify api gateway about
+      // the change in order to not cache the data, but reload through api
+      await ServerService.notifyApiGateway();
       res.send(savedServer);
     } catch (e: any) {
       logger.error(e.message);

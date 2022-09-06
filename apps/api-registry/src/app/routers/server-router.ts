@@ -15,20 +15,20 @@ const ServerRouter = Router();
  *      - in: headers
  *        name: x-api-key
  *        required: true
- *        schemas:
+ *        schema:
  *          type: string
  *     requestBody:
  *      required: true
  *      content:
  *        application/json:
- *          schemas:
+ *          schema:
  *            $ref: '#/components/schemas/CreateServerInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/CreateServerResponse'
  *      409:
  *        description: Conflict
@@ -48,14 +48,14 @@ ServerRouter.post('/api-registry/servers', Validator.validate(createServerSchema
  *      - in: headers
  *        name: x-api-key
  *        required: true
- *        schemas:
+ *        schema:
  *          type: string
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
- *            schemas:
+ *            schema:
  *              $ref: '#/components/schemas/CreateServerResponse'
  *      500:
  *        description: Something went wrong

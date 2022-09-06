@@ -22,6 +22,7 @@
       "@blogger/middleware-validator": [
         "libs/middleware-validator/src/index.ts"
       ],
+      "@blogger/rabbitmq-manager": ["libs/rabbitmq-manager/src/index.ts"],
       "@blogger/redis-manager": ["libs/redis-manager/src/index.ts"],
       "@blogger/util-db-creator": ["libs/util-db-creator/src/index.ts"],
       "@blogger/util-logger": ["libs/util-logger/src/index.ts"],

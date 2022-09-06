@@ -14,7 +14,6 @@ const forwardRequest = async (req: Request, res: Response, next: NextFunction) =
   } else {
     const servers: Interfaces.ServerI[] = await GatewayService.getApiData();
     const server: Interfaces.ServerI = servers.find(server => server.name === apiName);
-
     if (server) {
       logger.info(`Forwarding request to ${server.url}`);
       const config: AxiosRequestConfig = GatewayService.getAxiosConfig(req, server, apiName, path);

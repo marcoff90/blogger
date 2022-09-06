@@ -21,9 +21,15 @@ client.on('connect', () => {
 
 const storeToCache = async (key: string, time: number, value: string) => {
   logger.info(`Caching data for ${key}, for time ${time}, value ${value}`);
-  await client.connect();
-  await client.setEx(key, time, value);
-  logger.info('Caching successful');
+  if (!client.isOpen) {
+    await client.connect();
+  }
+  try {
+    await client.setEx(key, time, value);
+    logger.info('Caching successful');
+  } catch (e: any) {
+    logger.error(`Caching failed: ${e.message}`);
+  }
 };
 
 const redisClient = () => {
