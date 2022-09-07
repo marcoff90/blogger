@@ -42,7 +42,7 @@ export const options: swaggerJsdoc.Options = {
     ],
   },
   apis: [
-    'apps/user-service/src/app/routers/*.ts',
-    'apps/user-service/src/app/schemas/*.ts',
+    'apps/user-service/src/config/swagger-docs.js',
+    'swagger-docs.js', // for docker-container
   ],
 };

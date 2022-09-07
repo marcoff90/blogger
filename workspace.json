@@ -4,6 +4,7 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "api-registry": "apps/api-registry",
+    "blog-service": "apps/blog-service",
     "global-interfaces": "libs/global-interfaces",
     "middleware-api-error": "libs/middleware-api-error",
     "middleware-validator": "libs/middleware-validator",

@@ -19,9 +19,10 @@ createTables();
 app.use(ServerRouter);
 app.use(ErrorHandler.apiErrorHandler);
 
-const port: number = parseInt(process.env.PORT) || 4444;
+const port: number = parseInt(process.env.PORT_REGISTRY) || 4444;
+const url = process.env['REGISTRY_URL_VISIBLE'];
 const server = app.listen(port, () => {
-  logger.info(`Listening at http://localhost:${port}`);
+  logger.info(`Listening at ${url}:${port}`);
   Swagger.swaggerDocs(app, port, options);
 });
 server.on('error', console.error);

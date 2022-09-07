@@ -7,7 +7,10 @@ import GatewayService from "../services/gateway-service";
 
 const forwardRequest = async (req: Request, res: Response, next: NextFunction) => {
   const { apiName } = req.params;
-  const { path } = req.params;
+  // the api name is used to filter the api data from cache/api registry to get corresponding
+  // server to contact -> then we use the whole path in request to connect to api
+  const path = req.path.substring(1);
+  const params = req.query;
 
   if (apiName === 'docs' || apiName === 'docs.json') {
     next();
@@ -16,7 +19,7 @@ const forwardRequest = async (req: Request, res: Response, next: NextFunction) =
     const server: Interfaces.ServerI = servers.find(server => server.name === apiName);
     if (server) {
       logger.info(`Forwarding request to ${server.url}`);
-      const config: AxiosRequestConfig = GatewayService.getAxiosConfig(req, server, apiName, path);
+      const config: AxiosRequestConfig = GatewayService.getAxiosConfig(req, server, path, params);
 
       axios(config)
       .then(response => {

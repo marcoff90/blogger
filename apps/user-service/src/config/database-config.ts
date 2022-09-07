@@ -4,7 +4,7 @@ import Postgres from '@blogger/util-db-creator';
 import syncTables from "./sync-tables";
 
 const {
-  RDS_DB_NAME,
+  RDS_DB_NAME_USER_SERVICE,
   RDS_USERNAME,
   RDS_PASSWORD,
   RDS_HOSTNAME,
@@ -13,12 +13,12 @@ const {
 
 // first create database if it doesn't exist
 export const createDatabase = () => {
-  Postgres.createDatabase(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_EXISTING_DB_NAME, RDS_DB_NAME);
+  Postgres.createDatabase(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_EXISTING_DB_NAME, RDS_DB_NAME_USER_SERVICE);
 };
 
 // then check if the database is created if so, sync model tables
 export const createTables = () => {
-  const client = Postgres.createClient(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_DB_NAME);
+  const client = Postgres.createClient(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_DB_NAME_USER_SERVICE);
   client.connect(err => {
     if (err) {
       createTables();
@@ -28,7 +28,7 @@ export const createTables = () => {
   });
 };
 
-const sequelize = new Sequelize(RDS_DB_NAME, RDS_USERNAME, RDS_PASSWORD, {
+const sequelize = new Sequelize(RDS_DB_NAME_USER_SERVICE, RDS_USERNAME, RDS_PASSWORD, {
   dialect: 'postgres',
   host: RDS_HOSTNAME,
 });

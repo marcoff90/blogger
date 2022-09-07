@@ -1,7 +1,7 @@
 import UserRepository from '../repositories/user-repository';
 import Mailer from '../../utils/mailer';
 import TokenGenerator from '../../utils/token-generator';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { UserI } from '../models/user-model';
 import logger from '@blogger/util-logger';
 

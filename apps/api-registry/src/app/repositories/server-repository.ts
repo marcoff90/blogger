@@ -20,6 +20,19 @@ const findAll = async () => {
   });
 };
 
+const update = async (server: Interfaces.ServerI) => {
+  const updatedServer = await ServerModel.update({
+    name: server.name,
+    description: server.description,
+  }, {
+    where: {
+      id: server.id
+    },
+    returning: true
+  });
+  return updatedServer;
+};
+
 const findByUrl = async (url: string) => {
   return await ServerModel.findOne({
     where: {
@@ -34,5 +47,6 @@ const findByUrl = async (url: string) => {
 export default {
   create,
   findAll,
-  findByUrl
+  findByUrl,
+  update
 };

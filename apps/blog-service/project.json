@@ -1,16 +1,16 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/user-service/src",
+  "sourceRoot": "apps/blog-service/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/user-service",
-        "main": "apps/user-service/src/main.ts",
-        "tsConfig": "apps/user-service/tsconfig.app.json",
-        "assets": ["apps/user-service/src/assets"],
+        "outputPath": "dist/apps/blog-service",
+        "main": "apps/blog-service/src/main.ts",
+        "tsConfig": "apps/blog-service/tsconfig.app.json",
+        "assets": ["apps/blog-service/src/assets"],
         "generatePackageJson": true
       },
       "configurations": {
@@ -20,8 +20,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/user-service/src/environments/environment.ts",
-              "with": "apps/user-service/src/environments/environment.prod.ts"
+              "replace": "apps/blog-service/src/environments/environment.ts",
+              "with": "apps/blog-service/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -30,11 +30,11 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "user-service:build"
+        "buildTarget": "blog-service:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "user-service:build:production"
+          "buildTarget": "blog-service:build:production"
         }
       }
     },
@@ -42,14 +42,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/user-service/**/*.ts"]
+        "lintFilePatterns": ["apps/blog-service/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/user-service"],
+      "outputs": ["coverage/apps/blog-service"],
       "options": {
-        "jestConfig": "apps/user-service/jest.config.ts",
+        "jestConfig": "apps/blog-service/jest.config.ts",
         "passWithNoTests": true
       }
     }

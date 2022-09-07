@@ -3,16 +3,15 @@ import 'dotenv/config';
 import ApiRegistration from "@blogger/util-registry-registrator";
 
 const registerToRegistry = () => {
-  const routerPath = 'apps/user-service/src/app/routers/*.ts';
-  const schemaPath = 'apps/user-service/src/app/schemas/*.ts';
-  const userServiceApiURL = process.env["API_URL"];
+  const dockerDocksPath = 'swagger-docs.js';
+  const devDocsPath = 'apps/user-service/src/config/swagger-docs.js';
+  const userServiceApiURL = `${process.env["USER_SERVICE_URL"]}:${process.env['PORT_USER_SERVICE']}/`;
   const description = 'User Management Service';
   const name = 'user-service-api';
-  const registryUrl = process.env['REGISTRY_URL'];
-  const apiKey = process.env['API_REGISTRY_KEY'];
 
-  ApiRegistration.registerApiToRegistry(userServiceApiURL, schemaPath, routerPath, description,
-    name, registryUrl, apiKey)
+
+  ApiRegistration.registerApiToRegistry(userServiceApiURL, devDocsPath, dockerDocksPath, description,
+    name)
   .then(() => {
     logger.info('Successfully registered to registry');
   })

@@ -4,6 +4,6 @@ import MessageConsumer from "../middlewares/message-consumer";
 
 const GatewayRouter = Router();
 
-GatewayRouter.all('/:apiName/:path', MessageConsumer.consumeMessages, GatewayController.forwardRequest);
+GatewayRouter.all('/:apiName/*', MessageConsumer.consumeMessages, GatewayController.forwardRequest);
 
 export default GatewayRouter;

@@ -22,7 +22,7 @@ const generateSwaggerDocs = (app: Express, port: number) => {
 const getServersData = (data: Interfaces.ServerI[]) => {
   const serversData: Interfaces.SwaggerDocsServer[] = [];
   serversData.push({
-    url: process.env['GATEWAY_URL'],
+    url: `${process.env['GATEWAY_URL']}:${process.env['PORT_GATEWAY']}`,
     description: 'API Gateway server'
   })
   const apisData: string[] = [];

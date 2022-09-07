@@ -3,17 +3,15 @@ import logger from '@blogger/util-logger';
 import { Interfaces } from "@blogger/global-interfaces";
 import RabbitManager from "@blogger/rabbitmq-manager";
 import 'dotenv/config';
+import ApiService from "./api-service";
 
 const create = async (server: Interfaces.ServerI) => {
   const storedServer: Interfaces.ServerI = await ServerRepository.findByUrl(server.url);
 
   if (storedServer) {
     logger.info(`Updating server id: ${storedServer.id}`);
-    await storedServer.update({
-      name: server.name,
-      description: server.description,
-      apis: server.apis
-    });
+    await ApiService.updateServerApis(storedServer.id, storedServer.apis, server.apis);
+    await ServerRepository.update(storedServer);
     logger.info(`Server updated successfully ${storedServer.id}`);
     return storedServer;
   } else {

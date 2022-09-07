@@ -5,17 +5,19 @@ import RedisManager from "@blogger/redis-manager";
 import loadApisData from "../../config/apis-data";
 import logger from '@blogger/util-logger';
 
-const getAxiosConfig = (req: Request, server: Interfaces.ServerI, requestApiName: string, path: string) => {
+const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, reqParams: any) => {
   const config: AxiosRequestConfig = !req.headers.authorization ?
     {
       method: req.method,
-      url: `${server.url}/${requestApiName}/${path}`,
-      data: req.body
+      url: `${server.url}${path}`, // no slash between url and path to api because zod accepts url with the slash at the end
+      data: req.body,
+      params: reqParams
     } :
     {
       method: req.method,
-      url: `${server.url}/${requestApiName}/${path}`,
+      url: `${server.url}${path}`,
       data: req.body,
+      params: reqParams,
       headers: {
         'Authorization': req.headers.authorization
       }

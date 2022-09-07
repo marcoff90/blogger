@@ -12,7 +12,7 @@ import UserService from '../services/user-service';
 import {UserI} from '../models/user-model';
 import generateToken from '../../utils/jwt-util';
 import {Interfaces} from '@blogger/global-interfaces';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api-error";
 
 const storeUser = async (

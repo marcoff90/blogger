@@ -10,7 +10,7 @@ services:
     ports:
       - '6379:6379'
     env_file:
-      - .env
+      - .env.docker
 
   rabbitmq:
     image: 'rabbitmq:3.10-management'
@@ -23,3 +23,61 @@ services:
       RABBITMQ_DEFAULT_USER: 'guest'
       RABBITMQ_DEFAULT_PASS: 'guest'
 
+  postgres:
+    env_file:
+      - .env.docker
+    image: 'postgres:14.5-alpine'
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=mara
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - ./config/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  api-registry:
+    env_file:
+      - .env.docker
+    image: 'api-registry'
+    ports:
+      - '4444:4444'
+    depends_on:
+      - redis
+      - rabbitmq
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4444" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+
+  user-service:
+    env_file:
+      - .env.docker
+    image: 'user-service'
+    ports:
+        - '3000:3000'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  api-gateway:
+    env_file:
+      - .env.docker
+    image: 'api-gateway'
+    ports:
+        - '3333:3333'
+    depends_on:
+      - api-registry
+      - user-service

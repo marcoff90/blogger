@@ -1,5 +1,6 @@
 import swaggerJsdoc from '../../../../node_modules/swagger-jsdoc';
 import { version } from '../../../../package.json';
+import 'dotenv/config';
 
 export const options: swaggerJsdoc.Options = {
   definition: {
@@ -17,13 +18,13 @@ export const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:4444',
+        url: `${process.env['REGISTRY_URL_VISIBLE']}:${process.env['PORT_REGISTRY']}`,
         description: 'API registry'
       },
     ],
   },
   apis: [
-    'apps/api-registry/src/app/routers/*.ts',
-    'apps/api-registry/src/app/schemas/*.ts',
+    'apps/api-registry/src/config/swagger-docs.js', // for local dev
+    'swagger-docs.js', // for docker-container
   ],
 };

@@ -10,7 +10,8 @@
         "outputPath": "dist/apps/api-registry",
         "main": "apps/api-registry/src/main.ts",
         "tsConfig": "apps/api-registry/tsconfig.app.json",
-        "assets": ["apps/api-registry/src/assets"]
+        "assets": ["apps/api-registry/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {

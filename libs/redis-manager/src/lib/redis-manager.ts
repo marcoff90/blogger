@@ -32,11 +32,25 @@ const storeToCache = async (key: string, time: number, value: string) => {
   }
 };
 
+const deleteKey = async (key: string) => {
+  logger.info(`Deleting key ${key} from cache`);
+  if (!client.isOpen) {
+    await client.connect();
+  }
+  try {
+    await client.del(key);
+    logger.info('Delete successful');
+  } catch (e: any) {
+    logger.error(`Delete failed: ${e.message}`);
+  }
+};
+
 const redisClient = () => {
   return client;
 };
 
 export default {
   storeToCache,
-  redisClient
+  redisClient,
+  deleteKey
 };

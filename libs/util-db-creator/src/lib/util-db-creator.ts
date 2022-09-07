@@ -3,6 +3,7 @@ import logger from '@blogger/util-logger';
 
 const createDatabase = (RDS_USERNAME: string, RDS_PASSWORD: string, RDS_HOSTNAME: string,
                                RDS_EXISTING_DB_NAME: string, RDS_DB_NAME: string) => {
+
   const client = createClient(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_EXISTING_DB_NAME);
 
   client.connect();

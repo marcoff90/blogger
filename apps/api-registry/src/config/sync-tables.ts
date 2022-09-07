@@ -10,7 +10,7 @@ const syncTables = () => {
   });
   ApiModel.belongsTo(ServerModel, {
     as: 'api',
-    foreignKey: 'server_id',
+    foreignKey: 'server_id'
   });
   sequelize.sync().then(() => logger.info("Tables synced"));
 };

@@ -3,10 +3,13 @@ import axios from "axios";
 import 'dotenv/config';
 import {Interfaces} from '@blogger/global-interfaces';
 
-const registerApiToRegistry = async (userServiceApiURL: string, schemaPath: string,
-                                     routerPath: string, description: string, name: string,
-                                     registryUrl: string, apiKey: string) => {
+const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: string,
+                                     dockerDocksPath: string, description: string, name: string) => {
   logger.info(`Registering ${name} to registry`);
+
+  const registryUrl = process.env['REGISTRY_URL'];
+  const apiKey = process.env['API_REGISTRY_KEY'];
+  const registryPort = process.env['PORT_REGISTRY'];
 
   const requestData: Interfaces.RegisterServerInput = {
     url: userServiceApiURL,
@@ -14,15 +17,15 @@ const registerApiToRegistry = async (userServiceApiURL: string, schemaPath: stri
     name: name,
     apis: [
       {
-        path: schemaPath
+        path: devDocsPath
       },
       {
-        path: routerPath
+        path: dockerDocksPath
       }
     ]
   };
 
-  await axios.post(`${registryUrl}/api-registry/servers`, requestData, {
+  await axios.post(`${registryUrl}:${registryPort}/api-registry/servers`, requestData, {
     headers: {
       'x-api-key': apiKey
     }

@@ -61,3 +61,7 @@ export interface SwaggerDocsServer {
 export interface ApiRegistryMessage {
   serversUpdated: boolean
 }
+
+export interface RequestParams {
+  [key: string]: string
+}

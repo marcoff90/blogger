@@ -39,3 +39,6 @@ testem.log
 Thumbs.db
 
 .env
+.env.docker
+swagger-js-doc-with-anchors.js
+swagger-docs-with-anchors.js

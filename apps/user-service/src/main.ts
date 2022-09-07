@@ -20,9 +20,10 @@ createTables();
 app.use(UserRouter);
 app.use(ErrorHandler.apiErrorHandler);
 registerToRegistry();
-const port: number = parseInt(process.env.PORT) || 3000;
+const port: number = parseInt(process.env.PORT_USER_SERVICE) || 3000;
+const url = process.env['USER_SERVICE_URL_VISIBLE'];
 const server = app.listen(port, () => {
-  logger.info(`Listening at http://localhost:${port}`);
+  logger.info(`Listening at ${url}:${port}`);
   Swagger.swaggerDocs(app, port, options);
 });
 server.on('error', console.error);
