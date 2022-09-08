@@ -31,8 +31,8 @@ services:
     ports:
       - '5432:5432'
     environment:
-      - POSTGRES_USER=mara
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=${RDS_USERNAME}
+      - POSTGRES_PASSWORD=${RDS_PASSWORD}
     volumes:
       - ./config/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
 

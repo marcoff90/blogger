@@ -1,7 +1,11 @@
 import swaggerJsdoc from '../../../../node_modules/swagger-jsdoc';
 import {version} from '../../../../package.json';
+import {Express} from "express";
+import Swagger from "@blogger/util-swagger-docs";
+import swaggerDocs from 'user-service.json'
+import logger from '@blogger/util-logger';
 
-export const options: swaggerJsdoc.Options = {
+const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
@@ -45,4 +49,15 @@ export const options: swaggerJsdoc.Options = {
     'apps/user-service/src/config/swagger-docs.js',
     'swagger-docs.js', // for docker-container
   ],
+};
+
+export const generateSwaggerDocs = (app: Express, port: number) => {
+  const isDocker = process.env.DOCKER;
+  logger.info(isDocker)
+  if (isDocker === 'true') {
+    Swagger.swaggerDocsDocker(app, port, swaggerDocs);
+  } else {
+    Swagger.saveSwaggerDocsToJson(options, 'user-service');
+    Swagger.swaggerDocs(app, port, options);
+  }
 };

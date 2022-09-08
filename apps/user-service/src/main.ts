@@ -4,10 +4,9 @@ import 'dotenv/config';
 import logger from '@blogger/util-logger';
 import UserRouter from './app/routers/user-router';
 import {createDatabase, createTables} from "./config/database-config";
-import Swagger from '@blogger/util-swagger-docs';
-import {options} from "./config/swagger";
 import ErrorHandler from '@blogger/middleware-api-error';
 import registerToRegistry from "./config/register-to-registry";
+import {generateSwaggerDocs} from "./config/swagger";
 
 const app = express();
 
@@ -24,6 +23,6 @@ const port: number = parseInt(process.env.PORT_USER_SERVICE) || 3000;
 const url = process.env['USER_SERVICE_URL_VISIBLE'];
 const server = app.listen(port, () => {
   logger.info(`Listening at ${url}:${port}`);
-  Swagger.swaggerDocs(app, port, options);
+  generateSwaggerDocs(app, port);
 });
 server.on('error', console.error);

@@ -6,13 +6,21 @@ import {Express} from "express";
 import loadApisData from "./apis-data";
 import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
+import swaggerDocs from 'api-gateway.json';
 
 const generateSwaggerDocs = (app: Express, port: number) => {
+  const isDocker = process.env.DOCKER;
+
   loadApisData()
   .then(data => {
-    const {serversData, apisData} = getServersData(data);
-    const options = generateSwaggerOptions(serversData, apisData);
-    Swagger.swaggerDocs(app, port, options);
+    if (isDocker === 'true') {
+      Swagger.swaggerDocsDocker(app, port, swaggerDocs);
+    } else {
+      const {serversData, apisData} = getServersData(data);
+      const options = generateSwaggerOptions(serversData, apisData);
+      Swagger.saveSwaggerDocsToJson(options, 'api-gateway');
+      Swagger.swaggerDocs(app, port, options);
+    }
   })
   .catch(err => {
     logger.error(err);

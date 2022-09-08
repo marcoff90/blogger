@@ -3,10 +3,9 @@ import cors from 'cors';
 import 'dotenv/config';
 import logger from '@blogger/util-logger';
 import {createDatabase, createTables} from "./config/database-config";
-import Swagger from '@blogger/util-swagger-docs';
-import {options} from "./config/swagger";
 import ServerRouter from './app/routers/server-router';
 import ErrorHandler from "@blogger/middleware-api-error";
+import {generateSwaggerDocs} from "./config/swagger";
 
 const app = express();
 
@@ -23,6 +22,6 @@ const port: number = parseInt(process.env.PORT_REGISTRY) || 4444;
 const url = process.env['REGISTRY_URL_VISIBLE'];
 const server = app.listen(port, () => {
   logger.info(`Listening at ${url}:${port}`);
-  Swagger.swaggerDocs(app, port, options);
+  generateSwaggerDocs(app, port);
 });
 server.on('error', console.error);

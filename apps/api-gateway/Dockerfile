@@ -1,7 +1,8 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY ../../.env.docker .
-COPY ../../package-lock.json .
+COPY ./.env.docker .
+COPY ./package-lock.json .
+COPY ./api-gateway.json .
 COPY ./dist/apps/api-gateway .
 ENV PORT=3333
 EXPOSE ${PORT}

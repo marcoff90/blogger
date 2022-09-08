@@ -1,12 +1,12 @@
 /**
- * @openapi
+ * @swagger
  * '/api-registry/servers':
  *  post:
  *     tags:
  *      - RegistryAPI
  *     summary: Store a server's data or update if server exists
  *     parameters:
- *      - in: headers
+ *      - in: header
  *        name: x-api-key
  *        required: true
  *        schema:
@@ -28,14 +28,14 @@
  *        description: Conflict
  *      400:
  *        description: Bad request
- * @openapi
+ * @swagger
  * '/api-registry/servers':
  *  get:
  *     tags:
  *     - RegistryAPI
  *     summary: Get all available servers' data
  *     parameters:
- *      - in: headers
+ *      - in: header
  *        name: x-api-key
  *        required: true
  *        schema:
@@ -51,7 +51,7 @@
  *        description: Something went wrong
  *      404:
  *        description: Servers not found
- * @openapi
+ * @swagger
  * components:
  *  schemas:
  *    CreateServerInput:

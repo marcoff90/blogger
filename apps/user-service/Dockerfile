@@ -1,8 +1,8 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY .env.docker .
-COPY package-lock.json .
-COPY apps/api-registry/src/config/swagger-docs.js .
+COPY ./.env.docker .
+COPY ./package-lock.json .
+COPY ./user-service.json .
 COPY ./dist/apps/user-service .
 ENV PORT=3000
 EXPOSE ${PORT}
