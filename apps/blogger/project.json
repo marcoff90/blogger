@@ -1,17 +1,16 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/blog-service/src",
+  "sourceRoot": "apps/blogger/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/blog-service",
-        "main": "apps/blog-service/src/main.ts",
-        "tsConfig": "apps/blog-service/tsconfig.app.json",
-        "assets": ["apps/blog-service/src/assets"],
-        "generatePackageJson": true
+        "outputPath": "dist/apps/blogger",
+        "main": "apps/blogger/src/main.ts",
+        "tsConfig": "apps/blogger/tsconfig.app.json",
+        "assets": ["apps/blogger/src/assets"]
       },
       "configurations": {
         "production": {
@@ -20,8 +19,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/blog-service/src/environments/environment.ts",
-              "with": "apps/blog-service/src/environments/environment.prod.ts"
+              "replace": "apps/blogger/src/environments/environment.ts",
+              "with": "apps/blogger/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -30,11 +29,11 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "blog-service:build"
+        "buildTarget": "blogger:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "blog-service:build:production"
+          "buildTarget": "blogger:build:production"
         }
       }
     },
@@ -42,14 +41,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/blog-service/**/*.ts"]
+        "lintFilePatterns": ["apps/blogger/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/blog-service"],
+      "outputs": ["coverage/apps/blogger"],
       "options": {
-        "jestConfig": "apps/blog-service/jest.config.ts",
+        "jestConfig": "apps/blogger/jest.config.ts",
         "passWithNoTests": true
       }
     }

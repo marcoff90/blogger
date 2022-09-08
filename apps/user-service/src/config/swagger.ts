@@ -3,7 +3,6 @@ import {version} from '../../../../package.json';
 import {Express} from "express";
 import Swagger from "@blogger/util-swagger-docs";
 import swaggerDocs from 'user-service.json'
-import logger from '@blogger/util-logger';
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -40,7 +39,7 @@ const options: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: `${process.env['USER_SERVICE_URL_VISIBLE']}:${process.env['PORT_USER_SERVICE']}`,
         description: 'User Management Service'
       },
     ],
@@ -53,7 +52,6 @@ const options: swaggerJsdoc.Options = {
 
 export const generateSwaggerDocs = (app: Express, port: number) => {
   const isDocker = process.env.DOCKER;
-  logger.info(isDocker)
   if (isDocker === 'true') {
     Swagger.swaggerDocsDocker(app, port, swaggerDocs);
   } else {

@@ -19,6 +19,7 @@
       "@blogger/middleware-api-error": [
         "libs/middleware-api-error/src/index.ts"
       ],
+      "@blogger/middleware-auth": ["libs/middleware-auth/src/index.ts"],
       "@blogger/middleware-validator": [
         "libs/middleware-validator/src/index.ts"
       ],

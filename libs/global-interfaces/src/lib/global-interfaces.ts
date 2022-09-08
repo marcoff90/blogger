@@ -53,6 +53,22 @@ export interface ApiI
   server_id?: number;
 }
 
+export interface ArticleI
+  extends Model<InferAttributes<ArticleI>, InferCreationAttributes<ArticleI>> {
+  id: number;
+  title: string;
+  perex: string;
+  content: string;
+  deleted: boolean;
+  state: State;
+  user_id?: number;
+}
+
+export enum State {
+  DRAFT = 'draft',
+  DONE = 'done'
+}
+
 export interface SwaggerDocsServer {
   url: string,
   description: string

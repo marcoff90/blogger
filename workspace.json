@@ -4,9 +4,10 @@
   "projects": {
     "api-gateway": "apps/api-gateway",
     "api-registry": "apps/api-registry",
-    "blog-service": "apps/blog-service",
+    "blogger": "apps/blogger",
     "global-interfaces": "libs/global-interfaces",
     "middleware-api-error": "libs/middleware-api-error",
+    "middleware-auth": "libs/middleware-auth",
     "middleware-validator": "libs/middleware-validator",
     "rabbitmq-manager": "libs/rabbitmq-manager",
     "redis-manager": "libs/redis-manager",

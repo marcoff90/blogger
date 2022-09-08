@@ -6,9 +6,10 @@
     "dev:user-service": "nx run user-service:serve",
     "dev:api-gateway": "nx run api-gateway:serve",
     "dev:api-registry": "nx run api-registry:serve",
+    "dev:blogger-service": "nx run blogger:serve",
     "docker:compose": "docker-compose start docker-compose.yml",
-    "dev:all": "nx run-many --target=serve --projects=api-registry,user-service,api-gateway --parallel",
-    "build:apps": "nx run-many --target=build --projects=api-registry,user-service,api-gateway --parallel",
+    "dev:all": "nx run-many --target=serve --projects=api-registry,user-service,api-gateway,blogger --parallel",
+    "build:apps": "nx run-many --target=build --projects=api-registry,user-service,api-gateway,blogger --parallel",
     "build:docker-images": "docker build -f ./apps/api-registry/Dockerfile . -t api-registry && docker build -f ./apps/api-gateway/Dockerfile . -t api-gateway && docker build -f ./apps/user-service/Dockerfile . -t user-service",
     "db:seed": "sequelize db:seed:all",
     "test": "nx test"
