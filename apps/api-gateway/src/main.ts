@@ -7,6 +7,7 @@ import ErrorHandler from "@blogger/middleware-api-error";
 import GatewayRouter from "./app/routers/gateway-router";
 
 const app = express();
+global.app = app; // used for rerendering swagger docs in case of new api registration
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

@@ -6,6 +6,7 @@ import {createDatabase, createTables} from "./config/database-config";
 import registerToRegistry from "./config/register-to-registry";
 import logger from '@blogger/util-logger';
 import {generateSwaggerDocs} from "./config/swagger";
+import ArticleRouter from "./app/routers/article-router";
 
 const app = express();
 
@@ -57,13 +58,14 @@ createTables();
  * on post publish to queue, consumer saves to db
  * needed communication with user service to get user data about visible articles
  */
+app.use(ArticleRouter);
 app.use(ErrorHandler.apiErrorHandler);
 registerToRegistry();
 
 const port: number = parseInt(process.env.PORT_BLOGGER) || 5555;
 const url = process.env['BLOGGER_SERVICE_URL_VISIBLE'];
+generateSwaggerDocs(app, port);
 const server = app.listen(port, () => {
   logger.info(`Listening at ${url}:${port}/api`);
-  generateSwaggerDocs(app, port);
 });
 server.on('error', console.error);

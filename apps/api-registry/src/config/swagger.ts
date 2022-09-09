@@ -27,8 +27,7 @@ const options: swaggerJsdoc.Options = {
     ],
   },
   apis: [
-    'apps/api-registry/src/config/swagger-docs.js', // for local dev
-    'swagger-docs.js', // for docker-container
+    'apps/api-registry/src/config/swagger-docs.js'
   ],
 };
 

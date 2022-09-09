@@ -20,8 +20,8 @@ app.use(ErrorHandler.apiErrorHandler);
 
 const port: number = parseInt(process.env.PORT_REGISTRY) || 4444;
 const url = process.env['REGISTRY_URL_VISIBLE'];
+generateSwaggerDocs(app, port);
 const server = app.listen(port, () => {
   logger.info(`Listening at ${url}:${port}`);
-  generateSwaggerDocs(app, port);
 });
 server.on('error', console.error);

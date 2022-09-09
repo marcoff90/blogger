@@ -1,10 +1,10 @@
-import {Interfaces} from "@blogger/global-interfaces";
+import {ErrorMessage} from "../../interfaces/error-message";
 
 class ApiError {
   code: number;
-  message: Interfaces.ErrorMessage;
+  message: ErrorMessage;
 
-  constructor(code: number, message: Interfaces.ErrorMessage) {
+  constructor(code: number, message: ErrorMessage) {
     this.code = code;
     this.message = message;
   }
@@ -31,6 +31,10 @@ class ApiError {
 
   static unavailable(message) {
     return new ApiError(503, message);
+  }
+
+  static serverError() {
+    return new ApiError(500, {error: 'Something went wrong'});
   }
 }
 

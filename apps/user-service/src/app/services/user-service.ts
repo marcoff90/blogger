@@ -22,9 +22,7 @@ const findByConfirmationToken = async (confirmationToken: string) => {
 };
 
 const confirmAccount = async (confirmationToken: string, avatar: string) => {
-  const user: UserI = await UserRepository.findByConfirmationToken(
-    confirmationToken
-  );
+  const user: UserI = await UserRepository.findByConfirmationToken(confirmationToken);
   user.active = true;
   user.avatar = avatar;
   user.confirmationToken = null;
@@ -35,9 +33,7 @@ const confirmAccount = async (confirmationToken: string, avatar: string) => {
 };
 
 const generateNewConfirmationToken = async (confirmationToken: string) => {
-  const user: UserI = await UserRepository.findByConfirmationToken(
-    confirmationToken
-  );
+  const user: UserI = await UserRepository.findByConfirmationToken(confirmationToken);
   const token: string = await TokenGenerator.generateConfirmationToken();
   const expiration: number = Math.round(Date.now() / 1000 + 86400);
   user.confirmationToken = token;

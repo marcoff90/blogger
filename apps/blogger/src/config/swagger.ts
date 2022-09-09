@@ -23,8 +23,7 @@ const options: swaggerJsdoc.Options = {
     ],
   },
   apis: [
-    'apps/blogger/src/config/swagger-docs.js',
-    'swagger-docs.js', // for docker-container
+    'apps/blogger/src/config/swagger-docs.js'
   ],
 };
 

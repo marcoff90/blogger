@@ -1,5 +1,5 @@
 /**
- * @swagger
+ * @openapi
  * '/api-registry/servers':
  *  post:
  *     tags:
@@ -28,7 +28,7 @@
  *        description: Conflict
  *      400:
  *        description: Bad request
- * @swagger
+ * @openapi
  * '/api-registry/servers':
  *  get:
  *     tags:
@@ -51,7 +51,7 @@
  *        description: Something went wrong
  *      404:
  *        description: Servers not found
- * @swagger
+ * @openapi
  * components:
  *  schemas:
  *    CreateServerInput:

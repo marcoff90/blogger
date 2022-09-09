@@ -31,16 +31,11 @@ const showAll = async (req: Request<GetServers['headers']>, res: Response, next:
   const apiKey = req.headers['x-api-key'];
 
   if (apiKey === process.env['API_REGISTRY_KEY']) {
-    try {
-      const servers: Interfaces.ServerI[] = await ServerService.findAll();
-      if (servers.length > 0) {
-        res.send(servers);
-      } else {
-        next(ApiError.notFound({error: 'No servers available'}));
-      }
-    } catch (e: any) {
-      logger.error(e.message);
-      next();
+    const servers: Interfaces.ServerI[] = await ServerService.findAll();
+    if (servers.length > 0) {
+      res.send(servers);
+    } else {
+      next(ApiError.notFound({error: 'No servers available'}));
     }
   } else {
     next(ApiError.forbidden({error: `ApiKey doesn't match`}));

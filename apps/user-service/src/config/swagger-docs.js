@@ -1,5 +1,5 @@
 /**
- * @swagger
+ * @openapi
  * '/user-service-api/users':
  *  post:
  *     tags:

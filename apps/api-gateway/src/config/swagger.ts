@@ -7,6 +7,7 @@ import loadApisData from "./apis-data";
 import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
 import swaggerDocs from 'api-gateway.json';
+import {SwaggerDocsServer} from "../interfaces/swagger-docs-server";
 
 const generateSwaggerDocs = (app: Express, port: number) => {
   const isDocker = process.env.DOCKER;
@@ -28,7 +29,7 @@ const generateSwaggerDocs = (app: Express, port: number) => {
 };
 
 const getServersData = (data: Interfaces.ServerI[]) => {
-  const serversData: Interfaces.SwaggerDocsServer[] = [];
+  const serversData: SwaggerDocsServer[] = [];
   serversData.push({
     url: `${process.env['GATEWAY_URL']}:${process.env['PORT_GATEWAY']}`,
     description: 'API Gateway server'
@@ -49,7 +50,7 @@ const getServersData = (data: Interfaces.ServerI[]) => {
   };
 };
 
-const generateSwaggerOptions = (serversData: Interfaces.SwaggerDocsServer[], apisData: string[]) => {
+const generateSwaggerOptions = (serversData: SwaggerDocsServer[], apisData: string[]) => {
   const options: swaggerJsdoc.Options = {
     definition: {
       openapi: '3.0.0',

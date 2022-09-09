@@ -14,19 +14,19 @@ import generateToken from '../../utils/jwt-util';
 import {Interfaces} from '@blogger/global-interfaces';
 import bcrypt from 'bcryptjs';
 import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api-error";
+import {CreateUserResponse} from "../interfaces/create-user-response";
+import {LoginUserResponse} from "../interfaces/login-user-response";
+import {ActivationResponse} from "../interfaces/activation-response";
 
-const storeUser = async (
-  req: Request<CreateUserInput['body']>,
-  res: Response,
-  next: NextFunction
-) => {
+const storeUser = async (req: Request<CreateUserInput['body']>, res: Response, next: NextFunction) => {
   try {
     const user: UserI = await UserService.create(req.body);
 
-    const response: Interfaces.CreateUserResponse = {
+    const response: CreateUserResponse = {
       id: user.id,
       username: user.username,
     };
+
     return res.json(response);
   } catch (e: any) {
     logger.error(e.message);
@@ -34,10 +34,7 @@ const storeUser = async (
   }
 };
 
-const showLogin = async (
-  req: Request<LoginUserInput['body']>,
-  res: Response,
-  next: NextFunction
+const showLogin = async (req: Request<LoginUserInput['body']>, res: Response, next: NextFunction
 ) => {
   const loggedUser: UserI = await UserService.login(req.body);
 
@@ -45,20 +42,14 @@ const showLogin = async (
     loggedUser !== null ? await generateToken(loggedUser) : null;
 
   if (!token) {
-    next(
-      ApiError.unauthorized({
-        error: "At least one of the fields doesn't match!",
-      })
-    );
+    next(ApiError.unauthorized({error: "At least one of the fields doesn't match!"}));
+
   } else {
     if (!loggedUser.active) {
-      next(
-        ApiError.forbidden({
-          error: 'Confirm the account through email confirmation!',
-        })
-      );
+      next(ApiError.forbidden({error: 'Confirm the account through email confirmation!'}));
+
     } else {
-      const response: Interfaces.LoginUserResponse = {
+      const response: LoginUserResponse = {
         token: token,
         username: loggedUser.username,
         avatar: loggedUser.avatar,
@@ -68,11 +59,7 @@ const showLogin = async (
   }
 };
 
-const forgottenPassword = async (
-  req: Request<ForgottenUserPasswordInput['body']>,
-  res: Response,
-  next: NextFunction
-) => {
+const forgottenPassword = async (req: Request<ForgottenUserPasswordInput['body']>, res: Response, next: NextFunction) => {
   const user: UserI = await UserService.findByEmail(req.body.email);
 
   if (!user) {
@@ -86,26 +73,23 @@ const forgottenPassword = async (
   }
 };
 
-const resetPassword = async (
-  req: Request<ResetPasswordInput['body'], ResetPasswordInput['query']>,
-  res: Response,
-  next: NextFunction
-) => {
+const resetPassword = async (req: Request<ResetPasswordInput['body'], ResetPasswordInput['query']>, res: Response,
+  next: NextFunction) => {
   const timeNow = Date.now() / 1000;
   const user: UserI = await UserService.findByEmail(req.body.email);
 
   if (!user) {
     next(ApiError.badRequest({error: 'User not found'}));
+
   } else if (user.forgottenPasswordToken !== req.query.token) {
-    next(
-      ApiError.badRequest({
-        error: 'Reset token not associated with email address!',
-      })
-    );
+    next(ApiError.badRequest({error: 'Reset token not associated with email address!'}));
+
   } else if (bcrypt.compareSync(req.body.password, user.password)) {
     next(ApiError.badRequest({error: 'Password cannot be same as it was!'}));
+
   } else if (timeNow > user.forgottenPasswordTokenExpiration) {
     next(ApiError.badRequest({error: 'Token expired!'}));
+
   } else {
     await UserService.resetPassword(req.body.email, req.body.password);
     const response: Interfaces.ApiMessage = {
@@ -115,12 +99,10 @@ const resetPassword = async (
   }
 };
 
-const activateAccount = async (
-  req: Request<ActivateUserAccountInput['body'],
-    ActivateUserAccountInput['query']>,
+const activateAccount = async (req: Request<ActivateUserAccountInput['body'], ActivateUserAccountInput['query']>,
   res: Response,
-  next: NextFunction
-) => {
+  next: NextFunction) => {
+
   const timeNow = Date.now() / 1000;
   const user: UserI = await UserService.findByConfirmationToken(
     req.query.token.toString()
@@ -128,22 +110,15 @@ const activateAccount = async (
 
   if (!user) {
     next(ApiError.notFound({error: 'Token not assigned to user!'}));
+
   } else if (timeNow > user.confirmationTokenExpiration) {
-    const newToken = await UserService.generateNewConfirmationToken(
-      req.query.token.toString()
-    );
-    if (newToken) {
-      next(
-        ApiError.forbidden({error: 'Token expired! Check email for new one!'})
-      );
-    }
+    await UserService.generateNewConfirmationToken(req.query.token.toString());
+    next(ApiError.forbidden({error: 'Token expired! Check email for new one!'}));
+
   } else {
-    const user: UserI = await UserService.confirmAccount(
-      req.query.token.toString(),
-      req.body.avatar
-    );
+    const user: UserI = await UserService.confirmAccount(req.query.token.toString(), req.body.avatar);
     const token: string = await generateToken(user);
-    const response: Interfaces.ActivationResponse = {
+    const response: ActivationResponse = {
       username: user.username,
       active: user.active,
       avatar: user.avatar,
@@ -153,14 +128,9 @@ const activateAccount = async (
   }
 };
 
-const identifyUserByResetToken = async (
-  req: Request<IdentifyUserByResetTokenInput['query']>,
-  res: Response,
-  next: NextFunction
-) => {
-  const user: UserI = await UserService.findByPasswordToken(
-    req.query.token.toString()
-  );
+const identifyUserByResetToken = async (req: Request<IdentifyUserByResetTokenInput['query']>, res: Response,
+                                        next: NextFunction) => {
+  const user: UserI = await UserService.findByPasswordToken(req.query.token.toString());
 
   if (!user) {
     next(ApiError.notFound({error: 'Token not assigned to user!'}));

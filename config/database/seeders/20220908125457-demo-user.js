@@ -2,7 +2,7 @@
 const bcrypt = require('bcryptjs');
 
 module.exports = {
-  async up(queryInterface, Sequelize) {l
+  async up(queryInterface, Sequelize) {
     //generate 5 activated users
     const users = [];
     for (let i = 0; i < 5; i++) {
@@ -10,7 +10,7 @@ module.exports = {
         username: `user${i + 1}`,
         email: `user${i + 1}@example.com`,
         active: true,
-        password: bcrypt.hashSync('Password123', 5),
+        password: bcrypt.hashSync('Password123!', 5),
         avatar: `user${i + 1}/avatar.jpg`,
       });
     }

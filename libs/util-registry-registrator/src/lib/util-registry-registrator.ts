@@ -1,7 +1,7 @@
 import logger from '@blogger/util-logger';
 import axios from "axios";
 import 'dotenv/config';
-import {Interfaces} from '@blogger/global-interfaces';
+import {RegisterServerInput} from "../interfaces/register-server-input";
 
 const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: string,
                                      dockerDocksPath: string, description: string, name: string) => {
@@ -11,7 +11,7 @@ const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: str
   const apiKey = process.env['API_REGISTRY_KEY'];
   const registryPort = process.env['PORT_REGISTRY'];
 
-  const requestData: Interfaces.RegisterServerInput = {
+  const requestData: RegisterServerInput = {
     url: userServiceApiURL,
     description: description,
     name: name,

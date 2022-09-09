@@ -1,8 +1,26 @@
-import {Interfaces} from '@blogger/global-interfaces';
-import DataTypes from "sequelize";
+import DataTypes, {InferAttributes, InferCreationAttributes, Model} from "sequelize";
 import sequelize from "../../config/sequelize";
 
-const ArticleModel = sequelize.define<Interfaces.ArticleI>('blog', {
+export interface ArticleI
+  extends Model<InferAttributes<ArticleI>, InferCreationAttributes<ArticleI>> {
+  id: number;
+  title: string;
+  perex: string;
+  content: string;
+  deleted: boolean;
+  state: State;
+  image: string;
+  user_id: number;
+  createdAt?: Date,
+  updatedAt?: Date
+}
+
+export enum State {
+  DRAFT = 'draft',
+  DONE = 'done'
+}
+
+const ArticleModel = sequelize.define<ArticleI>('article', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -28,8 +46,12 @@ const ArticleModel = sequelize.define<Interfaces.ArticleI>('blog', {
     defaultValue: false,
   },
   state: {
-    type: DataTypes.ENUM(Interfaces.State.DONE, Interfaces.State.DRAFT),
+    type: DataTypes.ENUM(State.DONE, State.DRAFT),
     allowNull: false
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   user_id: {
     type: DataTypes.INTEGER,

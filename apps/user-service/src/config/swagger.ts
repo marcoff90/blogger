@@ -45,8 +45,7 @@ const options: swaggerJsdoc.Options = {
     ],
   },
   apis: [
-    'apps/user-service/src/config/swagger-docs.js',
-    'swagger-docs.js', // for docker-container
+    'apps/user-service/src/config/swagger-docs.js'
   ],
 };
 

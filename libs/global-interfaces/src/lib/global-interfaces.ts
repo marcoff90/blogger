@@ -1,36 +1,7 @@
 import {InferAttributes, InferCreationAttributes, Model} from "sequelize";
 
-export interface ErrorMessage {
-  error: string;
-}
-
-export interface CreateUserResponse {
-  id: number;
-  username: string;
-}
-
-export interface LoginUserResponse {
-  token: string;
-  username: string;
-  avatar: string;
-}
-
 export interface ApiMessage {
   message: string;
-}
-
-export interface ActivationResponse {
-  username: string;
-  active: boolean;
-  avatar: string;
-  token: string;
-}
-
-export interface RegisterServerInput {
-  url: string,
-  description: string,
-  name: string,
-  apis: Path[]
 }
 
 export interface Path {
@@ -53,31 +24,6 @@ export interface ApiI
   server_id?: number;
 }
 
-export interface ArticleI
-  extends Model<InferAttributes<ArticleI>, InferCreationAttributes<ArticleI>> {
-  id: number;
-  title: string;
-  perex: string;
-  content: string;
-  deleted: boolean;
-  state: State;
-  user_id?: number;
-}
-
-export enum State {
-  DRAFT = 'draft',
-  DONE = 'done'
-}
-
-export interface SwaggerDocsServer {
-  url: string,
-  description: string
-}
-
 export interface ApiRegistryMessage {
   serversUpdated: boolean
-}
-
-export interface RequestParams {
-  [key: string]: string
 }
