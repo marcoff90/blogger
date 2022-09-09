@@ -6,7 +6,7 @@ import logger from '@blogger/util-logger';
 import GatewayService from "../services/gateway-service";
 
 const forwardRequest = async (req: Request, res: Response, next: NextFunction) => {
-  const { apiName } = req.params;
+  const {apiName} = req.params;
   // the api name is used to filter the api data from cache/api registry to get corresponding
   // server to contact -> then we use the whole path in request to connect to api
   const path = req.path.substring(1);
@@ -15,6 +15,7 @@ const forwardRequest = async (req: Request, res: Response, next: NextFunction) =
   if (apiName === 'docs' || apiName === 'docs.json') {
     next();
   } else {
+
     const servers: Interfaces.ServerI[] = await GatewayService.getApiData();
     const server: Interfaces.ServerI = servers.find(server => server.name === apiName);
     if (server) {
@@ -28,7 +29,11 @@ const forwardRequest = async (req: Request, res: Response, next: NextFunction) =
       })
       .catch(err => {
         logger.error(`${apiName}: ${err.message}`);
-        res.status(err.response.status).send(err.response.data)
+        if (err.code === 'ECONNREFUSED') {
+          next(ApiError.unavailable({error: `${server.name} unavailable`}));
+        } else {
+          res.status(err.response.status).send(err.response.data);
+        }
       });
 
     } else {

@@ -45,12 +45,23 @@ const deleteKey = async (key: string) => {
   }
 };
 
-const redisClient = () => {
-  return client;
+const getData = async (key: string) => {
+  logger.info(`Trying to load data from cache for key ${key}`);
+  if (!client.isOpen) {
+    await client.connect();
+  }
+  try {
+    const data = await client.get(key);
+    logger.info('Data loaded successfully');
+    return data;
+  } catch (e: any) {
+    logger.error(`Loading failed: ${e.message}`);
+    return null;
+  }
 };
 
 export default {
   storeToCache,
-  redisClient,
-  deleteKey
+  deleteKey,
+  getData
 };

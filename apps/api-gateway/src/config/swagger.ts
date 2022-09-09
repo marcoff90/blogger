@@ -23,7 +23,7 @@ const generateSwaggerDocs = (app: Express, port: number) => {
     }
   })
   .catch(err => {
-    logger.error(err);
+    logger.error(err.message);
   });
 };
 

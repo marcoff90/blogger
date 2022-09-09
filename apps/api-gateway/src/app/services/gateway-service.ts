@@ -4,6 +4,7 @@ import {AxiosRequestConfig} from "axios";
 import RedisManager from "@blogger/redis-manager";
 import loadApisData from "../../config/apis-data";
 import logger from '@blogger/util-logger';
+import 'dotenv/config';
 
 const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, reqParams: any) => {
   const config: AxiosRequestConfig = !req.headers.authorization ?
@@ -26,12 +27,12 @@ const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, 
 };
 
 const getApiData = async () => {
-  const redisClient = RedisManager.redisClient();
+  const redisKey = process.env['REDIS_API_GATEWAY_KEY'];
 
   let apiData = null;
 
   try {
-    apiData = await redisClient.get('apiData');
+    apiData = await RedisManager.getData(redisKey);
   } catch (e: any) {
     logger.error(e.message);
   }

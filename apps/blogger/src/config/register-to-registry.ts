@@ -15,7 +15,11 @@ const registerToRegistry = () => {
     logger.info('Successfully registered to registry');
   })
   .catch(err => {
-    logger.error(err);
+    if (err.code === 'ECONNREFUSED') {
+      logger.error('Api registry unavailable');
+    } else {
+      logger.error(`Registration failed: ${err}`);
+    }
   });
 };
 

@@ -28,6 +28,10 @@ class ApiError {
   static conflict(message) {
     return new ApiError(409, message);
   }
+
+  static unavailable(message) {
+    return new ApiError(503, message);
+  }
 }
 
 export default ApiError;
