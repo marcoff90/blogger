@@ -22,7 +22,25 @@ const findAllByUserId = async (userId: number) => {
   });
 };
 
+const updateByIdAndUserId = async (articleId: number, userId: number, articlesData: ArticleI) => {
+  return await ArticleModel.update({
+    title: articlesData.title,
+    perex: articlesData.perex,
+    content: articlesData.content,
+    image: articlesData.image,
+    state: articlesData.state
+  }, {
+    where: {
+      id: articleId,
+      user_id: userId,
+      deleted: false
+    },
+    returning: true
+  });
+};
+
 export default {
   create,
-  findAllByUserId
+  findAllByUserId,
+  updateByIdAndUserId,
 };

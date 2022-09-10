@@ -32,10 +32,6 @@ class ApiError {
   static unavailable(message) {
     return new ApiError(503, message);
   }
-
-  static serverError() {
-    return new ApiError(500, {error: 'Something went wrong'});
-  }
 }
 
 export default ApiError;

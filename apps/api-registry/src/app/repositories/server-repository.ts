@@ -2,7 +2,7 @@ import ServerModel from '../models/server-model';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import ApiModel from "../models/api-model";
-import { Interfaces } from '@blogger/global-interfaces';
+import {Interfaces} from '@blogger/global-interfaces';
 
 const create = async (server: Interfaces.ServerI) => {
   return await ServerModel.create(server, {
@@ -21,7 +21,7 @@ const findAll = async () => {
 };
 
 const update = async (server: Interfaces.ServerI) => {
-  const updatedServer = await ServerModel.update({
+  return await ServerModel.update({
     name: server.name,
     description: server.description,
   }, {
@@ -30,7 +30,6 @@ const update = async (server: Interfaces.ServerI) => {
     },
     returning: true
   });
-  return updatedServer;
 };
 
 const findByUrl = async (url: string) => {

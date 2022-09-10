@@ -25,7 +25,16 @@ const findAllByUserId = async (user: string | JwtPayload) => {
   return result;
 };
 
+const updateByIdAndUserId = async (user: string | JwtPayload, articleId: number, articlesData: ArticleI) => {
+  const updatedData = await ArticleRepository.updateByIdAndUserId(articleId, user['id'], articlesData);
+  // sequelize returns the model with metadata -> the array has count of updated objects in 0 index, and array of
+  // models at 1 index, the data is in property dataValues
+  const {deleted, user_id, ...response} = updatedData[1][0]['dataValues'];
+  return response;
+};
+
 export default {
   create,
-  findAllByUserId
+  findAllByUserId,
+  updateByIdAndUserId
 };
