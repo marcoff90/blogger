@@ -1,10 +1,16 @@
 /**
  * @openapi
- * '/blogger-service-api/articles':
+ * '/blogger-service-api/articles/{userId}':
  *  post:
  *     tags:
  *      - BloggerServiceAPI
  *     summary: Create Article
+ *     parameters:
+ *      - in: path
+ *        name: userId
+ *        required: true
+ *        schema:
+ *          type: string
  *     security:
  *      - bearerAuth: []
  *     requestBody:
@@ -20,14 +26,18 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/CreateArticleResponse'
- *
+ *      403:
+ *        description: Forbidden - userId in path doesn't match userId from JWT
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/ApiError'
- *
  *      400:
  *        description: Bad Request
  *        content:
@@ -36,13 +46,43 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/ValidationError'
- *
- *      500:
- *        description: Server Error
+ * @openapi
+ * '/blogger-service-api/articles/{userId}':
+ *  get:
+ *     tags:
+ *      - BloggerServiceAPI
+ *     summary: Get articles for user as admin
+ *     parameters:
+ *      - in: path
+ *        name: userId
+ *        required: true
+ *        schema:
+ *          type: string
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *      403:
+ *        description: Forbidden - userId in path doesn't match userId from JWT
  *        content:
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/ApiError'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
  *
  * @openapi
  * components:
@@ -103,6 +143,27 @@
  *          items:
  *            type: string
  *        message:
+ *          type: string
+ *    GetUserArticlesResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: number
+ *        title:
+ *          type: string
+ *        perex:
+ *          type: string
+ *        content:
+ *          type: string
+ *        state:
+ *          type: string
+ *        image:
+ *          type: string
+ *        createdAt:
+ *          type: date
+ *        updatedAt:
+ *          type: date
+ *        username:
  *          type: string
  *
  *

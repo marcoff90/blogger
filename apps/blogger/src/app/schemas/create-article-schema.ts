@@ -1,4 +1,4 @@
-import {object, string, TypeOf, nativeEnum} from 'zod';
+import {object, string, TypeOf, nativeEnum, number} from 'zod';
 import {State} from "../models/article-model";
 
 export const createArticleSchema = object({
@@ -22,8 +22,13 @@ export const createArticleSchema = object({
     })
   }),
   headers: object({
-    'authorization': string({
+    authorization: string({
       required_error: 'Bearer token is required'
+    })
+  }),
+  params: object({
+    userId: string({
+      required_error: 'User ID is required'
     })
   })
 });

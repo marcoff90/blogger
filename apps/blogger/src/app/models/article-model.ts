@@ -7,7 +7,7 @@ export interface ArticleI
   title: string;
   perex: string;
   content: string;
-  deleted: boolean;
+  deleted?: boolean;
   state: State;
   image: string;
   user_id: number;
