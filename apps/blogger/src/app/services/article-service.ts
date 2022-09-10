@@ -11,30 +11,42 @@ import RedisManager from "../../../../../libs/redis-manager/src/lib/redis-manage
 const create = async (article: ArticleI, user: string | JwtPayload) => {
   article.user_id = user['id'];
   logger.info(`Created new article ${article.title} by user ${user['username']}`);
-  return await ArticleRepository.create(article);
+  const savedArticle = await ArticleRepository.create(article);
+
+  const cachedArticles = await loadUserArticlesFromCache(user['username']);
+
+  if (cachedArticles) {
+    const converted = convertArticleToArticleResponse(savedArticle, user['username']);
+    cachedArticles.push(converted);
+    try {
+      await RedisManager.deleteKey(user['username']);
+      await saveUserArticlesToCache(user['username'], cachedArticles);
+    } catch (e: any) {
+      logger.error(e.message);
+    }
+  }
+
+  return savedArticle;
 };
 
-const findAllByUserId = async (user: string | JwtPayload) => {
+const findAllByUserId = async (user: string | JwtPayload | Interfaces.UserData) => {
+  const cachedArticles = await loadUserArticlesFromCache(user['username']);
+
+  if (cachedArticles) {
+    return cachedArticles;
+  }
+
   const articles: ArticleI[] = await ArticleRepository.findAllByUserId(user['id']);
   logger.info(`Successfully loaded ${articles.length} articles of ${user['username']}`);
 
   const result: GetUserArticleResponse[] = [];
 
   articles.map(article => {
-    const res: GetUserArticleResponse = {
-      id: article.id,
-      title: article.title,
-      perex: article.perex,
-      content: article.content,
-      state: article.state,
-      image: article.image,
-      createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-      username: user['username'],
-    };
-    result.push(res);
+    const convert = convertArticleToArticleResponse(article, user['username']);
+    result.push(convert);
   });
 
+  await saveUserArticlesToCache(user['username'], result);
   logger.info(`Sending articles: ${result.length}`);
   return result;
 };
@@ -100,18 +112,9 @@ const findFreshFiveArticles = async () => {
   const result: GetUserArticleResponse[] = [];
 
   for (const article of articles) {
-    const res: GetUserArticleResponse = {
-      id: article.id,
-      title: article.title,
-      perex: article.perex,
-      content: article.content,
-      state: article.state,
-      image: article.image,
-      createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-      username: await findUsernameByArticleId(articles, article.id),
-    };
-    result.push(res);
+    const username = await findUsernameByArticleId(articles, article.id);
+    const converted = convertArticleToArticleResponse(article, username);
+    result.push(converted);
   }
 
   logger.info(`Successfully added usernames to articles`);
@@ -137,11 +140,66 @@ const mapArticleAndUserId = (articles: ArticleI[]) => {
   return map;
 };
 
+const findArticlesByUsername = async (username: string) => {
+  const user: Interfaces.UserData = await UserService.findUserDataByUsername(username);
+  if (!user) {
+    throw new Error(`User ${username} not found`);
+  }
+
+  const cachedArticles = await loadUserArticlesFromCache(username);
+
+  if (!cachedArticles) {
+    return await findAllByUserId(user);
+  }
+  return cachedArticles;
+};
+
+const loadUserArticlesFromCache = async (username: string) => {
+  let cachedData: string = null;
+
+  try {
+    cachedData = await RedisManager.getData(username);
+  } catch (e: any) {
+    logger.error(e.message);
+  }
+
+  if (cachedData) {
+    logger.info(`Loaded user articles form cache: ${cachedData}`);
+    const articles: GetUserArticleResponse[] = JSON.parse(cachedData);
+    return articles;
+  }
+  return null;
+};
+
+const saveUserArticlesToCache = async (username: string, articles: GetUserArticleResponse[]) => {
+  try {
+    await RedisManager.storeToCache(username, 43200, JSON.stringify(articles));
+  } catch (e: any) {
+    logger.error(`Data not cached: ${JSON.stringify(articles)}`);
+  }
+};
+
+const convertArticleToArticleResponse = (article: ArticleI, username: string) => {
+  return {
+    id: article.id,
+    title: article.title,
+    perex: article.perex,
+    content: article.content,
+    state: article.state,
+    image: article.image,
+    createdAt: article.createdAt,
+    updatedAt: article.updatedAt,
+    username: username,
+  };
+};
+
+
 export default {
   create,
   findAllByUserId,
   updateByIdAndUserId,
   softDelete,
   doesArticleExist,
-  getFiveFeaturedArticles
+  getFiveFeaturedArticles,
+  findArticlesByUsername
 };

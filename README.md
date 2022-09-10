@@ -24,6 +24,10 @@ ABOUT
   - user-service
     - responsible for user management
     - flow explained in swagger docs
+  - blogger-service
+    - responsible for management of articles
+    - public and admin part
+    - complete info in swagger docs
 
 PREREQUISITES
 - installed locally postgresql, redis and rabbitmq

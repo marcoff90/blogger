@@ -10,7 +10,8 @@
         "outputPath": "dist/apps/blogger",
         "main": "apps/blogger/src/main.ts",
         "tsConfig": "apps/blogger/tsconfig.app.json",
-        "assets": ["apps/blogger/src/assets"]
+        "assets": ["apps/blogger/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {

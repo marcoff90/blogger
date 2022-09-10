@@ -54,7 +54,6 @@ services:
     links:
       - postgres
 
-
   user-service:
     env_file:
       - .env.docker
@@ -81,3 +80,24 @@ services:
     depends_on:
       - api-registry
       - user-service
+    links:
+      - user-service
+      - api-registry
+      - blogger-service
+
+  blogger-service:
+    env_file:
+      - .env.docker
+    image: 'blogger-service'
+    ports:
+      - '5555:5555'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres

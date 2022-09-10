@@ -184,6 +184,41 @@
  *              items:
  *                $ref: '#/components/schemas/ValidationError'
  * @openapi
+ * '/blogger-service-api/blogs/{username}/articles':
+ *  get:
+ *     tags:
+ *      - BloggerServiceAPI
+ *     summary: Get all articles by username -> public
+ *     parameters:
+ *      - in: path
+ *        name: username
+ *        required: true
+ *        schema:
+ *          type: string
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *      404:
+ *        description: Not found - Article not found based on id and user id
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ * @openapi
  * '/blogger-service-api/featured-blogs':
  *  get:
  *     tags:

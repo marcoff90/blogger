@@ -11,6 +11,7 @@ import {UpdateArticleInput} from "../schemas/update-article-schema";
 import {UpdateArticleResponse} from "../interfaces/update-article-response";
 import {DeleteArticleInput} from "../schemas/delete-article-schema";
 import {Interfaces} from '@blogger/global-interfaces';
+import {GetArticlesByUsernameInput} from "../schemas/get-articles-by-username-schema";
 
 const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArticleInput['body']>,
                             res: Response, next: NextFunction) => {
@@ -103,10 +104,22 @@ const showFiveFeaturedArticles = async (req: Request, res: Response, next: NextF
   }
 };
 
+const findArticlesByUsername = async (req: Request<GetArticlesByUsernameInput['params']>, res: Response,
+                                  next: NextFunction) => {
+  const {username} = req.params;
+  try {
+    const articles: GetUserArticleResponse[] = await ArticleService.findArticlesByUsername(username);
+    res.send(articles);
+  } catch (e) {
+    next(ApiError.notFound({error: `Blog posts by ${username} not found`}));
+  }
+};
+
 export default {
   storeArticle,
   showAllByUserId,
   updateArticle,
   deleteArticle,
-  showFiveFeaturedArticles
+  showFiveFeaturedArticles,
+  findArticlesByUsername
 };

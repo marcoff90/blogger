@@ -6,6 +6,7 @@ import ArticleController from "../controllers/article-controller";
 import {getArticlesByUserIdSchema} from "../schemas/get-articles-by-user-id-schema";
 import {updateArticleSchema} from "../schemas/update-article-schema";
 import {deleteArticleSchema} from "../schemas/delete-article-schema";
+import {getArticlesByUsernameSchema} from "../schemas/get-articles-by-username-schema";
 
 const ArticleRouter = Router();
 
@@ -22,5 +23,8 @@ ArticleRouter.delete('/blogger-service-api/bloggers/:userId/articles/:articleId'
   Auth.authorize, ArticleController.deleteArticle);
 
 ArticleRouter.get('/blogger-service-api/featured-blogs', ArticleController.showFiveFeaturedArticles);
+
+ArticleRouter.get('/blogger-service-api/blogs/:username/articles', Validator.validate(getArticlesByUsernameSchema),
+  ArticleController.findArticlesByUsername);
 
 export default ArticleRouter;
