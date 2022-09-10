@@ -14,6 +14,8 @@ ABOUT
     - stores data of each service in database
     - each service sends post request to registry when it's restarted -> the data is updated
     - if registry receives an update it publishes a message to rabbitmq direct exchange for api gateway
+    - if registry fails, the registrator util will publish data to rabbitmq and registry will consume the data later 
+      when it's online
     - the registry is protected by api key stored in .env file so user never contacts the registry
   - api gateway
     - proxy for communication with the services

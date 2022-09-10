@@ -3,23 +3,28 @@ import 'dotenv/config';
 import { Interfaces } from "@blogger/global-interfaces";
 import { NextFunction, Request, Response } from "express";
 import logger from "@blogger/util-logger";
-import generateSwaggerDocs from "../../config/swagger";
+import ServerService from "../services/server-service";
 
 const consumeMessages = async (req: Request, res: Response, next: NextFunction) => {
-  const queueName = process.env['API_GATEWAY_QUEUE_NAME'];
-  const routingKey = process.env['API_REGISTRY_ROUTING_KEY'];
+  const queueName = process.env['API_REGISTRY_QUEUE_NAME'];
+  const routingKey = process.env['API_REGISTRY_FAIL_KEY'];
   const exchangeName = process.env['RABBIT_EXCHANGE'];
-  const port = parseInt(process.env['PORT_GATEWAY']);
 
   try {
     const rabbit = await RabbitManager.rabbitChannel();
     await rabbit.assertExchange(exchangeName, 'direct', {durable: true});
     const queue = await rabbit.assertQueue(queueName, {durable: true})
     await rabbit.bindQueue(queue.queue, exchangeName, routingKey);
+
     await rabbit.consume(queue.queue, (msg) => {
-      const message: Interfaces.ApiRegistryMessage = JSON.parse(msg.content.toString());
+      const message: Interfaces.RegisterServerInput = JSON.parse(msg.content.toString());
+      const newServer = {} as Interfaces.RegisterServerInput;
+
       logger.info(`Message consumed from exchange: ${exchangeName}, queue: ${queueName}, message: ${JSON.stringify(message)}`);
-      generateSwaggerDocs(global.app, port); // reloads api data, caches new values and rerenders swagger docs
+
+      Object.assign(newServer, message['message']);
+      ServerService.create(newServer as Interfaces.ServerI);
+      ServerService.notifyApiGateway();
       rabbit.ack(msg);
     });
     next();

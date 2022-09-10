@@ -1,10 +1,11 @@
 import ServerService from "../services/server-service";
 import {NextFunction, Request, Response} from "express";
-import {CreateServerInput, GetServers} from "../schemas/server-schema";
+import {CreateServerInput} from "../schemas/create-server-schema";
 import logger from '@blogger/util-logger';
 import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api-error";
 import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
+import {GetServers} from "../schemas/get-servers-schema";
 
 const storeServer = async (req: Request<CreateServerInput['body'], CreateServerInput['headers']>,
                            res: Response,

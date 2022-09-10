@@ -27,3 +27,14 @@ export interface ApiI
 export interface ApiRegistryMessage {
   serversUpdated: boolean
 }
+
+export interface RegisterServerInput {
+  url: string,
+  description: string,
+  name: string,
+  apis: Path[]
+}
+
+export interface Path {
+  path: string
+}

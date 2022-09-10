@@ -1,7 +1,8 @@
 import logger from '@blogger/util-logger';
 import axios from "axios";
 import 'dotenv/config';
-import {RegisterServerInput} from "../interfaces/register-server-input";
+import {Interfaces} from '@blogger/global-interfaces';
+import RabbitManager from "../../../rabbitmq-manager/src/lib/rabbit-manager";
 
 const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: string,
                                      dockerDocksPath: string, description: string, name: string) => {
@@ -11,7 +12,7 @@ const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: str
   const apiKey = process.env['API_REGISTRY_KEY'];
   const registryPort = process.env['PORT_REGISTRY'];
 
-  const requestData: RegisterServerInput = {
+  const requestData: Interfaces.RegisterServerInput = {
     url: userServiceApiURL,
     description: description,
     name: name,
@@ -25,11 +26,22 @@ const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: str
     ]
   };
 
-  await axios.post(`${registryUrl}:${registryPort}/api-registry/servers`, requestData, {
-    headers: {
-      'x-api-key': apiKey
-    }
-  })
+  try {
+    await axios.post(`${registryUrl}:${registryPort}/api-registry/servers`, requestData, {
+      headers: {
+        'x-api-key': apiKey
+      }
+    });
+  } catch (e: any) {
+    logger.error(`Registration failed ${e.message}; Publishing data to queue ${JSON.stringify(requestData)}`);
+    await publishToQueue(requestData);
+    throw new Error(e);
+  }
+};
+
+const publishToQueue = async (message: Interfaces.RegisterServerInput) => {
+  const routingKey = process.env['API_REGISTRY_FAIL_KEY'];
+  await RabbitManager.publishMessage(routingKey, message);
 };
 
 export default {

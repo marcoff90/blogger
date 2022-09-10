@@ -27,15 +27,5 @@ export const createServerSchema = object({
 
 export type CreateServerInput = TypeOf<typeof createServerSchema>;
 
-export const createGetServesSchema = object({
-  headers: object({
-    'x-api-key': string({
-      required_error: 'Api key is required'
-    })
-  })
-});
-
-export type GetServers = TypeOf<typeof createGetServesSchema>;
-
 
 

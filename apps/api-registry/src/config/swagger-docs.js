@@ -76,6 +76,14 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/ApiError'
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
  *
  * @openapi
  * components:
