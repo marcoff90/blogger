@@ -69,7 +69,17 @@ const generateSwaggerOptions = (serversData: SwaggerDocsServer[], apisData: stri
         },
         version,
       },
-      servers: serversData
+      servers: serversData,
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            name: 'authorization',
+            in: 'headers'
+          }
+        }
+      }
     },
     apis: apisData
   };

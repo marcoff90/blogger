@@ -18,10 +18,20 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/CreateUserResponse'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
  *      409:
  *        description: Conflict
- *      400:
- *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  */
 
 /**
@@ -44,12 +54,26 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/LoginUserResponse'
- *      401:
- *        description: One of the fields doesn't match
- *      403:
- *        description: User didn't confirm the account through email
  *      400:
  *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *      401:
+ *        description: Unauthorized - some of the fields doesn't match
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      403:
+ *        description: Forbidden - user is not active
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  */
 
 /**
@@ -73,7 +97,20 @@
  *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
  *      400:
- *        description: Bad request - email is not filled or doesn't match any user
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *      404:
+ *        description: Not found - user email
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *
  * @openapi
  * '/user-service-api/users/recover':
  *  post:
@@ -100,7 +137,28 @@
  *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
  *      400:
- *        description: Bad request
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              oneOf:
+ *                - type: array
+ *                  items:
+ *                    $ref: '#/components/schemas/ValidationError'
+ *                - $ref: '#/components/schemas/ApiError'
+ *      403:
+ *        description: Forbidden - token expired or token not assigned to user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      404:
+ *        description: Not found - user not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *
  * @openapi
  * '/user-service-api/users/activate':
  *  post:
@@ -127,11 +185,20 @@
  *            schema:
  *              $ref: '#/components/schemas/ActivationResponse'
  *      400:
- *        description: Bad request
- *      404:
- *        description: User not found based on query token
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
  *      403:
- *        description: Token expired -> generated new one
+ *        description: Forbidden - token expired, token not assigned to user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *
  * @openapi
  * '/user-service-api/users/identify':
  *  get:
@@ -152,9 +219,19 @@
  *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
  *      400:
- *        description: Bad request
- *      404:
- *        description: User not found based on query token
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *      403:
+ *        description: Unauthorized - token not assigned to user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  * @openapi
  * components:
  *  schemas:
@@ -253,5 +330,25 @@
  *        avatar:
  *          type: string
  *        token:
+ *          type: string
+ *    ApiError:
+ *      type: object
+ *      properties:
+ *        error:
+ *          type: string
+ *    ValidationError:
+ *      type: object
+ *      properties:
+ *        code:
+ *          type: string
+ *        expected:
+ *          type: string
+ *        received:
+ *          type: string
+ *        path:
+ *          type: array
+ *          items:
+ *            type: string
+ *        message:
  *          type: string
  */

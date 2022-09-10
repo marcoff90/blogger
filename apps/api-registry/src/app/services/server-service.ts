@@ -1,6 +1,6 @@
 import ServerRepository from "../repositories/server-repository";
 import logger from '@blogger/util-logger';
-import { Interfaces } from "@blogger/global-interfaces";
+import {Interfaces} from "@blogger/global-interfaces";
 import RabbitManager from "@blogger/rabbitmq-manager";
 import 'dotenv/config';
 import ApiService from "./api-service";

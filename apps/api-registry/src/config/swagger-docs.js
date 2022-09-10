@@ -26,8 +26,25 @@
  *              $ref: '#/components/schemas/CreateServerResponse'
  *      409:
  *        description: Conflict
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      401:
+ *        description: Conflict
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
- *        description: Bad request
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *
  * @openapi
  * '/api-registry/servers':
  *  get:
@@ -47,10 +64,19 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/CreateServerResponse'
- *      500:
- *        description: Something went wrong
  *      404:
  *        description: Servers not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      401:
+ *        description: Unauthorized
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *
  * @openapi
  * components:
  *  schemas:
@@ -109,5 +135,25 @@
  *          type: array
  *          items:
  *            $ref: '#/components/schemas/CreateApiResponse'
+ *    ApiError:
+ *      type: object
+ *      properties:
+ *        error:
+ *          type: string
+ *    ValidationError:
+ *      type: object
+ *      properties:
+ *        code:
+ *          type: string
+ *        expected:
+ *          type: string
+ *        received:
+ *          type: string
+ *        path:
+ *          type: array
+ *          items:
+ *            type: string
+ *        message:
+ *          type: string
  *
  */

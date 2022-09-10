@@ -6,24 +6,21 @@ const redisUrl = process.env['REDIS_URL'];
 const redisPort = process.env['REDIS_PORT'];
 const redisPassword = process.env['REDIS_PASSWORD'];
 
-const client = createClient({
-  url: `redis://@${redisUrl}:${redisPort}`,
-  password: redisPassword
-});
-
-client.on('error', (err) => {
-  logger.error(err.message);
-});
-
-client.on('connect', () => {
-  logger.info('Redis connected');
-});
+const createRedisClient = () => {
+    return createClient({
+      url: `redis://@${redisUrl}:${redisPort}`,
+      password: redisPassword
+    });
+};
 
 const storeToCache = async (key: string, time: number, value: string) => {
   logger.info(`Caching data for ${key}, for time ${time}, value ${value}`);
+  const client = await createRedisClient();
+
   if (!client.isOpen) {
     await client.connect();
   }
+
   try {
     await client.setEx(key, time, value);
     logger.info('Caching successful');
@@ -34,6 +31,8 @@ const storeToCache = async (key: string, time: number, value: string) => {
 
 const deleteKey = async (key: string) => {
   logger.info(`Deleting key ${key} from cache`);
+  const client = await createRedisClient();
+
   if (!client.isOpen) {
     await client.connect();
   }
@@ -46,7 +45,9 @@ const deleteKey = async (key: string) => {
 };
 
 const getData = async (key: string) => {
-  logger.info(`Trying to load data from cache for key ${key}`);
+  logger.info(`Loading data from cache for key ${key}`);
+  const client = await createRedisClient();
+
   if (!client.isOpen) {
     await client.connect();
   }

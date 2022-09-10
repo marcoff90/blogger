@@ -11,12 +11,11 @@ const consumeMessages = async (req: Request, res: Response, next: NextFunction) 
   const exchangeName = process.env['RABBIT_EXCHANGE'];
   const port = parseInt(process.env['PORT_GATEWAY']);
 
-  const rabbit = await RabbitManager.rabbitChannel();
-  await rabbit.assertExchange(exchangeName, 'direct', {durable: true});
-  const q = await rabbit.assertQueue(queueName, {durable: true})
-  await rabbit.bindQueue(q.queue, exchangeName, routingKey);
-
   try {
+    const rabbit = await RabbitManager.rabbitChannel();
+    await rabbit.assertExchange(exchangeName, 'direct', {durable: true});
+    const q = await rabbit.assertQueue(queueName, {durable: true})
+    await rabbit.bindQueue(q.queue, exchangeName, routingKey);
     await rabbit.consume(q.queue, (msg) => {
       const message: Interfaces.ApiRegistryMessage = JSON.parse(msg.content.toString());
       logger.info(`Message consumed from exchange: ${exchangeName}, queue: ${queueName}, message: ${JSON.stringify(message)}`);

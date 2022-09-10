@@ -23,7 +23,7 @@ const storeServer = async (req: Request<CreateServerInput['body'], CreateServerI
       next(ApiError.conflict({error: e.message}));
     }
   } else {
-    next(ApiError.forbidden({error: `ApiKey doesn't match`}));
+    next(ApiError.unauthorized({error: `ApiKey doesn't match`}));
   }
 };
 
@@ -38,7 +38,7 @@ const showAll = async (req: Request<GetServers['headers']>, res: Response, next:
       next(ApiError.notFound({error: 'No servers available'}));
     }
   } else {
-    next(ApiError.forbidden({error: `ApiKey doesn't match`}));
+    next(ApiError.unauthorized({error: `ApiKey doesn't match`}));
   }
 };
 

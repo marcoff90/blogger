@@ -63,7 +63,7 @@ const forgottenPassword = async (req: Request<ForgottenUserPasswordInput['body']
   const user: UserI = await UserService.findByEmail(req.body.email);
 
   if (!user) {
-    next(ApiError.badRequest({error: "Email doesn't match any user"}));
+    next(ApiError.notFound({error: "Email doesn't match any user"}));
   } else {
     await UserService.forgottenPassword(req.body.email);
     const response: Interfaces.ApiMessage = {
@@ -79,16 +79,16 @@ const resetPassword = async (req: Request<ResetPasswordInput['body'], ResetPassw
   const user: UserI = await UserService.findByEmail(req.body.email);
 
   if (!user) {
-    next(ApiError.badRequest({error: 'User not found'}));
+    next(ApiError.notFound({error: 'User not found'}));
 
   } else if (user.forgottenPasswordToken !== req.query.token) {
-    next(ApiError.badRequest({error: 'Reset token not associated with email address!'}));
+    next(ApiError.forbidden({error: 'Reset token not associated with email address!'}));
 
   } else if (bcrypt.compareSync(req.body.password, user.password)) {
     next(ApiError.badRequest({error: 'Password cannot be same as it was!'}));
 
   } else if (timeNow > user.forgottenPasswordTokenExpiration) {
-    next(ApiError.badRequest({error: 'Token expired!'}));
+    next(ApiError.forbidden({error: 'Token expired!'}));
 
   } else {
     await UserService.resetPassword(req.body.email, req.body.password);
@@ -109,7 +109,7 @@ const activateAccount = async (req: Request<ActivateUserAccountInput['body'], Ac
   );
 
   if (!user) {
-    next(ApiError.notFound({error: 'Token not assigned to user!'}));
+    next(ApiError.forbidden({error: 'Token not assigned to user!'}));
 
   } else if (timeNow > user.confirmationTokenExpiration) {
     await UserService.generateNewConfirmationToken(req.query.token.toString());
@@ -133,7 +133,7 @@ const identifyUserByResetToken = async (req: Request<IdentifyUserByResetTokenInp
   const user: UserI = await UserService.findByPasswordToken(req.query.token.toString());
 
   if (!user) {
-    next(ApiError.notFound({error: 'Token not assigned to user!'}));
+    next(ApiError.forbidden({error: 'Token not assigned to user!'}));
   } else {
     const response: Interfaces.ApiMessage = {
       message: 'ok',

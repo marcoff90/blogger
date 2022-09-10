@@ -5,12 +5,8 @@
  *     tags:
  *      - BloggerServiceAPI
  *     summary: Create Article
- *     parameters:
- *      - in: header
- *        name: authorization
- *        required: true
- *        schema:
- *          type: string
+ *     security:
+ *      - bearerAuth: []
  *     requestBody:
  *      required: true
  *      content:
@@ -24,16 +20,32 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/CreateArticleResponse'
+ *
  *      401:
  *        description: Unauthorized
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *
  *      400:
- *        description: Bad request
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *
+ *      500:
+ *        description: Server Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *
  * @openapi
  * components:
- *  securitySchemas:
- *    BearerAuth:
- *      type: http
- *      scheme: bearer
  *  schemas:
  *    CreateArticleInput:
  *      type: object
@@ -72,5 +84,26 @@
  *          type: string
  *        createdAt:
  *          type: date
+ *    ApiError:
+ *      type: object
+ *      properties:
+ *        error:
+ *          type: string
+ *    ValidationError:
+ *      type: object
+ *      properties:
+ *        code:
+ *          type: string
+ *        expected:
+ *          type: string
+ *        received:
+ *          type: string
+ *        path:
+ *          type: array
+ *          items:
+ *            type: string
+ *        message:
+ *          type: string
+ *
  *
  */

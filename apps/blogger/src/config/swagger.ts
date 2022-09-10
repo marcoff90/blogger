@@ -21,6 +21,16 @@ const options: swaggerJsdoc.Options = {
         description: 'Blogger Management Service'
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          name: 'authorization',
+          in: 'headers'
+        }
+      }
+    }
   },
   apis: [
     'apps/blogger/src/config/swagger-docs.js'

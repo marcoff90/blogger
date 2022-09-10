@@ -17,8 +17,14 @@ const loadApisData = async () => {
       }
     });
     const serversData: Interfaces.ServerI[] = res.data;
-    await RedisManager.deleteKey(redisKey);
-    await RedisManager.storeToCache(redisKey, 86400, JSON.stringify(serversData));
+
+    try {
+      await RedisManager.deleteKey(redisKey);
+      await RedisManager.storeToCache(redisKey, 86400, JSON.stringify(serversData));
+    } catch (e: any) {
+     logger.error(`Data not cached: ${e.message}`);
+    }
+
     logger.info(`Successfully loaded data: ${JSON.stringify(serversData)}`);
     return serversData;
   } catch (e: any) {
