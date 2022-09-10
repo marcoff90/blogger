@@ -21,4 +21,6 @@ ArticleRouter.put('/blogger-service-api/bloggers/:userId/articles/:articleId', V
 ArticleRouter.delete('/blogger-service-api/bloggers/:userId/articles/:articleId', Validator.validate(deleteArticleSchema),
   Auth.authorize, ArticleController.deleteArticle);
 
+ArticleRouter.get('/blogger-service-api/featured-blogs', ArticleController.showFiveFeaturedArticles);
+
 export default ArticleRouter;

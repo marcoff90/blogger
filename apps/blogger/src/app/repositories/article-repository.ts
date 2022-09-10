@@ -1,6 +1,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import ArticleModel, {ArticleI} from "../models/article-model";
+import Sequelize from "../../config/sequelize";
 
 const create = async (article: ArticleI) => {
   return await ArticleModel.create(article);
@@ -61,10 +62,18 @@ const softDelete = async (articleId: number, userId: number) => {
   });
 };
 
+const findFiveFeaturedArticles = async () => {
+  return await ArticleModel.findAll({
+    order: [Sequelize.random()],
+    limit: 5
+  })
+};
+
 export default {
   create,
   findAllByUserId,
   updateByIdAndUserId,
   softDelete,
-  findOneByIdAndUser
+  findOneByIdAndUser,
+  findFiveFeaturedArticles
 };

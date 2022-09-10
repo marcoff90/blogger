@@ -279,6 +279,8 @@
  *      properties:
  *        token:
  *          type: string
+ *        id:
+ *          type: number
  *        username:
  *          type: string
  *        avatar:

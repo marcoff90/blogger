@@ -45,7 +45,8 @@ const options: swaggerJsdoc.Options = {
     ],
   },
   apis: [
-    'apps/user-service/src/config/swagger-docs.js'
+    'apps/user-service/src/config/swagger-docs.js',
+    'apps/user-service/src/app/routers/internal-router.ts'
   ],
 };
 

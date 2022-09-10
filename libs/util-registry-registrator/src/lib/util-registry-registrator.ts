@@ -4,8 +4,7 @@ import 'dotenv/config';
 import {Interfaces} from '@blogger/global-interfaces';
 import RabbitManager from "../../../rabbitmq-manager/src/lib/rabbit-manager";
 
-const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: string,
-                                     dockerDocksPath: string, description: string, name: string) => {
+const registerApiToRegistry = async (userServiceApiURL: string, docsPath: string, description: string, name: string) => {
   logger.info(`Registering ${name} to registry`);
 
   const registryUrl = process.env['REGISTRY_URL'];
@@ -18,10 +17,7 @@ const registerApiToRegistry = async (userServiceApiURL: string, devDocsPath: str
     name: name,
     apis: [
       {
-        path: devDocsPath
-      },
-      {
-        path: dockerDocksPath
+        path: docsPath
       }
     ]
   };

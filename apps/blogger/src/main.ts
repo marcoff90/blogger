@@ -21,26 +21,10 @@ createTables();
  * - get (no auth)
  *  - api/
  *      - featured - randomly chosen articles with the names of authors
- *  - /api-name/username
+ *  - /blogger-service/api/blogs/:username
  *      - all by user
  *        - title, perex, order by date desc, publication day
  *
- * COMMUNICATION WITH USER SERVICE
- * - needed userId, username, avatar of active users
- * - on load of app blogger sends request to user-service to get these data and stores them in cache for 24 hours
- *    - when sending the data for endpoints, it builds the response with the data
- *    - featured will be just 5 random articles
- *      -> load the articles
- *      -> compare user id of article with user ids withing the cache
- *      -> rebuild the objects to response
- *    - /username
- *      -> find the username and user id, find all articles by userId, set username for every Article
- *    - /userId
- *      -> same as /username but with userId
- * - when new user is activated and has empty blog page
- *
- * on post publish to queue, consumer saves to db
- * needed communication with user service to get user data about visible articles
  */
 app.use(ArticleRouter);
 app.use(ErrorHandler.apiErrorHandler);

@@ -4,6 +4,7 @@ import TokenGenerator from '../../utils/token-generator';
 import bcrypt from 'bcryptjs';
 import { UserI } from '../models/user-model';
 import logger from '@blogger/util-logger';
+import {Interfaces} from '@blogger/global-interfaces';
 
 const create = async (user: UserI) => {
   user.password = bcrypt.hashSync(user['password'], 5);
@@ -91,6 +92,11 @@ const getUsersAvatar = async (userId: number) => {
   return user.avatar;
 };
 
+const mapUsers = async () => {
+  const usersData: Interfaces.UserData[] = await UserRepository.findUsernamesIdAvatarsWhereActive();
+  return usersData;
+};
+
 export default {
   create,
   login,
@@ -103,4 +109,5 @@ export default {
   confirmAccount,
   generateNewConfirmationToken,
   getUsersAvatar,
+  mapUsers
 };

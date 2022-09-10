@@ -29,17 +29,17 @@ const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, 
 const getApiData = async () => {
   const redisKey = process.env['REDIS_API_GATEWAY_KEY'];
 
-  let apiData = null;
+  let cachedData: string = null;
 
   try {
-    apiData = await RedisManager.getData(redisKey);
+    cachedData = await RedisManager.getData(redisKey);
   } catch (e: any) {
     logger.error(e.message);
   }
 
-  if (apiData) {
-    logger.info(`Loaded api data from cache: ${apiData}`);
-    return JSON.parse(apiData);
+  if (cachedData) {
+    logger.info(`Loaded api data from cache: ${cachedData}`);
+    return JSON.parse(cachedData);
   }
 
   const servers: Interfaces.ServerI[] = await loadApisData();

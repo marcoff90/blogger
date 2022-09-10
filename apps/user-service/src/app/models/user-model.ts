@@ -12,7 +12,7 @@ export interface UserI
   email: string;
   password: string;
   active: boolean;
-  avatar?: string;
+  avatar: string;
   confirmationToken?: string;
   confirmationTokenExpiration?: number;
   forgottenPasswordToken?: string;

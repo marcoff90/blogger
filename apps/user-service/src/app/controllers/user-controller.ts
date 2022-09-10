@@ -49,6 +49,7 @@ const showLogin = async (req: Request<LoginUserInput['body']>, res: Response, ne
     } else {
       const response: LoginUserResponse = {
         token: token,
+        id: loggedUser.id,
         username: loggedUser.username,
         avatar: loggedUser.avatar,
       };

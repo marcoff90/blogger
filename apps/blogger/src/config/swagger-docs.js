@@ -162,9 +162,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      403:
  *        description: Forbidden - userId in path doesn't match userId from JWT
  *        content:
@@ -185,6 +183,27 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/ValidationError'
+ * @openapi
+ * '/blogger-service-api/featured-blogs':
+ *  get:
+ *     tags:
+ *      - BloggerServiceAPI
+ *     summary: Get featured articles
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *      500:
+ *        description: Something went wrong
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  *
  * @openapi
  * components:

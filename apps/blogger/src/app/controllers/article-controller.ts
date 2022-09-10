@@ -93,9 +93,20 @@ const deleteArticle = async (req: Request<DeleteArticleInput['params']>, res: Re
   }
 };
 
+const showFiveFeaturedArticles = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const articles: GetUserArticleResponse[] = await ArticleService.getFiveFeaturedArticles();
+    res.send(articles);
+  } catch (e: any) {
+    logger.error(`Could not load featured articles ${e.message}`);
+    next(ApiError.serverError());
+  }
+};
+
 export default {
   storeArticle,
   showAllByUserId,
   updateArticle,
-  deleteArticle
+  deleteArticle,
+  showFiveFeaturedArticles
 };

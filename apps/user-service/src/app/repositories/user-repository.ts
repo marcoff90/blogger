@@ -46,6 +46,20 @@ const findByPasswordToken = async (passwordToken: string) => {
   });
 };
 
+const findUsernamesIdAvatarsWhereActive = async () => {
+  return await UserModel.findAll({
+    where: {
+      active: true
+    },
+    attributes: {
+      exclude: [
+        'email', 'password', 'active','confirmationToken', 'confirmationTokenExpiration',
+        'forgottenPasswordToken', 'forgottenPasswordTokenExpiration'
+      ],
+    }
+  })
+};
+
 export default {
   create,
   findByEmail,
@@ -53,4 +67,5 @@ export default {
   findById,
   findByConfirmationToken,
   findByPasswordToken,
+  findUsernamesIdAvatarsWhereActive
 };

@@ -7,6 +7,7 @@ import {createDatabase, createTables} from "./config/database-config";
 import ErrorHandler from '@blogger/middleware-api-error';
 import registerToRegistry from "./config/register-to-registry";
 import {generateSwaggerDocs} from "./config/swagger";
+import InternalRouter from "./app/routers/internal-router";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 createDatabase();
 createTables();
 app.use(UserRouter);
+app.use(InternalRouter)
 app.use(ErrorHandler.apiErrorHandler);
 registerToRegistry();
 const port: number = parseInt(process.env.PORT_USER_SERVICE) || 3000;
