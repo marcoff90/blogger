@@ -9,6 +9,8 @@ import {GetArticlesByUserIdInput} from "../schemas/get-articles-by-user-id-schem
 import {GetUserArticleResponse} from "../interfaces/get-user-article-response";
 import {UpdateArticleInput} from "../schemas/update-article-schema";
 import {UpdateArticleResponse} from "../interfaces/update-article-response";
+import {DeleteArticleInput} from "../schemas/delete-article-schema";
+import {Interfaces} from '@blogger/global-interfaces';
 
 const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArticleInput['body']>,
                             res: Response, next: NextFunction) => {
@@ -16,7 +18,7 @@ const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArt
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: 'It is forbidden to create articles for different user'}));
+    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
 
   } else {
     const article: ArticleI = await ArticleService.create(req.body, req.user);
@@ -36,7 +38,7 @@ const showAllByUserId = async (req: Request<GetArticlesByUserIdInput['params']>,
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: `Can't load articles of different user`}));
+    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
 
   } else {
     const response: GetUserArticleResponse[] = await ArticleService.findAllByUserId(req.user);
@@ -51,7 +53,12 @@ const updateArticle = async (req: Request<UpdateArticleInput['params'], UpdateAr
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: 'It is forbidden to create articles for different user'}));
+    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
+  }
+
+  if (!await ArticleService.doesArticleExist(req.user, parseInt(articleId))) {
+    logger.error(`Article not found: id ${articleId}, userId: ${req.user['id']}`);
+    next(ApiError.notFound({error: 'Article not found'}));
 
   } else {
     const updated: UpdateArticleResponse = await ArticleService.updateByIdAndUserId(req.user,
@@ -60,8 +67,35 @@ const updateArticle = async (req: Request<UpdateArticleInput['params'], UpdateAr
   }
 };
 
+const deleteArticle = async (req: Request<DeleteArticleInput['params']>, res: Response, next: NextFunction) => {
+  const {userId} = req.params;
+  const {articleId} = req.params;
+
+  if (userId != req.user['id']) {
+    logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
+    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
+  }
+
+  if (!await ArticleService.doesArticleExist(req.user, parseInt(articleId))) {
+    logger.error(`Article not found: id ${articleId}, userId: ${req.user['id']}`);
+    next(ApiError.notFound({error: 'Article not found'}));
+
+  } else {
+    const deleted = await ArticleService.softDelete(req.user, parseInt(articleId));
+    if (deleted) {
+      const response: Interfaces.ApiMessage = {
+        message: `Article id: ${articleId} deleted successfully`,
+      }
+      res.send(response);
+    } else {
+      next();
+    }
+  }
+};
+
 export default {
   storeArticle,
   showAllByUserId,
-  updateArticle
+  updateArticle,
+  deleteArticle
 };

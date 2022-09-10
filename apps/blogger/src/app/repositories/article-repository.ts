@@ -39,8 +39,32 @@ const updateByIdAndUserId = async (articleId: number, userId: number, articlesDa
   });
 };
 
+const findOneByIdAndUser = async (articleId: number, userId: number) => {
+  return await ArticleModel.findOne({
+    where: {
+      id: articleId,
+      user_id: userId,
+      deleted: false
+    }
+  });
+};
+
+const softDelete = async (articleId: number, userId: number) => {
+  return await ArticleModel.update({
+    deleted: true
+  }, {
+    where: {
+      id: articleId,
+      user_id: userId
+    },
+    returning: true
+  });
+};
+
 export default {
   create,
   findAllByUserId,
   updateByIdAndUserId,
+  softDelete,
+  findOneByIdAndUser
 };

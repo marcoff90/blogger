@@ -24,22 +24,6 @@ createTables();
  *  - /api-name/username
  *      - all by user
  *        - title, perex, order by date desc, publication day
- *  - /api/username/id
- *      - title, content  of one article
- *
- * AUTH
- *  - api/userId
- *    - list articles for user
- *
- * - post
- *    - api/userId
- *        - add new article
- * - put
- *    - api/userId/articleId
- *        - update article
- * -  delete
- *    - api/userId/articleId
- *       - delete article
  *
  * COMMUNICATION WITH USER SERVICE
  * - needed userId, username, avatar of active users

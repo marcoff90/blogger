@@ -5,6 +5,7 @@ import Auth from '@blogger/middleware-auth';
 import ArticleController from "../controllers/article-controller";
 import {getArticlesByUserIdSchema} from "../schemas/get-articles-by-user-id-schema";
 import {updateArticleSchema} from "../schemas/update-article-schema";
+import {deleteArticleSchema} from "../schemas/delete-article-schema";
 
 const ArticleRouter = Router();
 
@@ -16,5 +17,8 @@ ArticleRouter.get('/blogger-service-api/bloggers/:userId/articles', Validator.va
 
 ArticleRouter.put('/blogger-service-api/bloggers/:userId/articles/:articleId', Validator.validate(updateArticleSchema),
   Auth.authorize, ArticleController.updateArticle);
+
+ArticleRouter.delete('/blogger-service-api/bloggers/:userId/articles/:articleId', Validator.validate(deleteArticleSchema),
+  Auth.authorize, ArticleController.deleteArticle);
 
 export default ArticleRouter;
