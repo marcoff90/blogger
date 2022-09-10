@@ -1,14 +1,12 @@
 import { Router } from 'express';
 import Validator from '@blogger/middleware-validator';
-import {
-  activateUserAccountSchema,
-  createUserSchema,
-  forgottenUserPasswordSchema,
-  identifyUserByResetTokenSchema,
-  loginUserSchema,
-  resetUserPasswordSchema,
-} from '../schemas/user-schema';
+import {createUserSchema} from '../schemas/create-user-schema';
 import UserController from '../controllers/user-controller';
+import {loginUserSchema} from "../schemas/login-user-schema";
+import {forgottenUserPasswordSchema} from "../schemas/forgotten-password-schema";
+import {resetUserPasswordSchema} from "../schemas/reset-password-schema";
+import {activateUserAccountSchema} from "../schemas/activate-user-schema";
+import {identifyUserByResetTokenSchema} from "../schemas/identify-user-schema";
 
 const UserRouter = Router();
 

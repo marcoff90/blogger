@@ -1,13 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import logger from '@blogger/util-logger';
-import {
-  ActivateUserAccountInput,
-  CreateUserInput,
-  ForgottenUserPasswordInput,
-  IdentifyUserByResetTokenInput,
-  LoginUserInput,
-  ResetPasswordInput,
-} from '../schemas/user-schema';
+import {CreateUserInput} from '../schemas/create-user-schema';
 import UserService from '../services/user-service';
 import {UserI} from '../models/user-model';
 import generateToken from '../../utils/jwt-util';
@@ -17,6 +10,11 @@ import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api
 import {CreateUserResponse} from "../interfaces/create-user-response";
 import {LoginUserResponse} from "../interfaces/login-user-response";
 import {ActivationResponse} from "../interfaces/activation-response";
+import {LoginUserInput} from "../schemas/login-user-schema";
+import {ForgottenUserPasswordInput} from "../schemas/forgotten-password-schema";
+import {ResetPasswordInput} from "../schemas/reset-password-schema";
+import {ActivateUserAccountInput} from "../schemas/activate-user-schema";
+import {IdentifyUserByResetTokenInput} from "../schemas/identify-user-schema";
 
 const storeUser = async (req: Request<CreateUserInput['body']>, res: Response, next: NextFunction) => {
   try {
