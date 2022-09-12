@@ -1,6 +1,6 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import ArticleModel, {ArticleI} from "../models/article-model";
+import ArticleModel, {ArticleI, State} from "../models/article-model";
 import Sequelize from "../../config/sequelize";
 
 const create = async (article: ArticleI) => {
@@ -17,7 +17,7 @@ const findAllByUserId = async (userId: number) => {
       exclude: ['deleted']
     },
     order: [
-      ['createdAt', 'DESC']
+      ['created_at', 'DESC']
     ],
     raw: true
   });
@@ -64,9 +64,42 @@ const softDelete = async (articleId: number, userId: number) => {
 
 const findFiveFeaturedArticles = async () => {
   return await ArticleModel.findAll({
+    where: {
+      deleted: false,
+      state: State.DONE
+    },
     order: [Sequelize.random()],
     limit: 5
   })
+};
+
+const findArticleIds = async () => {
+  return ArticleModel.findAll({
+    where: {
+      deleted: false,
+      state: State.DONE
+    },
+    attributes: ['id'],
+    raw: true
+  })
+  .then(articles => articles.map(article => article.id));
+};
+
+const findAllByUserIdPublic = async (userId: number) => {
+  return await ArticleModel.findAll({
+    where: {
+      user_id: userId,
+      deleted: false,
+      state: State.DONE
+    },
+    attributes: {
+      exclude: ['deleted']
+    },
+    order: [
+      ['created_at', 'DESC']
+    ],
+    raw: true
+  });
 };
 
 export default {
@@ -75,5 +108,7 @@ export default {
   updateByIdAndUserId,
   softDelete,
   findOneByIdAndUser,
-  findFiveFeaturedArticles
+  findFiveFeaturedArticles,
+  findArticleIds,
+  findAllByUserIdPublic
 };

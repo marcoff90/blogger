@@ -28,18 +28,41 @@ ABOUT
     - responsible for management of articles
     - public and admin part
     - complete info in swagger docs
+  - comments-service
+    - responsible for management of article comments
+    - comments are nested to the level 4 and order by created_at property
+      - each comment has parent_id
+      - when creating a new comment, we check the parent depth, if the depth is 4, we assing the parent's parent_id 
+        to the new comment so they stay on the same level and the nesting doesn't go deeper
+    - comments are connected to article id passed in path
+    - when adding new comment, the application loads all article ids (from cache or from blogger on internal api) 
+      and compares if the article exists
+      - same for loading comments
 
 PREREQUISITES
 - installed locally postgresql, redis and rabbitmq
 - if not installed you can use docker-compose file where you can create instances of these services (in case of postgresql change the host in .env accordingly)
+
+DB
+- project uses Sequelize to handle database queries
+- to migrate the db use
+  - npx sequelize-cli db:migrate --env {name of project -> can be found in ./config/database/config/config.js -> for 
+    each project different db}
+    - and accordingly to [sequelize documentation use](https://sequelize.org/docs/v6/other-topics/migrations/) --from and --to to migrate just specific files into specific 
+      databases since each service uses it's own database
+- seed the databases with data
+  - for users
+    - npm run db:seed:users
+  - for articles
+    - npm run db:seed:articles
+  - for comments
+    - npm run db:seed:comments
 
 INIT PROJECT
 - for running locally
   - copy .sample.env and make it .env file, fill out the needed environment variables at the top of the file
   - run npm install to install dependencies
   - start redis, rabbitmq and postgresql (either locally or using each service alone from docker compose -> there are also services for each app and their containers haven't been build yet)
-  - you can seed the database by running
-    - npm run db:seed which generates 5 users
   - initialize the apps
     - api-registry
       - npm run dev:api-registry

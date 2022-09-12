@@ -28,7 +28,7 @@ const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArt
       title: article.title,
       state: article.state,
       image: article.image,
-      createdAt: article.createdAt
+      created_at: article.created_at
     }
     res.send(response);
   }

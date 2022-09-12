@@ -13,7 +13,7 @@ const options: swaggerJsdoc.Options = {
         "The application can host multiple blogs, one blog per registered user through user service\n\n" +
         "The access is divided by path variables in each endpoint\n\n" +
         "The application uses redis cache to optimize it's speed of loading in certain cases (more at specific" +
-        " endpoints)" +
+        " endpoints)\n\n\n\n" +
         "Admin side\n\n" +
         "- protected by auth middleware -> jwt obtained upon login through user service\n\n" +
         "- all necessary data about user are in jwt (id, username, ...)\n\n" +
@@ -28,6 +28,8 @@ const options: swaggerJsdoc.Options = {
         "- checks if users articles are cached, if not, loads from database and saves to cache\n\n" +
         "- PUT update article\n\n" +
         "- DELETE soft delete of article\n\n" +
+        "- user as admin has overview of his drafts as well -> on public site are only the articles in state" +
+        " 'done'\n\n" +
         "Public side\n\n" +
         "- GET featured blogs\n\n" +
         "- shows up to 5 randomly chosen articles to promote the bloggers\n\n" +
@@ -44,7 +46,12 @@ const options: swaggerJsdoc.Options = {
         " change)\n\n" +
         "- GET articles by username\n\n" +
         "- username obtained as path variable, compares with data from cache/user api and finds corresponding" +
-        " user id; if not found throws error",
+        " user id; if not found throws error\n\n\n\n" +
+        "Internal API\n\n" +
+        "- not accessible through gateway\n\n" +
+        "- protected by x-api-key\n\n" +
+        "- for communication with comments service",
+
       contact: {
         name: 'Marek Slavicek',
       },
@@ -68,7 +75,8 @@ const options: swaggerJsdoc.Options = {
     }
   },
   apis: [
-    'apps/blogger/src/config/swagger-docs.js'
+    'apps/blogger/src/config/swagger-docs.js',
+    'apps/blogger/src/app/routers/internal-router.ts'
   ],
 };
 

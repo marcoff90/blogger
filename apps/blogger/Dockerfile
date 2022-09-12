@@ -1,10 +1,9 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY ./.env.docker ./.env
 COPY ./package-lock.json .
 COPY ./blogger-service.json .
 COPY ./dist/apps/blogger .
-ENV PORT=3000
+ENV PORT=5555
 EXPOSE ${PORT}
 RUN npm install --production
 # dependencies that nestjs needs

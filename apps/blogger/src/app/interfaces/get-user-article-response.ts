@@ -7,7 +7,7 @@ export interface GetUserArticleResponse {
   content: string;
   state: State;
   image: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: number;
+  updated_at: number;
   username?: string;
 }

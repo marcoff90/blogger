@@ -98,7 +98,7 @@
  *      properties:
  *        url:
  *          type: string
- *          default: http://localhost:3000
+ *          default: http://localhost:3000/
  *        description:
  *          type: string
  *          default: User Management Api

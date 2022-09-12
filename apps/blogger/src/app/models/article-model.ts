@@ -11,8 +11,8 @@ export interface ArticleI
   state: State;
   image: string;
   user_id: number;
-  createdAt?: Date,
-  updatedAt?: Date
+  created_at?: number,
+  updated_at?: number
 }
 
 export enum State {
@@ -56,7 +56,17 @@ const ArticleModel = sequelize.define<ArticleI>('article', {
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  created_at: {
+    type: DataTypes.DOUBLE,
+    allowNull: false,
+    defaultValue: Math.floor(Date.now() / 1000)
+  },
+  updated_at: {
+    type: DataTypes.DOUBLE,
+    allowNull: false,
+    defaultValue: Math.floor(Date.now() / 1000)
   }
-});
+}, {timestamps: false});
 
 export default ArticleModel;

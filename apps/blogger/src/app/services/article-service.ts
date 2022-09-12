@@ -6,7 +6,8 @@ import {GetUserArticleResponse} from "../interfaces/get-user-article-response";
 import UserService from "./user-service";
 import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
-import RedisManager from "../../../../../libs/redis-manager/src/lib/redis-manager";
+import RedisManager from "@blogger/redis-manager";
+import {UserData} from "../../../../../libs/global-interfaces/src/lib/global-interfaces";
 
 const create = async (article: ArticleI, user: string | JwtPayload) => {
   article.user_id = user['id'];
@@ -25,30 +26,14 @@ const create = async (article: ArticleI, user: string | JwtPayload) => {
       logger.error(e.message);
     }
   }
-
+  await updateArticleIdsInCache(savedArticle.id);
   return savedArticle;
 };
 
 const findAllByUserId = async (user: string | JwtPayload | Interfaces.UserData) => {
-  const cachedArticles = await loadUserArticlesFromCache(user['username']);
-
-  if (cachedArticles) {
-    return cachedArticles;
-  }
-
   const articles: ArticleI[] = await ArticleRepository.findAllByUserId(user['id']);
   logger.info(`Successfully loaded ${articles.length} articles of ${user['username']}`);
-
-  const result: GetUserArticleResponse[] = [];
-
-  articles.map(article => {
-    const convert = convertArticleToArticleResponse(article, user['username']);
-    result.push(convert);
-  });
-
-  await saveUserArticlesToCache(user['username'], result);
-  logger.info(`Sending articles: ${result.length}`);
-  return result;
+  return convertAllArticleToResponse(articles, user['username'])
 };
 
 const updateByIdAndUserId = async (user: string | JwtPayload, articleId: number, articlesData: ArticleI) => {
@@ -68,6 +53,7 @@ const doesArticleExist = async (user: string | JwtPayload, articleId: number) =>
 const softDelete = async (user: string | JwtPayload, articleId: number) => {
   logger.info(`Deleting article ${articleId}`);
   const updatedData = await ArticleRepository.softDelete(articleId, user['id']);
+  await deleteArticleIdFromCache(articleId);
   if (updatedData[1][0]['dataValues']['deleted']) {
     logger.info(`Successfully deleted!`);
     return true;
@@ -149,7 +135,8 @@ const findArticlesByUsername = async (username: string) => {
   const cachedArticles = await loadUserArticlesFromCache(username);
 
   if (!cachedArticles) {
-    return await findAllByUserId(user);
+    const articles: ArticleI[] = await ArticleRepository.findAllByUserIdPublic(user['id']);
+    return convertAllArticleToResponse(articles, user.username);
   }
   return cachedArticles;
 };
@@ -187,12 +174,63 @@ const convertArticleToArticleResponse = (article: ArticleI, username: string) =>
     content: article.content,
     state: article.state,
     image: article.image,
-    createdAt: article.createdAt,
-    updatedAt: article.updatedAt,
+    created_at: article.created_at,
+    updated_at: article.updated_at,
     username: username,
   };
 };
 
+
+const findArticleIds = async () => {
+  return await ArticleRepository.findArticleIds();
+};
+
+const updateArticleIdsInCache = async (articleId: number) => {
+  const redisKey = process.env['REDIS_EXISTING_ARTICLES'];
+
+  try {
+    const cachedData = await RedisManager.getData(redisKey);
+    const ids = JSON.stringify(cachedData);
+    if (Array.isArray(ids)) {
+      ids.push(articleId);
+      await RedisManager.deleteKey(redisKey);
+      await RedisManager.storeToCache(redisKey, 864000, JSON.stringify(ids));
+      logger.info(`Article ids in cache updated: ${JSON.stringify(ids)}`);
+    }
+  } catch (e: any) {
+    logger.error(`Article ids not updated: ${e.message}`);
+  }
+};
+
+const deleteArticleIdFromCache = async (articleId: number) => {
+  const redisKey = process.env['REDIS_EXISTING_ARTICLES'];
+
+  try {
+    const cachedData = await RedisManager.getData(redisKey);
+    const ids = JSON.stringify(cachedData);
+    if (Array.isArray(ids)) {
+      const index = ids.indexOf(articleId);
+      if (index > -1) {
+        ids.splice(index, 1);
+        await RedisManager.deleteKey(redisKey);
+        await RedisManager.storeToCache(redisKey, 864000, JSON.stringify(ids));
+        logger.info(`Article ids in cache updated: ${JSON.stringify(ids)}`);
+      }
+    }
+  } catch (e: any) {
+    logger.error(`Article ids not updated: ${e.message}`);
+  }
+};
+
+const convertAllArticleToResponse = (articles: ArticleI[], username: string) => {
+  const result: GetUserArticleResponse[] = [];
+  articles.map(article => {
+    const convert = convertArticleToArticleResponse(article, username);
+    result.push(convert);
+  });
+  logger.info(`Sending articles: ${result.length}`);
+  return result;
+};
 
 export default {
   create,
@@ -201,5 +239,6 @@ export default {
   softDelete,
   doesArticleExist,
   getFiveFeaturedArticles,
-  findArticlesByUsername
+  findArticlesByUsername,
+  findArticleIds
 };

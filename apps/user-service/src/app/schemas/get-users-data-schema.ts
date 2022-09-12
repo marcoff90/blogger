@@ -9,7 +9,3 @@ export const getUsersDataSchema = object({
 });
 
 export type GetUsersDataInput = TypeOf<typeof getUsersDataSchema>;
-
-/**
- *
- */

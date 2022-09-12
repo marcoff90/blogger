@@ -1,4 +1,4 @@
-import {object, string, TypeOf, nativeEnum, number} from 'zod';
+import {object, string, TypeOf, nativeEnum} from 'zod';
 import {State} from "../models/article-model";
 
 export const createArticleSchema = object({

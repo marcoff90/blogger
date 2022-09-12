@@ -5,6 +5,6 @@ export interface UpdateArticleResponse {
   content: string;
   image: string;
   state: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: number;
+  updated_at: number;
 }

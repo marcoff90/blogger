@@ -5,5 +5,5 @@ export interface CreateArticleResponse {
   title: string;
   state: State,
   image: string;
-  createdAt: Date;
+  created_at: number;
 }

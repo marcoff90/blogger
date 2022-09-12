@@ -5,6 +5,7 @@
     "api-gateway": "apps/api-gateway",
     "api-registry": "apps/api-registry",
     "blogger": "apps/blogger",
+    "comments-service": "apps/comments-service",
     "global-interfaces": "libs/global-interfaces",
     "middleware-api-error": "libs/middleware-api-error",
     "middleware-auth": "libs/middleware-auth",

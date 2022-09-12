@@ -1,6 +1,5 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY ./.env.docker ./.env
 COPY ./package-lock.json .
 COPY ./api-registry.json .
 COPY ./dist/apps/api-registry .

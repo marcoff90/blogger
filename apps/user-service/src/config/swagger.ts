@@ -30,8 +30,8 @@ const options: swaggerJsdoc.Options = {
         " and sequelize\n\n" +
         "- since the application is part of microservices architecture, it's connected to api-registry app, where the" +
         "  data about the app is stored for api-gateway. Whenever the application restarts, it sends post request to api-registry" +
-        " to update it's data so the owner of the app doesn't have to\n\n" +
-        "- Internal API\n\n" +
+        " to update it's data so the owner of the app doesn't have to\n\n\n\n" +
+        "Internal API\n\n" +
         "- not accessible through gateway\n\n" +
         "- protected by x-api-key\n\n" +
         "- for communication with blogger service"

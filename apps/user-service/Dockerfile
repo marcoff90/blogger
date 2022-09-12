@@ -1,6 +1,5 @@
 FROM node:lts-alpine
 WORKDIR /app
-COPY ./.env.docker ./.env
 COPY ./package-lock.json .
 COPY ./user-service.json .
 COPY ./dist/apps/user-service .
