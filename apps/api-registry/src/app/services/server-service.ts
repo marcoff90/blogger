@@ -5,9 +5,15 @@ import RabbitManager from "@blogger/rabbitmq-manager";
 import 'dotenv/config';
 import ApiService from "./api-service";
 
+/**
+ * when server is updated/created publish message to blogger direct exchange to notify api gateway about
+ * the change in order to not cache the data, but reload through api
+ */
+
 const create = async (server: Interfaces.ServerI) => {
   const storedServer: Interfaces.ServerI = await ServerRepository.findByUrl(server.url);
 
+  await notifyApiGateway();
   if (storedServer) {
     logger.info(`Updating server id: ${storedServer.id}`);
     await ApiService.updateServerApis(storedServer.id, storedServer.apis, server.apis);
@@ -19,6 +25,7 @@ const create = async (server: Interfaces.ServerI) => {
     logger.info(`Saved new server with id ${savedServer.id}, url: ${savedServer.url}`);
     return savedServer;
   }
+
 };
 
 const findAll = async () => {

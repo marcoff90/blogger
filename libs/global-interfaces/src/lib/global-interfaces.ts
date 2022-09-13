@@ -44,3 +44,13 @@ export interface UserData {
   username: string;
   avatar: string;
 }
+
+export interface DeletedArticleMessage {
+  deletedId: number
+}
+
+export interface RabbitMessage {
+  type: string;
+  message: any;
+  date: Date;
+}

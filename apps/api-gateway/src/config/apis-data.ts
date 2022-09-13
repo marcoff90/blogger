@@ -3,6 +3,11 @@ import axios, {AxiosResponse} from "axios";
 import {Interfaces} from '@blogger/global-interfaces';
 import RedisManager from "@blogger/redis-manager";
 
+/**
+ * Since it's unexpected that the servers' data will change often, we cache the data for 24 hours to allow smoother
+ * experienced
+ */
+
 const loadApisData = async () => {
   const registryUrl = process.env['REGISTRY_URL'];
   const registryPort = process.env['PORT_REGISTRY'];

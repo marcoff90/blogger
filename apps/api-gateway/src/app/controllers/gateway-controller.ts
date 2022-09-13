@@ -5,10 +5,13 @@ import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api
 import logger from '@blogger/util-logger';
 import GatewayService from "../services/gateway-service";
 
+/**
+ * the api name is obtained by path variable and used to filter in data from api registry to get url of the service,
+ * then the path is used to connect to api
+ */
+
 const forwardRequest = async (req: Request, res: Response, next: NextFunction) => {
   const {apiName} = req.params;
-  // the api name is used to filter the api data from cache/api registry to get corresponding
-  // server to contact -> then we use the whole path in request to connect to api
   const path = req.path.substring(1);
   const params = req.query;
 

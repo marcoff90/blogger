@@ -7,25 +7,17 @@ import UserService from "./user-service";
 import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
 import RedisManager from "@blogger/redis-manager";
-import {UserData} from "../../../../../libs/global-interfaces/src/lib/global-interfaces";
+import RabbitManager from "@blogger/rabbitmq-manager";
+
+/**
+ * When creating article, update the article ids in redis cache, which are used in comments service, to check if
+ * article exists
+ */
 
 const create = async (article: ArticleI, user: string | JwtPayload) => {
   article.user_id = user['id'];
   logger.info(`Created new article ${article.title} by user ${user['username']}`);
   const savedArticle = await ArticleRepository.create(article);
-
-  const cachedArticles = await loadUserArticlesFromCache(user['username']);
-
-  if (cachedArticles) {
-    const converted = convertArticleToArticleResponse(savedArticle, user['username']);
-    cachedArticles.push(converted);
-    try {
-      await RedisManager.deleteKey(user['username']);
-      await saveUserArticlesToCache(user['username'], cachedArticles);
-    } catch (e: any) {
-      logger.error(e.message);
-    }
-  }
   await updateArticleIdsInCache(savedArticle.id);
   return savedArticle;
 };
@@ -45,15 +37,26 @@ const updateByIdAndUserId = async (user: string | JwtPayload, articleId: number,
   return response;
 };
 
+/**
+ * Checks if article, passed as path variable exists when updating/deleting article
+ */
 const doesArticleExist = async (user: string | JwtPayload, articleId: number) => {
   const article = await ArticleRepository.findOneByIdAndUser(articleId, user['id']);
   return article != null;
 };
 
+/**
+ * Delete id from ids cache -> comments service needs updated data
+ * Send rabbit message to comment service to delete comments accordingly
+ * Soft delete -> after article soft deleted, comments will delete through message, comments send message back that
+ * article deleted -> we can hard delete
+ */
+
 const softDelete = async (user: string | JwtPayload, articleId: number) => {
   logger.info(`Deleting article ${articleId}`);
   const updatedData = await ArticleRepository.softDelete(articleId, user['id']);
   await deleteArticleIdFromCache(articleId);
+  await notifyCommentsService(articleId);
   if (updatedData[1][0]['dataValues']['deleted']) {
     logger.info(`Successfully deleted!`);
     return true;
@@ -62,6 +65,10 @@ const softDelete = async (user: string | JwtPayload, articleId: number) => {
     return false;
   }
 };
+
+/**
+ * shows five randomly chosen articles, for 24 hours fixed in cache, then new random articles
+ */
 
 const getFiveFeaturedArticles = async () => {
   const redisKey = process.env['REDIS_BLOGGER_FEATURED'];
@@ -107,6 +114,12 @@ const findFreshFiveArticles = async () => {
   return result;
 };
 
+/**
+ * When loading five fresh articles, we get only the data stored in bloggers db, we need to display username of the
+ * blogger as well, we send those five articles to create map of articleId, userId and by userId find user data
+ * obtained from user service through internal api
+ */
+
 const findUsernameByArticleId = async (articles: ArticleI[], articleId: number) => {
   const map = mapArticleAndUserId(articles);
   const userId = map.get(articleId);
@@ -126,6 +139,13 @@ const mapArticleAndUserId = (articles: ArticleI[]) => {
   return map;
 };
 
+/**
+ * public part of blogger uses username as path variable, so each writer can have his own data shown
+ * We find the user id by username from user's data from user api
+ * There's a probability the articles of one user won't be changing very often, we cache the articles for 12 hours by
+ * username of the blogger
+ */
+
 const findArticlesByUsername = async (username: string) => {
   const user: Interfaces.UserData = await UserService.findUserDataByUsername(username);
   if (!user) {
@@ -136,7 +156,9 @@ const findArticlesByUsername = async (username: string) => {
 
   if (!cachedArticles) {
     const articles: ArticleI[] = await ArticleRepository.findAllByUserIdPublic(user['id']);
-    return convertAllArticleToResponse(articles, user.username);
+    const converted: GetUserArticleResponse[] = convertAllArticleToResponse(articles, user.username);
+    await saveUserArticlesToCache(username, converted);
+    return converted;
   }
   return cachedArticles;
 };
@@ -180,6 +202,9 @@ const convertArticleToArticleResponse = (article: ArticleI, username: string) =>
   };
 };
 
+/**
+ * Sends ids of articles to comment service, if comments service didn't get them from cache
+ */
 
 const findArticleIds = async () => {
   return await ArticleRepository.findArticleIds();
@@ -232,6 +257,27 @@ const convertAllArticleToResponse = (articles: ArticleI[], username: string) => 
   return result;
 };
 
+
+/**
+ * On article delete send message to comment's service to delete comments associated with article
+ */
+const notifyCommentsService = async (articleId: number) => {
+  const routingKey = process.env['BLOGGER_ROUTING_KEY'];
+  const message: Interfaces.DeletedArticleMessage = {
+    deletedId: articleId
+  };
+  await RabbitManager.publishMessage(routingKey, message);
+};
+
+const deleteArticle = async (articleId: number) => {
+  try {
+    await ArticleRepository.deleteArticle(articleId);
+    logger.info(`Article deleted id: ${articleId}`);
+  } catch (e: any) {
+    logger.error(`Deleting article id: ${articleId} failed: ${e.message}`)
+  }
+};
+
 export default {
   create,
   findAllByUserId,
@@ -240,5 +286,6 @@ export default {
   doesArticleExist,
   getFiveFeaturedArticles,
   findArticlesByUsername,
-  findArticleIds
+  findArticleIds,
+  deleteArticle
 };

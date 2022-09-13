@@ -43,9 +43,9 @@ services:
     ports:
       - '4444:4444'
     depends_on:
+      - postgres
       - redis
       - rabbitmq
-      - postgres
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:4444" ]
       interval: 30s
@@ -80,10 +80,16 @@ services:
     depends_on:
       - api-registry
       - user-service
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3333" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     links:
       - user-service
       - api-registry
       - blogger-service
+      - comments-service
 
   blogger-service:
     env_file:
@@ -95,7 +101,24 @@ services:
       - api-registry
       - postgres
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:5555" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  comments-service:
+    env_file:
+      - .env.docker
+    image: 'comments-service'
+    ports:
+      - '7777:7777'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7777" ]
       interval: 30s
       timeout: 10s
       retries: 5

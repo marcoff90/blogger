@@ -9,25 +9,36 @@ import {GetCommentsSchema} from "../schemas/get-comments-schema";
 const create = async (req: Request<CreateCommentInput['params'], CreateCommentInput['body']>, res: Response, next: NextFunction) => {
   const {articleId} = req.params;
 
-  if (!await ArticleService.doesArticleExist(parseInt(articleId))) {
-    logger.error(`Article not found: ${articleId}`);
-    next(ApiError.notFound({error: 'Article not found'}));
-  } else {
-    const comment = await CommentService.create(req.body, parseInt(articleId));
-    res.send(comment);
+  try {
+    if (!await ArticleService.doesArticleExist(parseInt(articleId))) {
+      logger.error(`Article not found: ${articleId}`);
+      next(ApiError.notFound({error: 'Article not found'}));
+    } else {
+      const comment = await CommentService.create(req.body, parseInt(articleId));
+      res.send(comment);
+    }
+  } catch (e: any) {
+    logger.error(`Saving comment for article id: ${articleId} failed: ${e.message}`);
+    next(ApiError.serverError());
   }
 };
 
 const showAll = async (req: Request<GetCommentsSchema['params']>, res: Response, next: NextFunction) => {
   const {articleId} = req.params;
 
-  if (!await ArticleService.doesArticleExist(parseInt(articleId))) {
-    logger.error(`Article not found: ${articleId}`);
-    next(ApiError.notFound({error: 'Article not found'}));
-  } else {
-    const comments = await CommentService.findAllByArticleId(parseInt(articleId));
-    res.send(comments);
+  try {
+    if (!await ArticleService.doesArticleExist(parseInt(articleId))) {
+      logger.error(`Article not found: ${articleId}`);
+      next(ApiError.notFound({error: 'Article not found'}));
+    } else {
+      const comments = await CommentService.findAllByArticleId(parseInt(articleId));
+      res.send(comments);
+    }
+  } catch (e: any) {
+    logger.error(`Loading comments for article id: ${articleId} failed: ${e.message}`);
+    next(ApiError.serverError());
   }
+
 };
 
 export default {

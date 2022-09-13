@@ -35,10 +35,19 @@ const findById = async (commentId: number) => {
       id: commentId
     }
   })
-}
+};
+
+const deleteByArticleId = async (articleId: number) => {
+  await CommentModel.destroy({
+    where: {
+      article_id: articleId
+    }
+  })
+};
 
 export default {
   findAllByArticleId,
   findById,
-  create
+  create,
+  deleteByArticleId
 };

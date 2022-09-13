@@ -3,6 +3,13 @@ import logger from "@blogger/util-logger";
 import 'dotenv/config';
 import axios, {AxiosResponse} from "axios";
 
+/**
+ * article ids are cached upon adding/deleting article in blogger service for 24 hours or when cache is empty
+ * directly in comments service -> this way the comments adding/loading is faster and comments service has current
+ * info at all times, or in case of fail of blogger service, the comments service has data in cache at least for
+ * some times
+ */
+
 const redisKey = process.env['REDIS_EXISTING_ARTICLES'];
 
 const doesArticleExist = async (articleId: number) => {
@@ -18,6 +25,9 @@ const doesArticleExist = async (articleId: number) => {
   if (cachedData) {
     logger.info(`Loaded featured articles from cache: ${cachedData}`);
     ids = JSON.parse(cachedData);
+    if (ids.length <= 0) {
+      ids = await loadArticleIds();
+    }
   } else {
     ids = await loadArticleIds();
   }
@@ -51,7 +61,7 @@ const loadArticleIds = async () => {
     logger.error(`Can't load articles data: ${e.message}`);
     return null;
   }
-}
+};
 
 export default {
   doesArticleExist

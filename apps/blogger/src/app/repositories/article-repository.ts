@@ -102,6 +102,14 @@ const findAllByUserIdPublic = async (userId: number) => {
   });
 };
 
+const deleteArticle = async (articleId: number) => {
+  await ArticleModel.destroy({
+    where: {
+      id: articleId
+    }
+  });
+};
+
 export default {
   create,
   findAllByUserId,
@@ -110,5 +118,6 @@ export default {
   findOneByIdAndUser,
   findFiveFeaturedArticles,
   findArticleIds,
-  findAllByUserIdPublic
+  findAllByUserIdPublic,
+  deleteArticle
 };

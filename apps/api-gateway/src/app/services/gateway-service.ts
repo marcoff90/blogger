@@ -6,6 +6,10 @@ import loadApisData from "../../config/apis-data";
 import logger from '@blogger/util-logger';
 import 'dotenv/config';
 
+/**
+ * Since not every endpoint is protected by auth, we need two types of headers
+ */
+
 const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, reqParams: any) => {
   const config: AxiosRequestConfig = !req.headers.authorization ?
     {

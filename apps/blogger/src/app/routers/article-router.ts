@@ -7,6 +7,7 @@ import {getArticlesByUserIdSchema} from "../schemas/get-articles-by-user-id-sche
 import {updateArticleSchema} from "../schemas/update-article-schema";
 import {deleteArticleSchema} from "../schemas/delete-article-schema";
 import {getArticlesByUsernameSchema} from "../schemas/get-articles-by-username-schema";
+import MessageConsumer from "../middlewares/message-consumer";
 
 const ArticleRouter = Router();
 
@@ -22,9 +23,13 @@ ArticleRouter.put('/blogger-service-api/bloggers/:userId/articles/:articleId', V
 ArticleRouter.delete('/blogger-service-api/bloggers/:userId/articles/:articleId', Validator.validate(deleteArticleSchema),
   Auth.authorize, ArticleController.deleteArticle);
 
-ArticleRouter.get('/blogger-service-api/featured-blogs', ArticleController.showFiveFeaturedArticles);
+/**
+ * listening on exchange on public side of the app, since the data is mostly cached
+ */
+
+ArticleRouter.get('/blogger-service-api/featured-blogs', MessageConsumer.consumeMessages, ArticleController.showFiveFeaturedArticles);
 
 ArticleRouter.get('/blogger-service-api/blogs/:username/articles', Validator.validate(getArticlesByUsernameSchema),
-  ArticleController.findArticlesByUsername);
+  MessageConsumer.consumeMessages, ArticleController.findArticlesByUsername);
 
 export default ArticleRouter;

@@ -1,7 +1,7 @@
 import { Interfaces } from "@blogger/global-interfaces";
 import logger from '@blogger/util-logger';
 import axios, {AxiosResponse} from "axios";
-import RedisManager from "../../../../../libs/redis-manager/src/lib/redis-manager";
+import RedisManager from "@blogger/redis-manager";
 import 'dotenv/config';
 
 /**

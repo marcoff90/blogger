@@ -7,5 +7,5 @@ ENV PORT=4444
 EXPOSE ${PORT}
 RUN npm install --production
 # dependencies that nestjs needs
-RUN npm install reflect-metadata tslib rxjs express pino-pretty doctrine swagger-parser yaml lodash.mergewith swagger-ui-dist
+RUN npm install reflect-metadata tslib rxjs express pino-pretty doctrine swagger-parser yaml js-yaml lodash.mergewith swagger-ui-dist
 CMD node ./main.js
