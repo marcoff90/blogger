@@ -9,7 +9,8 @@ export interface CommentI extends Model<InferAttributes<CommentI>, InferCreation
   parent_id: number;
   depth: number;
   created_at?: number;
-  children?: CommentI[]
+  published: boolean;
+  children?: CommentI[];
 }
 
 const CommentModel = sequelize.define<CommentI>('comment', {
@@ -46,6 +47,11 @@ const CommentModel = sequelize.define<CommentI>('comment', {
     type: DataTypes.DOUBLE,
     allowNull: false,
     defaultValue: Math.floor(Date.now() / 1000)
+  },
+  published: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
   }
 }, {timestamps: false});
 

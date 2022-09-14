@@ -24,6 +24,12 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/CreateCommentResponse'
+ *      202:
+ *        description: Accepted - article id not validated through blogger service
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiMessage'
  *      404:
  *        description: Not found - article not found by id
  *        content:

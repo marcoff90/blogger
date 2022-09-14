@@ -4,24 +4,57 @@ const create = async (comment: CommentI): Promise<CommentI> => {
   return await CommentModel.create(comment);
 };
 
+/**
+ * Find all related comments to article
+ * Required makes the query to left outer join which allows to find all, not just the first related models (first
+ * thread)
+ */
+
 const findAllByArticleId = async (articleId: number): Promise<CommentI[]> => {
   return await CommentModel.findAll({
     where: {
       article_id: articleId,
       parent_id: null,
+      published: true
+    },
+    attributes: {
+      exclude: ['depth', 'published']
     },
     include: [{
       model: CommentModel,
       as: 'children',
       nested: true,
+      required: false,
+      where: {
+        published: true
+      },
+      attributes: {
+        exclude: ['depth', 'published']
+      },
+
       include: [{
         model: CommentModel,
         as: 'children',
         nested: true,
+        required: false,
+        where: {
+          published: true
+        },
+        attributes: {
+          exclude: ['depth', 'published']
+        },
+
         include: [{
           model: CommentModel,
           as: 'children',
           nested: true,
+          required: false,
+          where: {
+            published: true
+          },
+          attributes: {
+            exclude: ['depth', 'published']
+          },
         }],
       }],
     }],
@@ -45,9 +78,19 @@ const deleteByArticleId = async (articleId: number): Promise<void> => {
   });
 };
 
+const findAllNotPublished = async (): Promise<CommentI[]> => {
+  return await CommentModel.findAll({
+    where: {
+      published: false
+    }
+  });
+};
+
+
 export default {
   findAllByArticleId,
   findById,
   create,
-  deleteByArticleId
+  deleteByArticleId,
+  findAllNotPublished
 };

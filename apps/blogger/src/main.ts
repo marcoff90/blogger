@@ -8,6 +8,7 @@ import logger from '@blogger/util-logger';
 import {generateSwaggerDocs} from "./config/swagger";
 import ArticleRouter from "./app/routers/article-router";
 import InternalRouter from "./app/routers/internal-router";
+import MessageConsumer from "./app/middlewares/message-consumer";
 
 const app: Express = express();
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 createDatabase();
 createTables();
 
+app.use(MessageConsumer.consumeLifeCheckQueue);
 app.use(ArticleRouter);
 app.use(InternalRouter);
 app.use(ErrorHandler.apiErrorHandler);

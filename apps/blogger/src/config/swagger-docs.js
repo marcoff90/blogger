@@ -69,6 +69,18 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *      401:
+ *        description: Unauthorized
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      404:
+ *        description: Not found - user id doesn't match the article
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -117,6 +129,12 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/ApiError'
+ *      401:
+ *        description: Unauthorized
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -153,6 +171,12 @@
  *              $ref: '#/components/schemas/ApiMessage'
  *      404:
  *        description: Not found - Article not found based on id and user id
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      401:
+ *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:

@@ -9,7 +9,6 @@ import 'dotenv/config';
 import RedisManager from "@blogger/redis-manager";
 import RabbitManager from "@blogger/rabbitmq-manager";
 import {UpdateArticleResponse} from "../interfaces/update-article-response";
-import {map} from "zod";
 
 /**
  * When creating article, update the article ids in redis cache, which are used in comments service, to check if

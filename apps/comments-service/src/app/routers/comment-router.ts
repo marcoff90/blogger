@@ -8,9 +8,9 @@ import {getCommentsSchema} from "../schemas/get-comments-schema";
 const CommentRouter: Router = Router();
 
 CommentRouter.post('/comments-service-api/articles/:articleId/comments', Validator.validate(createCommentSchema),
-  MessageConsumer.consumeMessages, CommentController.create);
+  MessageConsumer.consumeDeleteCommentsQueue, CommentController.create);
 
 CommentRouter.get('/comments-service-api/articles/:articleId/comments', Validator.validate(getCommentsSchema),
-  MessageConsumer.consumeMessages, CommentController.showAll);
+  MessageConsumer.consumeDeleteCommentsQueue, CommentController.showAll);
 
 export default CommentRouter;

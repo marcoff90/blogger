@@ -38,6 +38,11 @@ module.exports =  {
         type: DataTypes.DOUBLE,
         allowNull: false,
         defaultValue: Math.floor(Date.now() / 1000)
+      },
+      published: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       }
     });
   },

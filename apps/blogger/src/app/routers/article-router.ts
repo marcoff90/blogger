@@ -27,9 +27,9 @@ ArticleRouter.delete('/blogger-service-api/bloggers/:userId/articles/:articleId'
  * listening on exchange on public side of the app, since the data is mostly cached
  */
 
-ArticleRouter.get('/blogger-service-api/featured-blogs', MessageConsumer.consumeMessages, ArticleController.showFiveFeaturedArticles);
+ArticleRouter.get('/blogger-service-api/featured-blogs', MessageConsumer.consumeDeleteArticlesQueue, ArticleController.showFiveFeaturedArticles);
 
 ArticleRouter.get('/blogger-service-api/blogs/:username/articles', Validator.validate(getArticlesByUsernameSchema),
-  MessageConsumer.consumeMessages, ArticleController.findArticlesByUsername);
+  MessageConsumer.consumeDeleteArticlesQueue, ArticleController.findArticlesByUsername);
 
 export default ArticleRouter;

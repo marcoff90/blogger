@@ -34,13 +34,17 @@ const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArt
   }
 };
 
+/**
+ * when user doesn't have access based on user id not same as the one from jwt, we return 404 similarly to github
+ * when accessing repo without access even though repo exists
+ */
+
 const showAllByUserId = async (req: Request<GetArticlesByUserIdInput['params']>, res: Response, next: NextFunction) => {
   const {userId} = req.params;
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.notFound({error: 'Article not found'})); // user doesn't have access -> similarly to github when
-    // accessing repo which isn't in users scope -> not found
+    next(ApiError.notFound({error: 'Articles not found'}));
 
   } else {
     const response: GetUserArticleResponse[] = await ArticleService.findAllByUserId(req.user);

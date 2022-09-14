@@ -9,7 +9,21 @@ const options: swaggerJsdoc.Options = {
     openapi: '3.0.0',
     info: {
       title: 'Comments Service API docs',
-      description: "TBD",
+      description: "Responsible for handling comments to articles\n\n" +
+        "- Comments are fixed to article id, can be nested to the level 4, based on property depth -> when parent" +
+        " comment is on level 4, we set it's parent_id to the newly added comment to stop deeper nesting\n\n" +
+        "- The application validates if the article exists when comment is added -> every time article is added or" +
+        " deleted in blogger service, blogger service updates the ids of existing article in redis cache (24h), from" +
+        " which comments service takes the ids. If any article wouldn't be added/deleted in the last 24 hours and" +
+        " cache would be empty. The comments service calls internal api endpoint to obtain the ids and stores them" +
+        " in cache it self. In case of blogger service fail, the comment is stored to database with property" +
+        " published set to false. Comments service sends message to Blogger service, once Blogger is back online, it" +
+        " send back the message, the Comments service loads the fresh data and validates the not published" +
+        " articles\n\n" +
+        "- When article is deleted in blogger service, the comments are no longer needed -> blogger sends message," +
+        " comments service deletes the comments, sends message back and article is deleted too so no non existent" +
+        " relations exist in db.\n\n" +
+        "- Public endpoints with no auth protection",
       contact: {
         name: 'Marek Slavicek',
       },

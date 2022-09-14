@@ -8,6 +8,7 @@ import {generateSwaggerDocs} from "./config/swagger";
 import {createDatabase} from "./config/database-config";
 import syncTables from "./config/sync-tables";
 import CommentRouter from "./app/routers/comment-router";
+import MessageConsumer from "./app/middlewares/message-consumer";
 
 const app: Express = express();
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 createDatabase();
 syncTables();
 
+app.use(MessageConsumer.consumeBloggerActiveQueue);
 app.use(CommentRouter);
 app.use(ErrorHandler.apiErrorHandler);
 registerToRegistry();
