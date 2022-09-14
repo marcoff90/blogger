@@ -12,12 +12,12 @@ const {
 } = process.env;
 
 // first create database if it doesn't exist
-export const createDatabase = () => {
+export const createDatabase = (): void => {
   Postgres.createDatabase(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_EXISTING_DB_NAME, RDS_DB_NAME_USER_SERVICE);
 };
 
 // then check if the database is created if so, sync model tables
-export const createTables = () => {
+export const createTables = (): void => {
   const client = Postgres.createClient(RDS_USERNAME, RDS_PASSWORD, RDS_HOSTNAME, RDS_DB_NAME_USER_SERVICE);
   client.connect(err => {
     if (err) {
@@ -28,7 +28,7 @@ export const createTables = () => {
   });
 };
 
-const sequelize = new Sequelize(RDS_DB_NAME_USER_SERVICE, RDS_USERNAME, RDS_PASSWORD, {
+const sequelize: Sequelize = new Sequelize(RDS_DB_NAME_USER_SERVICE, RDS_USERNAME, RDS_PASSWORD, {
   dialect: 'postgres',
   host: RDS_HOSTNAME,
 });

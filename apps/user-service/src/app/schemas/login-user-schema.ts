@@ -1,6 +1,6 @@
-import {object, string, TypeOf} from "zod";
+import {AnyZodObject, object, string, TypeOf} from "zod";
 
-export const loginUserSchema = object({
+export const loginUserSchema: AnyZodObject = object({
   body: object({
     username: string({
       required_error: 'Username is required',

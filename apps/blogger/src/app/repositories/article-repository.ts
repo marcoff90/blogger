@@ -2,8 +2,9 @@ import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import ArticleModel, {ArticleI, State} from "../models/article-model";
 import Sequelize from "../../config/sequelize";
+import {SequelizeMethod} from "sequelize/types/utils";
 
-const create = async (article: ArticleI) => {
+const create = async (article: ArticleI): Promise<ArticleI> => {
   return await ArticleModel.create(article);
 };
 
@@ -23,7 +24,7 @@ const findAllByUserId = async (userId: number) => {
   });
 };
 
-const updateByIdAndUserId = async (articleId: number, userId: number, articlesData: ArticleI) => {
+const updateByIdAndUserId = async (articleId: number, userId: number, articlesData: ArticleI): Promise<SequelizeMethod> => {
   return await ArticleModel.update({
     title: articlesData.title,
     perex: articlesData.perex,
@@ -40,7 +41,7 @@ const updateByIdAndUserId = async (articleId: number, userId: number, articlesDa
   });
 };
 
-const findOneByIdAndUser = async (articleId: number, userId: number) => {
+const findOneByIdAndUser = async (articleId: number, userId: number): Promise<ArticleI> => {
   return await ArticleModel.findOne({
     where: {
       id: articleId,
@@ -50,7 +51,7 @@ const findOneByIdAndUser = async (articleId: number, userId: number) => {
   });
 };
 
-const softDelete = async (articleId: number, userId: number) => {
+const softDelete = async (articleId: number, userId: number): Promise<SequelizeMethod> => {
   return await ArticleModel.update({
     deleted: true
   }, {
@@ -62,7 +63,7 @@ const softDelete = async (articleId: number, userId: number) => {
   });
 };
 
-const findFiveFeaturedArticles = async () => {
+const findFiveFeaturedArticles = async (): Promise<ArticleI[]> => {
   return await ArticleModel.findAll({
     where: {
       deleted: false,
@@ -73,7 +74,7 @@ const findFiveFeaturedArticles = async () => {
   })
 };
 
-const findArticleIds = async () => {
+const findArticleIds = async (): Promise<number[]> => {
   return ArticleModel.findAll({
     where: {
       deleted: false,
@@ -85,7 +86,7 @@ const findArticleIds = async () => {
   .then(articles => articles.map(article => article.id));
 };
 
-const findAllByUserIdPublic = async (userId: number) => {
+const findAllByUserIdPublic = async (userId: number): Promise<ArticleI[]> => {
   return await ArticleModel.findAll({
     where: {
       user_id: userId,
@@ -102,7 +103,7 @@ const findAllByUserIdPublic = async (userId: number) => {
   });
 };
 
-const deleteArticle = async (articleId: number) => {
+const deleteArticle = async (articleId: number): Promise<void> => {
   await ArticleModel.destroy({
     where: {
       id: articleId

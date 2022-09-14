@@ -1,6 +1,6 @@
-import {object, string, TypeOf} from "zod";
+import {AnyZodObject, object, string, TypeOf} from "zod";
 
-export const createServerSchema = object({
+export const createServerSchema: AnyZodObject = object({
   body: object({
     url: string({
       required_error: 'Url is required',

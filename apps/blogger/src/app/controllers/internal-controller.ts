@@ -15,7 +15,7 @@ const showArticleIds = async (req: Request<GetArticleIdsInput['headers']>, res: 
     const data: number[] = await ArticleService.findArticleIds();
     res.send(data);
   } else {
-    next(ApiError.unauthorized({error: `ApiKey doesn't match`}));
+    next(ApiError.unauthorized({error: `Access denied`}));
   }
 };
 

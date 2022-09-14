@@ -5,7 +5,7 @@ import Validator from '@blogger/middleware-validator';
 import MessageConsumer from "../middlewares/message-consumer";
 import {getCommentsSchema} from "../schemas/get-comments-schema";
 
-const CommentRouter = Router();
+const CommentRouter: Router = Router();
 
 CommentRouter.post('/comments-service-api/articles/:articleId/comments', Validator.validate(createCommentSchema),
   MessageConsumer.consumeMessages, CommentController.create);

@@ -1,6 +1,6 @@
-import {object, string, TypeOf, number} from 'zod';
+import {object, string, TypeOf, number, AnyZodObject} from 'zod';
 
-export const createCommentSchema = object({
+export const createCommentSchema: AnyZodObject = object({
   body: object({
     author: string({
       required_error: 'Author is required'

@@ -1,6 +1,6 @@
-import {object, string, TypeOf} from "zod";
+import {AnyZodObject, object, string, TypeOf} from "zod";
 
-export const deleteArticleSchema = object({
+export const deleteArticleSchema: AnyZodObject = object({
   headers: object({
     authorization: string({
       required_error: 'Bearer token is required'

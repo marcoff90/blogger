@@ -11,7 +11,7 @@ const showUsersData = async (req: Request<GetUsersDataInput['headers']>, res: Re
     const data: Interfaces.UserData[] = await UserService.mapUsers();
     res.send(data);
   } else {
-    next(ApiError.unauthorized({error: `ApiKey doesn't match`}));
+    next(ApiError.unauthorized({error: `Access denied`}));
   }
 };
 

@@ -4,7 +4,7 @@ import swaggerJsdoc from '../../../../node_modules/swagger-jsdoc';
 import swaggerUi from '../../../../node_modules/swagger-ui-express';
 import {writeFileSync, readFileSync} from "fs";
 
-const swaggerDocs = (app: Express, port: number, options: swaggerJsdoc.Options) => {
+const swaggerDocs = (app: Express, port: number, options: swaggerJsdoc.Options): void => {
   const swaggerSpec = swaggerJsdoc(options);
 
   // Swagger page
@@ -18,7 +18,7 @@ const swaggerDocs = (app: Express, port: number, options: swaggerJsdoc.Options) 
   logger.info(`Documentation available at http:localhost:${port}/docs`);
 };
 
-const swaggerDocsDocker = (app: Express, port: number, swaggerDocument: any) => {
+const swaggerDocsDocker = (app: Express, port: number, swaggerDocument: any): void => {
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   app.get('/docs.json', (req: Request, res: Response) => {
@@ -28,7 +28,7 @@ const swaggerDocsDocker = (app: Express, port: number, swaggerDocument: any) => 
   logger.info(`Documentation available at http:localhost:${port}/docs`);
 };
 
-const saveSwaggerDocsToJson = (options: swaggerJsdoc.Options, apiName: string) => {
+const saveSwaggerDocsToJson = (options: swaggerJsdoc.Options, apiName: string): void => {
   // saving swagger spec to json on dev load -> copied into container, where Swagger Jsdoc doesn't run, so we use
   // json for docs
   const swaggerSpec = swaggerJsdoc(options);

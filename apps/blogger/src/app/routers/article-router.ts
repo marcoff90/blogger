@@ -9,7 +9,7 @@ import {deleteArticleSchema} from "../schemas/delete-article-schema";
 import {getArticlesByUsernameSchema} from "../schemas/get-articles-by-username-schema";
 import MessageConsumer from "../middlewares/message-consumer";
 
-const ArticleRouter = Router();
+const ArticleRouter: Router = Router();
 
 ArticleRouter.post('/blogger-service-api/bloggers/:userId/articles', Validator.validate(createArticleSchema),
   Auth.authorize, ArticleController.storeArticle);

@@ -6,7 +6,7 @@ const rabbitUrl = process.env['RABBIT_URL'];
 const exchangeName = process.env['RABBIT_EXCHANGE'];
 let channel: Channel = null;
 
-const createConnection = async () => {
+const createConnection = async (): Promise<void> => {
   try {
     const connection: Connection = await client.connect(`amqp://${rabbitUrl}`)
     channel = await connection.createChannel();
@@ -16,7 +16,7 @@ const createConnection = async () => {
   }
 };
 
-const rabbitChannel = async () => {
+const rabbitChannel = async (): Promise<Channel> => {
   if (!channel) {
     await createConnection();
     return channel;
@@ -25,7 +25,7 @@ const rabbitChannel = async () => {
   }
 };
 
-const publishMessage = async (routingKey: string, message: any) => {
+const publishMessage = async (routingKey: string, message: any): Promise<void> => {
   try {
     const rabbit = await rabbitChannel();
     await rabbit.assertExchange(exchangeName, 'direct', {durable: true});

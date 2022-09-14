@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Express} from "express";
 import cors from "cors";
 import 'dotenv/config';
 import ErrorHandler from "@blogger/middleware-api-error";
@@ -9,7 +9,7 @@ import {createDatabase} from "./config/database-config";
 import syncTables from "./config/sync-tables";
 import CommentRouter from "./app/routers/comment-router";
 
-const app = express();
+const app: Express = express();
 
 app.use(cors());
 app.use(express.json());

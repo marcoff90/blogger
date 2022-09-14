@@ -21,7 +21,8 @@ const storeServer = async (req: Request<CreateServerInput['body'], CreateServerI
       next(ApiError.conflict({error: e.message}));
     }
   } else {
-    next(ApiError.unauthorized({error: `ApiKey doesn't match`}));
+    logger.error(`Blocked access due to invalid api key`);
+    next(ApiError.unauthorized({error: `Access denied`}));
   }
 };
 
@@ -33,10 +34,12 @@ const showAll = async (req: Request<GetServers['headers']>, res: Response, next:
     if (servers.length > 0) {
       res.send(servers);
     } else {
+      logger.info(`No servers found`);
       next(ApiError.notFound({error: 'No servers available'}));
     }
   } else {
-    next(ApiError.unauthorized({error: `ApiKey doesn't match`}));
+    logger.error(`Blocked access due to invalid api key`);
+    next(ApiError.unauthorized({error: `Access denied`}));
   }
 };
 

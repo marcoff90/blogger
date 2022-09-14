@@ -1,4 +1,4 @@
-import {createClient} from "redis";
+import {createClient, RedisClientType} from "redis";
 import logger from "@blogger/util-logger";
 import 'dotenv/config';
 
@@ -6,14 +6,14 @@ const redisUrl = process.env['REDIS_URL'];
 const redisPort = process.env['REDIS_PORT'];
 const redisPassword = process.env['REDIS_PASSWORD'];
 
-const createRedisClient = () => {
+const createRedisClient = (): RedisClientType => {
     return createClient({
       url: `redis://@${redisUrl}:${redisPort}`,
       password: redisPassword
     });
 };
 
-const storeToCache = async (key: string, time: number, value: string) => {
+const storeToCache = async (key: string, time: number, value: string): Promise<void> => {
   logger.info(`Caching data for ${key}, for time ${time}, value ${value}`);
   const client = await createRedisClient();
 
@@ -29,7 +29,7 @@ const storeToCache = async (key: string, time: number, value: string) => {
   }
 };
 
-const deleteKey = async (key: string) => {
+const deleteKey = async (key: string): Promise<void> => {
   logger.info(`Deleting key ${key} from cache`);
   const client = await createRedisClient();
 
@@ -44,7 +44,7 @@ const deleteKey = async (key: string) => {
   }
 };
 
-const getData = async (key: string) => {
+const getData = async (key: string): Promise<string> => {
   logger.info(`Loading data from cache for key ${key}`);
   const client = await createRedisClient();
 

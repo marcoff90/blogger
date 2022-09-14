@@ -8,13 +8,15 @@ import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
 import RedisManager from "@blogger/redis-manager";
 import RabbitManager from "@blogger/rabbitmq-manager";
+import {UpdateArticleResponse} from "../interfaces/update-article-response";
+import {map} from "zod";
 
 /**
  * When creating article, update the article ids in redis cache, which are used in comments service, to check if
  * article exists
  */
 
-const create = async (article: ArticleI, user: string | JwtPayload) => {
+const create = async (article: ArticleI, user: string | JwtPayload): Promise<ArticleI> => {
   article.user_id = user['id'];
   logger.info(`Created new article ${article.title} by user ${user['username']}`);
   const savedArticle = await ArticleRepository.create(article);
@@ -22,13 +24,13 @@ const create = async (article: ArticleI, user: string | JwtPayload) => {
   return savedArticle;
 };
 
-const findAllByUserId = async (user: string | JwtPayload | Interfaces.UserData) => {
+const findAllByUserId = async (user: string | JwtPayload | Interfaces.UserData): Promise<GetUserArticleResponse[]> => {
   const articles: ArticleI[] = await ArticleRepository.findAllByUserId(user['id']);
   logger.info(`Successfully loaded ${articles.length} articles of ${user['username']}`);
   return convertAllArticleToResponse(articles, user['username'])
 };
 
-const updateByIdAndUserId = async (user: string | JwtPayload, articleId: number, articlesData: ArticleI) => {
+const updateByIdAndUserId = async (user: string | JwtPayload, articleId: number, articlesData: ArticleI): Promise<UpdateArticleResponse> => {
   const updatedData = await ArticleRepository.updateByIdAndUserId(articleId, user['id'], articlesData);
   // sequelize returns the model with metadata -> the array has count of updated objects in 0 index, and array of
   // models at 1 index, the data is in property dataValues
@@ -40,7 +42,7 @@ const updateByIdAndUserId = async (user: string | JwtPayload, articleId: number,
 /**
  * Checks if article, passed as path variable exists when updating/deleting article
  */
-const doesArticleExist = async (user: string | JwtPayload, articleId: number) => {
+const doesArticleExist = async (user: string | JwtPayload, articleId: number): Promise<boolean> => {
   const article = await ArticleRepository.findOneByIdAndUser(articleId, user['id']);
   return article != null;
 };
@@ -52,7 +54,7 @@ const doesArticleExist = async (user: string | JwtPayload, articleId: number) =>
  * article deleted -> we can hard delete
  */
 
-const softDelete = async (user: string | JwtPayload, articleId: number) => {
+const softDelete = async (user: string | JwtPayload, articleId: number): Promise<boolean> => {
   logger.info(`Deleting article ${articleId}`);
   const updatedData = await ArticleRepository.softDelete(articleId, user['id']);
   await deleteArticleIdFromCache(articleId);
@@ -70,7 +72,7 @@ const softDelete = async (user: string | JwtPayload, articleId: number) => {
  * shows five randomly chosen articles, for 24 hours fixed in cache, then new random articles
  */
 
-const getFiveFeaturedArticles = async () => {
+const getFiveFeaturedArticles = async (): Promise<GetUserArticleResponse[]> => {
   const redisKey = process.env['REDIS_BLOGGER_FEATURED'];
 
   let cachedData: string = null;
@@ -98,7 +100,7 @@ const getFiveFeaturedArticles = async () => {
   return articles;
 };
 
-const findFreshFiveArticles = async () => {
+const findFreshFiveArticles = async (): Promise<GetUserArticleResponse[]> => {
   const articles: ArticleI[] = await ArticleRepository.findFiveFeaturedArticles();
   logger.info(`Successfully loaded new featured articles`);
 
@@ -120,7 +122,7 @@ const findFreshFiveArticles = async () => {
  * obtained from user service through internal api
  */
 
-const findUsernameByArticleId = async (articles: ArticleI[], articleId: number) => {
+const findUsernameByArticleId = async (articles: ArticleI[], articleId: number): Promise<string> => {
   const map = mapArticleAndUserId(articles);
   const userId = map.get(articleId);
   const user: Interfaces.UserData = await UserService.findUserDataById(userId);
@@ -131,7 +133,7 @@ const findUsernameByArticleId = async (articles: ArticleI[], articleId: number) 
   }
 };
 
-const mapArticleAndUserId = (articles: ArticleI[]) => {
+const mapArticleAndUserId = (articles: ArticleI[]): Map<number, number> => {
   const map = new Map();
   articles.map(article => {
     map.set(article.id, article.user_id);
@@ -146,7 +148,7 @@ const mapArticleAndUserId = (articles: ArticleI[]) => {
  * username of the blogger
  */
 
-const findArticlesByUsername = async (username: string) => {
+const findArticlesByUsername = async (username: string): Promise<GetUserArticleResponse[]> => {
   const user: Interfaces.UserData = await UserService.findUserDataByUsername(username);
   if (!user) {
     throw new Error(`User ${username} not found`);
@@ -163,7 +165,7 @@ const findArticlesByUsername = async (username: string) => {
   return cachedArticles;
 };
 
-const loadUserArticlesFromCache = async (username: string) => {
+const loadUserArticlesFromCache = async (username: string): Promise<GetUserArticleResponse[]> => {
   let cachedData: string = null;
 
   try {
@@ -180,7 +182,7 @@ const loadUserArticlesFromCache = async (username: string) => {
   return null;
 };
 
-const saveUserArticlesToCache = async (username: string, articles: GetUserArticleResponse[]) => {
+const saveUserArticlesToCache = async (username: string, articles: GetUserArticleResponse[]): Promise<void> => {
   try {
     await RedisManager.storeToCache(username, 43200, JSON.stringify(articles));
   } catch (e: any) {
@@ -188,7 +190,7 @@ const saveUserArticlesToCache = async (username: string, articles: GetUserArticl
   }
 };
 
-const convertArticleToArticleResponse = (article: ArticleI, username: string) => {
+const convertArticleToArticleResponse = (article: ArticleI, username: string): GetUserArticleResponse => {
   return {
     id: article.id,
     title: article.title,
@@ -206,11 +208,11 @@ const convertArticleToArticleResponse = (article: ArticleI, username: string) =>
  * Sends ids of articles to comment service, if comments service didn't get them from cache
  */
 
-const findArticleIds = async () => {
+const findArticleIds = async (): Promise<number[]> => {
   return await ArticleRepository.findArticleIds();
 };
 
-const updateArticleIdsInCache = async (articleId: number) => {
+const updateArticleIdsInCache = async (articleId: number): Promise<void> => {
   const redisKey = process.env['REDIS_EXISTING_ARTICLES'];
 
   try {
@@ -227,7 +229,7 @@ const updateArticleIdsInCache = async (articleId: number) => {
   }
 };
 
-const deleteArticleIdFromCache = async (articleId: number) => {
+const deleteArticleIdFromCache = async (articleId: number): Promise<void> => {
   const redisKey = process.env['REDIS_EXISTING_ARTICLES'];
 
   try {
@@ -247,7 +249,7 @@ const deleteArticleIdFromCache = async (articleId: number) => {
   }
 };
 
-const convertAllArticleToResponse = (articles: ArticleI[], username: string) => {
+const convertAllArticleToResponse = (articles: ArticleI[], username: string): GetUserArticleResponse[] => {
   const result: GetUserArticleResponse[] = [];
   articles.map(article => {
     const convert = convertArticleToArticleResponse(article, username);
@@ -261,7 +263,7 @@ const convertAllArticleToResponse = (articles: ArticleI[], username: string) => 
 /**
  * On article delete send message to comment's service to delete comments associated with article
  */
-const notifyCommentsService = async (articleId: number) => {
+const notifyCommentsService = async (articleId: number): Promise<void> => {
   const routingKey = process.env['BLOGGER_ROUTING_KEY'];
   const message: Interfaces.DeletedArticleMessage = {
     deletedId: articleId
@@ -269,7 +271,7 @@ const notifyCommentsService = async (articleId: number) => {
   await RabbitManager.publishMessage(routingKey, message);
 };
 
-const deleteArticle = async (articleId: number) => {
+const deleteArticle = async (articleId: number): Promise<void> => {
   try {
     await ArticleRepository.deleteArticle(articleId);
     logger.info(`Article deleted id: ${articleId}`);

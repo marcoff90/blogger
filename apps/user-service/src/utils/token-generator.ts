@@ -1,7 +1,7 @@
 import UserService from '../app/services/user-service';
 import { UserI } from '../app/models/user-model';
 
-const generateConfirmationToken = async () => {
+const generateConfirmationToken = async (): Promise<string> => {
   let token = '';
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -19,7 +19,7 @@ const generateConfirmationToken = async () => {
   return token;
 };
 
-const generatePasswordToken = async () => {
+const generatePasswordToken = async (): Promise<string> => {
   let token = '';
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

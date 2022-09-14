@@ -27,13 +27,8 @@ const showAll = async (req: Request<GetCommentsSchema['params']>, res: Response,
   const {articleId} = req.params;
 
   try {
-    if (!await ArticleService.doesArticleExist(parseInt(articleId))) {
-      logger.error(`Article not found: ${articleId}`);
-      next(ApiError.notFound({error: 'Article not found'}));
-    } else {
       const comments = await CommentService.findAllByArticleId(parseInt(articleId));
       res.send(comments);
-    }
   } catch (e: any) {
     logger.error(`Loading comments for article id: ${articleId} failed: ${e.message}`);
     next(ApiError.serverError());

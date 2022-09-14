@@ -9,7 +9,7 @@ import {Interfaces} from '@blogger/global-interfaces';
  * In case of wrongly passed parent id, we allow the comment as a new comment for better user experience
  */
 
-const create = async (comment: CommentI, articleId: number) => {
+const create = async (comment: CommentI, articleId: number): Promise<CommentI> => {
   let parentComment = null;
 
   if (comment.parent_id) {
@@ -36,7 +36,7 @@ const create = async (comment: CommentI, articleId: number) => {
 
 };
 
-const findAllByArticleId = async (articleId: number) => {
+const findAllByArticleId = async (articleId: number): Promise<CommentI[]> => {
   const comments = await CommentRepository.findAllByArticleId(articleId);
   logger.info(`Successfully loaded ${comments.length} comments`)
   sortComments(comments);
@@ -44,7 +44,7 @@ const findAllByArticleId = async (articleId: number) => {
   return comments;
 };
 
-const sortComments = (comments: CommentI[]) => {
+const sortComments = (comments: CommentI[]): void => {
   comments.forEach(child => {
     if (child.children.length > 0) {
       sort(child);
@@ -62,7 +62,7 @@ const sortComments = (comments: CommentI[]) => {
   });
 };
 
-const sort = (comment: CommentI) => {
+const sort = (comment: CommentI): void => {
   comment.children.sort((a, b) => a.created_at - b.created_at);
 };
 
@@ -71,7 +71,7 @@ const sort = (comment: CommentI) => {
  * delete the article -> so no relationship exists anymore,
  * TODO sends message to vote service to delete votes
  */
-const deleteByArticleId = async (articleId: number) => {
+const deleteByArticleId = async (articleId: number): Promise<void> => {
 
   try {
     await CommentRepository.deleteByArticleId(articleId);
@@ -82,7 +82,7 @@ const deleteByArticleId = async (articleId: number) => {
   }
 };
 
-const notifyBloggerService = async (articleId: number) => {
+const notifyBloggerService = async (articleId: number): Promise<void> => {
   const routingKey = process.env['COMMENTS_ROUTING_KEY'];
   const message: Interfaces.DeletedArticleMessage = {
     deletedId: articleId

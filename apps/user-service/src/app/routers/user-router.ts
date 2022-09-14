@@ -8,7 +8,7 @@ import {resetUserPasswordSchema} from "../schemas/reset-password-schema";
 import {activateUserAccountSchema} from "../schemas/activate-user-schema";
 import {identifyUserByResetTokenSchema} from "../schemas/identify-user-schema";
 
-const UserRouter = Router();
+const UserRouter: Router = Router();
 
 UserRouter.post(
   '/user-service-api/users',

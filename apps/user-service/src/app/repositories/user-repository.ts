@@ -1,12 +1,13 @@
 import UserModel, { UserI } from '../models/user-model';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import { Interfaces } from '@blogger/global-interfaces';
 
-const create = async (user: UserI) => {
+const create = async (user: UserI): Promise<UserI> => {
   return await UserModel.create(user);
 };
 
-const findByConfirmationToken = async (confirmationToken: string) => {
+const findByConfirmationToken = async (confirmationToken: string): Promise<UserI> => {
   return await UserModel.findOne({
     where: {
       confirmationToken: confirmationToken,
@@ -14,7 +15,7 @@ const findByConfirmationToken = async (confirmationToken: string) => {
   });
 };
 
-const findByUsername = async (username: string) => {
+const findByUsername = async (username: string): Promise<UserI> => {
   return await UserModel.findOne({
     where: {
       username: username,
@@ -22,7 +23,7 @@ const findByUsername = async (username: string) => {
   });
 };
 
-const findByEmail = async (email: string) => {
+const findByEmail = async (email: string): Promise<UserI> => {
   return await UserModel.findOne({
     where: {
       email: email,
@@ -30,7 +31,7 @@ const findByEmail = async (email: string) => {
   });
 };
 
-const findById = async (id: number) => {
+const findById = async (id: number): Promise<UserI> => {
   return await UserModel.findOne({
     where: {
       id: id,
@@ -38,7 +39,7 @@ const findById = async (id: number) => {
   });
 };
 
-const findByPasswordToken = async (passwordToken: string) => {
+const findByPasswordToken = async (passwordToken: string): Promise<UserI> => {
   return await UserModel.findOne({
     where: {
       forgottenPasswordToken: passwordToken,
@@ -46,7 +47,7 @@ const findByPasswordToken = async (passwordToken: string) => {
   });
 };
 
-const findUsernamesIdAvatarsWhereActive = async () => {
+const findUsernamesIdAvatarsWhereActive = async (): Promise<Interfaces.UserData[]> => {
   return await UserModel.findAll({
     where: {
       active: true

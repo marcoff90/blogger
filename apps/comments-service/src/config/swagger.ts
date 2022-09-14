@@ -27,7 +27,7 @@ const options: swaggerJsdoc.Options = {
   ],
 };
 
-export const generateSwaggerDocs = (app: Express, port: number) => {
+export const generateSwaggerDocs = (app: Express, port: number): void => {
   const isDocker = process.env.DOCKER;
   if (isDocker === 'true') {
     Swagger.swaggerDocsDocker(app, port, swaggerDocs);

@@ -10,7 +10,7 @@ import ApiService from "./api-service";
  * the change in order to not cache the data, but reload through api
  */
 
-const create = async (server: Interfaces.ServerI) => {
+const create = async (server: Interfaces.ServerI): Promise<Interfaces.ServerI> => {
   const storedServer: Interfaces.ServerI = await ServerRepository.findByUrl(server.url);
 
   await notifyApiGateway();
@@ -28,14 +28,14 @@ const create = async (server: Interfaces.ServerI) => {
 
 };
 
-const findAll = async () => {
+const findAll = async (): Promise<Interfaces.ServerI[]> => {
   logger.info('Loading all servers');
   const servers: Interfaces.ServerI[] = await ServerRepository.findAll();
   logger.info(`Found ${servers.length} servers`);
   return servers;
 };
 
-const notifyApiGateway = async () => {
+const notifyApiGateway = async (): Promise<void> => {
   const routingKey = process.env['API_REGISTRY_ROUTING_KEY'];
   const apiMessage: Interfaces.ApiRegistryMessage = {
     serversUpdated: true

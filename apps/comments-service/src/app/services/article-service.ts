@@ -12,7 +12,7 @@ import axios, {AxiosResponse} from "axios";
 
 const redisKey = process.env['REDIS_EXISTING_ARTICLES'];
 
-const doesArticleExist = async (articleId: number) => {
+const doesArticleExist = async (articleId: number) : Promise<boolean>=> {
   let cachedData = null;
   let ids: number[];
 
@@ -34,7 +34,7 @@ const doesArticleExist = async (articleId: number) => {
   return ids.includes(articleId);
 };
 
-const loadArticleIds = async () => {
+const loadArticleIds = async (): Promise<number[]> => {
   const bloggerServiceUrl = process.env['BLOGGER_SERVICE_URL'];
   const bloggerServicePort = process.env['PORT_BLOGGER'];
   const apiKey = process.env['BLOGGER_APIKEY'];

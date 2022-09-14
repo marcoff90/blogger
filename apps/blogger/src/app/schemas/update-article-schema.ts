@@ -1,7 +1,7 @@
-import {object, string, TypeOf, nativeEnum, number} from 'zod';
+import {object, string, TypeOf, nativeEnum, number, AnyZodObject} from 'zod';
 import {State} from "../models/article-model";
 
-export const updateArticleSchema = object({
+export const updateArticleSchema: AnyZodObject = object({
   body: object({
     title: string({
       required_error: 'Title is required'

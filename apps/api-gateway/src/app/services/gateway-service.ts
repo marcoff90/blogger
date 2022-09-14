@@ -10,7 +10,7 @@ import 'dotenv/config';
  * Since not every endpoint is protected by auth, we need two types of headers
  */
 
-const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, reqParams: any) => {
+const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, reqParams: any): AxiosRequestConfig => {
   const config: AxiosRequestConfig = !req.headers.authorization ?
     {
       method: req.method,
@@ -30,7 +30,7 @@ const getAxiosConfig = (req: Request, server: Interfaces.ServerI, path: string, 
   return config;
 };
 
-const getApiData = async () => {
+const getApiData = async (): Promise<Interfaces.ServerI[]> => {
   const redisKey = process.env['REDIS_API_GATEWAY_KEY'];
 
   let cachedData: string = null;

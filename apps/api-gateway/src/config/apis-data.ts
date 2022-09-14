@@ -8,7 +8,7 @@ import RedisManager from "@blogger/redis-manager";
  * experienced
  */
 
-const loadApisData = async () => {
+const loadApisData = async (): Promise<Interfaces.ServerI[]> => {
   const registryUrl = process.env['REGISTRY_URL'];
   const registryPort = process.env['PORT_REGISTRY'];
   const apiKey = process.env['API_REGISTRY_KEY'];

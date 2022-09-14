@@ -1,6 +1,6 @@
-import {object, string, TypeOf} from "zod";
+import {AnyZodObject, object, string, TypeOf} from "zod";
 
-export const resetUserPasswordSchema = object({
+export const resetUserPasswordSchema: AnyZodObject = object({
   body: object({
     email: string({
       required_error: 'Email is required',

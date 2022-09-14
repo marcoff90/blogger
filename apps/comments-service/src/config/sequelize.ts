@@ -7,7 +7,7 @@ const {
   RDS_HOSTNAME,
 } = process.env;
 
-const sequelize = new Sequelize(RDS_DB_NAME_COMMENTS, RDS_USERNAME, RDS_PASSWORD, {
+const sequelize: Sequelize = new Sequelize(RDS_DB_NAME_COMMENTS, RDS_USERNAME, RDS_PASSWORD, {
   dialect: 'postgres',
   host: RDS_HOSTNAME,
 });

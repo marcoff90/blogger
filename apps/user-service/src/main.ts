@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Express} from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import logger from '@blogger/util-logger';
@@ -9,7 +9,7 @@ import registerToRegistry from "./config/register-to-registry";
 import {generateSwaggerDocs} from "./config/swagger";
 import InternalRouter from "./app/routers/internal-router";
 
-const app = express();
+const app: Express = express();
 
 app.use(cors());
 app.use(express.json());

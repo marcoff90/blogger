@@ -15,7 +15,7 @@ const sendPasswordResetMail = async (
   userEmail: string,
   token: string,
   username: string
-) => {
+): Promise<void> => {
   username = username[0].toUpperCase() + username.substring(1);
   const mailOptions: Mail.Options = {
     from: process.env.MAILER_USER,
@@ -42,7 +42,7 @@ const sendConfirmationMail = async (
   userEmail: string,
   token: string,
   username: string
-) => {
+): Promise<void> => {
   username = username[0].toUpperCase() + username.substring(1);
   const mailOptions: Mail.Options = {
     from: process.env.MAILER_USER,
@@ -65,7 +65,7 @@ const sendConfirmationMail = async (
   });
 };
 
-const confirmPasswordChange = async (userEmail: string, username: string) => {
+const confirmPasswordChange = async (userEmail: string, username: string): Promise<void> => {
   username = username[0].toUpperCase() + username.substring(1);
 
   const mailOptions: Mail.Options = {

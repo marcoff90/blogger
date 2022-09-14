@@ -8,8 +8,9 @@ import {Interfaces} from '@blogger/global-interfaces';
 import 'dotenv/config';
 import swaggerDocs from 'api-gateway.json';
 import {SwaggerDocsServer} from "../interfaces/swagger-docs-server";
+import {ServerApisData} from "../interfaces/servers-and-apis-data";
 
-const generateSwaggerDocs = (app: Express, port: number) => {
+const generateSwaggerDocs = (app: Express, port: number): void => {
   const isDocker = process.env.DOCKER;
 
   loadApisData()
@@ -28,7 +29,7 @@ const generateSwaggerDocs = (app: Express, port: number) => {
   });
 };
 
-const getServersData = (data: Interfaces.ServerI[]) => {
+const getServersData = (data: Interfaces.ServerI[]): ServerApisData => {
   const serversData: SwaggerDocsServer[] = [];
   serversData.push({
     url: `${process.env['GATEWAY_URL']}:${process.env['PORT_GATEWAY']}`,
@@ -50,7 +51,7 @@ const getServersData = (data: Interfaces.ServerI[]) => {
   };
 };
 
-const generateSwaggerOptions = (serversData: SwaggerDocsServer[], apisData: string[]) => {
+const generateSwaggerOptions = (serversData: SwaggerDocsServer[], apisData: string[]): swaggerJsdoc.Options => {
   const options: swaggerJsdoc.Options = {
     definition: {
       openapi: '3.0.0',

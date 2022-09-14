@@ -28,7 +28,7 @@ const storeUser = async (req: Request<CreateUserInput['body']>, res: Response, n
     return res.json(response);
   } catch (e: any) {
     logger.error(e.message);
-    next(ApiError.conflict({error: e.message}));
+    next(ApiError.conflict({error: `Validation error`}));
   }
 };
 
@@ -40,11 +40,11 @@ const showLogin = async (req: Request<LoginUserInput['body']>, res: Response, ne
     loggedUser !== null ? await generateToken(loggedUser) : null;
 
   if (!token) {
-    next(ApiError.unauthorized({error: "At least one of the fields doesn't match!"}));
+    next(ApiError.unauthorized({error: "Invalid credentials"}));
 
   } else {
     if (!loggedUser.active) {
-      next(ApiError.forbidden({error: 'Confirm the account through email confirmation!'}));
+      next(ApiError.forbidden({error: 'Finish the activation process'}));
 
     } else {
       const response: LoginUserResponse = {
@@ -62,11 +62,11 @@ const forgottenPassword = async (req: Request<ForgottenUserPasswordInput['body']
   const user: UserI = await UserService.findByEmail(req.body.email);
 
   if (!user) {
-    next(ApiError.notFound({error: "Email doesn't match any user"}));
+    next(ApiError.notFound({error: "Invalid credentials"}));
   } else {
-    await UserService.forgottenPassword(req.body.email);
+    await UserService.forgottenPassword(user);
     const response: Interfaces.ApiMessage = {
-      message: 'Email with reset link sent',
+      message: 'Reset link sent',
     };
     res.json(response);
   }
@@ -78,19 +78,19 @@ const resetPassword = async (req: Request<ResetPasswordInput['body'], ResetPassw
   const user: UserI = await UserService.findByEmail(req.body.email);
 
   if (!user) {
-    next(ApiError.notFound({error: 'User not found'}));
+    next(ApiError.notFound({error: 'Invalid credentials'}));
 
   } else if (user.forgottenPasswordToken !== req.query.token) {
-    next(ApiError.forbidden({error: 'Reset token not associated with email address!'}));
+    next(ApiError.forbidden({error: 'Invalid token!'}));
 
   } else if (bcrypt.compareSync(req.body.password, user.password)) {
-    next(ApiError.badRequest({error: 'Password cannot be same as it was!'}));
+    next(ApiError.badRequest({error: 'Password does not match requirements, try again'}));
 
   } else if (timeNow > user.forgottenPasswordTokenExpiration) {
-    next(ApiError.forbidden({error: 'Token expired!'}));
+    next(ApiError.forbidden({error: 'Token expired'}));
 
   } else {
-    await UserService.resetPassword(req.body.email, req.body.password);
+    await UserService.resetPassword(user, req.body.password);
     const response: Interfaces.ApiMessage = {
       message: 'Password changed successfully!',
     };
@@ -108,19 +108,19 @@ const activateAccount = async (req: Request<ActivateUserAccountInput['body'], Ac
   );
 
   if (!user) {
-    next(ApiError.forbidden({error: 'Token not assigned to user!'}));
+    next(ApiError.forbidden({error: 'Invalid token'}));
 
   } else if (timeNow > user.confirmationTokenExpiration) {
-    await UserService.generateNewConfirmationToken(req.query.token.toString());
+    await UserService.generateNewConfirmationToken(user);
     next(ApiError.forbidden({error: 'Token expired! Check email for new one!'}));
 
   } else {
-    const user: UserI = await UserService.confirmAccount(req.query.token.toString(), req.body.avatar);
+    const activeUser: UserI = await UserService.confirmAccount(user, req.body.avatar);
     const token: string = await generateToken(user);
     const response: ActivationResponse = {
-      username: user.username,
-      active: user.active,
-      avatar: user.avatar,
+      username: activeUser.username,
+      active: activeUser.active,
+      avatar: activeUser.avatar,
       token,
     };
     res.json(response);
@@ -132,7 +132,7 @@ const identifyUserByResetToken = async (req: Request<IdentifyUserByResetTokenInp
   const user: UserI = await UserService.findByPasswordToken(req.query.token.toString());
 
   if (!user) {
-    next(ApiError.forbidden({error: 'Token not assigned to user!'}));
+    next(ApiError.forbidden({error: 'Invalid token'}));
   } else {
     const response: Interfaces.ApiMessage = {
       message: 'ok',

@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Express} from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import logger from '@blogger/util-logger';
@@ -6,7 +6,7 @@ import generateSwaggerDocs from "./config/swagger";
 import ErrorHandler from "@blogger/middleware-api-error";
 import GatewayRouter from "./app/routers/gateway-router";
 
-const app = express();
+const app: Express = express();
 global.app = app; // used for rerendering swagger docs in case of new api registration
 app.use(cors());
 app.use(express.json());

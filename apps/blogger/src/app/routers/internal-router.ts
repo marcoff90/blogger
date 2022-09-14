@@ -3,7 +3,7 @@ import Validator from '@blogger/middleware-validator';
 import {getArticleIdsSchema} from "../schemas/get-article-ids-schema";
 import InternalController from "../controllers/internal-controller";
 
-const InternalRouter = Router();
+const InternalRouter: Router = Router();
 
 InternalRouter.get('/blogger-service-api/internal/articles', Validator.validate(getArticleIdsSchema), InternalController.showArticleIds);
 

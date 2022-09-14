@@ -16,7 +16,7 @@ import 'dotenv/config';
 
 const redisKey = process.env['REDIS_BLOGGER_KEY'];
 
-const findUserDataById = async (userId: number) => {
+const findUserDataById = async (userId: number): Promise<Interfaces.UserData> => {
   let cachedData: string = null;
 
   try {
@@ -37,7 +37,7 @@ const findUserDataById = async (userId: number) => {
   return await findByUserIdFromApi(userId);
 };
 
-const findUserDataByUsername = async (username: string) => {
+const findUserDataByUsername = async (username: string): Promise<Interfaces.UserData> => {
   let cachedData: string = null;
 
   try {
@@ -58,7 +58,7 @@ const findUserDataByUsername = async (username: string) => {
   return await findByUsernameFromApi(username);
 }
 
-const findByUserIdFromApi = async (userId: number) => {
+const findByUserIdFromApi = async (userId: number): Promise<Interfaces.UserData> => {
   const data: Interfaces.UserData[] = await loadUsersData();
   const user = data.find(user => user.id === userId);
   if (user) {
@@ -69,7 +69,7 @@ const findByUserIdFromApi = async (userId: number) => {
   return null;
 };
 
-const findByUsernameFromApi = async (username: string) => {
+const findByUsernameFromApi = async (username: string): Promise<Interfaces.UserData> => {
   const data: Interfaces.UserData[] = await loadUsersData();
   const user = data.find(user => user.username === username);
   if (user) {
@@ -80,7 +80,7 @@ const findByUsernameFromApi = async (username: string) => {
   return null;
 }
 
-const loadUsersData = async () => {
+const loadUsersData = async (): Promise<Interfaces.UserData[]> => {
   const userServiceUrl = process.env['USER_SERVICE_URL'];
   const userServicePort = process.env['PORT_USER_SERVICE'];
   const apiKey = process.env['USER_SERVICE_API_KEY'];

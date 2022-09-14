@@ -4,7 +4,7 @@ import 'dotenv/config';
 import {Interfaces} from '@blogger/global-interfaces';
 import RabbitManager from "../../../rabbitmq-manager/src/lib/rabbit-manager";
 
-const registerApiToRegistry = async (userServiceApiURL: string, docsPath: string, description: string, name: string) => {
+const registerApiToRegistry = async (userServiceApiURL: string, docsPath: string, description: string, name: string): Promise<void> => {
   logger.info(`Registering ${name} to registry`);
 
   const registryUrl = process.env['REGISTRY_URL'];
@@ -35,7 +35,7 @@ const registerApiToRegistry = async (userServiceApiURL: string, docsPath: string
   }
 };
 
-const publishToQueue = async (message: Interfaces.RegisterServerInput) => {
+const publishToQueue = async (message: Interfaces.RegisterServerInput): Promise<void> => {
   const routingKey = process.env['API_REGISTRY_FAIL_KEY'];
   await RabbitManager.publishMessage(routingKey, message);
 };

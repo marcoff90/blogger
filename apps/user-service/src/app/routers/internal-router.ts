@@ -3,7 +3,7 @@ import InternalController from "../controllers/internal-controller";
 import {getUsersDataSchema} from "../schemas/get-users-data-schema";
 import Validator from '@blogger/middleware-validator';
 
-const InternalRouter = Router();
+const InternalRouter: Router = Router();
 
 InternalRouter.get('/user-service-api/internal/users', Validator.validate(getUsersDataSchema), InternalController.showUsersData);
 

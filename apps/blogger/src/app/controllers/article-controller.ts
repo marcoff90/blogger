@@ -19,7 +19,7 @@ const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArt
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
+    next(ApiError.forbidden({error: `Access denied`}));
 
   } else {
     const article: ArticleI = await ArticleService.create(req.body, req.user);
@@ -39,7 +39,8 @@ const showAllByUserId = async (req: Request<GetArticlesByUserIdInput['params']>,
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
+    next(ApiError.notFound({error: 'Article not found'})); // user doesn't have access -> similarly to github when
+    // accessing repo which isn't in users scope -> not found
 
   } else {
     const response: GetUserArticleResponse[] = await ArticleService.findAllByUserId(req.user);
@@ -54,10 +55,9 @@ const updateArticle = async (req: Request<UpdateArticleInput['params'], UpdateAr
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
-  }
+    next(ApiError.notFound({error: 'Article not found'}));
 
-  if (!await ArticleService.doesArticleExist(req.user, parseInt(articleId))) {
+  } else if (!await ArticleService.doesArticleExist(req.user, parseInt(articleId))) {
     logger.error(`Article not found: id ${articleId}, userId: ${req.user['id']}`);
     next(ApiError.notFound({error: 'Article not found'}));
 
@@ -74,10 +74,9 @@ const deleteArticle = async (req: Request<DeleteArticleInput['params']>, res: Re
 
   if (userId != req.user['id']) {
     logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
-    next(ApiError.forbidden({error: `Access denied: user id doesn't match`}));
-  }
+    next(ApiError.notFound({error: 'Article not found'}));
 
-  if (!await ArticleService.doesArticleExist(req.user, parseInt(articleId))) {
+  } else if (!await ArticleService.doesArticleExist(req.user, parseInt(articleId))) {
     logger.error(`Article not found: id ${articleId}, userId: ${req.user['id']}`);
     next(ApiError.notFound({error: 'Article not found'}));
 
@@ -111,7 +110,7 @@ const findArticlesByUsername = async (req: Request<GetArticlesByUsernameInput['p
     const articles: GetUserArticleResponse[] = await ArticleService.findArticlesByUsername(username);
     res.send(articles);
   } catch (e) {
-    next(ApiError.notFound({error: `Blog posts by ${username} not found`}));
+    next(ApiError.notFound({error: `Blog doesn't exist`}));
   }
 };
 

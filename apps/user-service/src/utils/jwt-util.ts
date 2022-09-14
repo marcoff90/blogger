@@ -1,7 +1,7 @@
-import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
+import jwt, {Jwt, JwtPayload, SignOptions} from 'jsonwebtoken';
 import { UserI } from '../app/models/user-model';
 
-const generateToken = async (user: UserI) => {
+const generateToken = async (user: UserI): Promise<string>  => {
   if (!user.username || !user.password) {
     return null;
   }

@@ -4,7 +4,7 @@ import 'regenerator-runtime/runtime';
 import ApiModel from "../models/api-model";
 import {Interfaces} from '@blogger/global-interfaces';
 
-const create = async (server: Interfaces.ServerI) => {
+const create = async (server: Interfaces.ServerI): Promise<Interfaces.ServerI> => {
   return await ServerModel.create(server, {
     include: [{
       model: ApiModel, as: 'apis'
@@ -12,7 +12,7 @@ const create = async (server: Interfaces.ServerI) => {
   });
 };
 
-const findAll = async () => {
+const findAll = async (): Promise<Interfaces.ServerI[]> => {
   return await ServerModel.findAll({
     include: [{
       model: ApiModel, as: 'apis'
@@ -20,19 +20,18 @@ const findAll = async () => {
   });
 };
 
-const update = async (server: Interfaces.ServerI) => {
-  return await ServerModel.update({
+const update = async (server: Interfaces.ServerI): Promise<void> => {
+  await ServerModel.update({
     name: server.name,
     description: server.description,
   }, {
     where: {
       id: server.id
-    },
-    returning: true
+    }
   });
 };
 
-const findByUrl = async (url: string) => {
+const findByUrl = async (url: string): Promise<Interfaces.ServerI> => {
   return await ServerModel.findOne({
     where: {
       url: url

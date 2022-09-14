@@ -2,11 +2,16 @@ import UserRepository from '../repositories/user-repository';
 import Mailer from '../../utils/mailer';
 import TokenGenerator from '../../utils/token-generator';
 import bcrypt from 'bcryptjs';
-import { UserI } from '../models/user-model';
+import {UserI} from '../models/user-model';
 import logger from '@blogger/util-logger';
 import {Interfaces} from '@blogger/global-interfaces';
 
-const create = async (user: UserI) => {
+/**
+ * After registration user gets activation email with activation link valid for 24 hours
+ * Without activation user cannot proceed to enter the app
+ */
+
+const create = async (user: UserI): Promise<UserI> => {
   user.password = bcrypt.hashSync(user['password'], 5);
   const token: string = await TokenGenerator.generateConfirmationToken();
   const expiration: number = Math.round(Date.now() / 1000 + 86400);
@@ -18,12 +23,11 @@ const create = async (user: UserI) => {
   return savedUser;
 };
 
-const findByConfirmationToken = async (confirmationToken: string) => {
+const findByConfirmationToken = async (confirmationToken: string): Promise<UserI> => {
   return await UserRepository.findByConfirmationToken(confirmationToken);
 };
 
-const confirmAccount = async (confirmationToken: string, avatar: string) => {
-  const user: UserI = await UserRepository.findByConfirmationToken(confirmationToken);
+const confirmAccount = async (user: UserI, avatar: string): Promise<UserI> => {
   user.active = true;
   user.avatar = avatar;
   user.confirmationToken = null;
@@ -33,8 +37,7 @@ const confirmAccount = async (confirmationToken: string, avatar: string) => {
   return user;
 };
 
-const generateNewConfirmationToken = async (confirmationToken: string) => {
-  const user: UserI = await UserRepository.findByConfirmationToken(confirmationToken);
+const generateNewConfirmationToken = async (user: UserI): Promise<string> => {
   const token: string = await TokenGenerator.generateConfirmationToken();
   const expiration: number = Math.round(Date.now() / 1000 + 86400);
   user.confirmationToken = token;
@@ -45,7 +48,7 @@ const generateNewConfirmationToken = async (confirmationToken: string) => {
   return token;
 };
 
-const login = async (user: UserI) => {
+const login = async (user: UserI): Promise<UserI> => {
   const userInDb: UserI = await UserRepository.findByUsername(user.username);
   const doesPasswordMatch: boolean =
     userInDb && bcrypt.compareSync(user.password, userInDb.password);
@@ -53,19 +56,17 @@ const login = async (user: UserI) => {
   return doesPasswordMatch ? userInDb : null;
 };
 
-const forgottenPassword = async (userEmail: string) => {
-  const user: UserI = await UserRepository.findByEmail(userEmail);
+const forgottenPassword = async (user: UserI): Promise<void> => {
   const token: string = await TokenGenerator.generatePasswordToken();
   const expiration: number = Math.round(Date.now() / 1000 + 86400);
   user.forgottenPasswordToken = token;
   user.forgottenPasswordTokenExpiration = expiration;
   await user.save();
-  await Mailer.sendPasswordResetMail(userEmail, token, user.username);
+  await Mailer.sendPasswordResetMail(user.email, token, user.username);
   logger.info(`Generated reset password token for user ${user.username}`);
 };
 
-const resetPassword = async (userEmail: string, password: string) => {
-  const user: UserI = await UserRepository.findByEmail(userEmail);
+const resetPassword = async (user: UserI, password: string): Promise<void> => {
   user.password = bcrypt.hashSync(password, 5);
   user.forgottenPasswordToken = null;
   user.forgottenPasswordTokenExpiration = null;
@@ -75,26 +76,25 @@ const resetPassword = async (userEmail: string, password: string) => {
   logger.info(`Reset password for user ${user.username}`);
 };
 
-const findById = async (id: number) => {
+const findById = async (id: number): Promise<UserI> => {
   return await UserRepository.findById(id);
 };
 
-const findByEmail = async (email: string) => {
+const findByEmail = async (email: string): Promise<UserI> => {
   return await UserRepository.findByEmail(email);
 };
 
-const findByPasswordToken = async (passwordToken: string) => {
+const findByPasswordToken = async (passwordToken: string): Promise<UserI> => {
   return await UserRepository.findByPasswordToken(passwordToken);
 };
 
-const getUsersAvatar = async (userId: number) => {
+const getUsersAvatar = async (userId: number): Promise<string> => {
   const user: UserI = await UserRepository.findById(userId);
   return user.avatar;
 };
 
-const mapUsers = async () => {
-  const usersData: Interfaces.UserData[] = await UserRepository.findUsernamesIdAvatarsWhereActive();
-  return usersData;
+const mapUsers = async (): Promise<Interfaces.UserData[]> => {
+  return await UserRepository.findUsernamesIdAvatarsWhereActive();
 };
 
 export default {

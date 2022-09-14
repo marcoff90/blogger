@@ -69,12 +69,6 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/GetUserArticlesResponse'
- *      403:
- *        description: Forbidden - userId in path doesn't match userId from JWT
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -117,12 +111,6 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/GetUserArticlesResponse'
- *      403:
- *        description: Forbidden - userId in path doesn't match userId from JWT
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/ApiError'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:
@@ -163,12 +151,6 @@
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/ApiMessage'
- *      403:
- *        description: Forbidden - userId in path doesn't match userId from JWT
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/ApiError'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:

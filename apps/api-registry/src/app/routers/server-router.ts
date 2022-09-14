@@ -5,7 +5,7 @@ import {createServerSchema} from "../schemas/create-server-schema";
 import MessageConsumer from '../middlewares/message-consumer';
 import {createGetServesSchema} from "../schemas/get-servers-schema";
 
-const ServerRouter = Router();
+const ServerRouter: Router = Router();
 
 ServerRouter.post('/api-registry/servers', Validator.validate(createServerSchema),
   MessageConsumer.consumeMessages, ServerController.storeServer);

@@ -59,12 +59,6 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/GetCommentsResponse'
- *      404:
- *        description: Not found - article not found by id
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:

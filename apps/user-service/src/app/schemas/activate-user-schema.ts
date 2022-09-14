@@ -1,6 +1,6 @@
-import {object, string, TypeOf} from "zod";
+import {AnyZodObject, object, string, TypeOf} from "zod";
 
-export const activateUserAccountSchema = object({
+export const activateUserAccountSchema: AnyZodObject = object({
   body: object({
     avatar: string({
       required_error: 'Avatar must be provided',

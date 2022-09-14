@@ -3,7 +3,7 @@ import logger from '@blogger/util-logger';
 import ApiRepository from "../repositories/api-repository";
 
 const updateServerApis = async (serverId: number, apis: Interfaces.ApiI[],
-                                updatedApis: Interfaces.Path[]) => {
+                                updatedApis: Interfaces.Path[]): Promise<void> => {
   logger.info(`Updating apis for server ${serverId}`);
 
   const apisToDelete: Interfaces.ApiI[] = compareApisAndPaths(apis, updatedApis);
@@ -24,7 +24,7 @@ const updateServerApis = async (serverId: number, apis: Interfaces.ApiI[],
   }
 };
 
-const compareApisAndPaths = (arrayOne, arrayTwo) => {
+const compareApisAndPaths = (arrayOne, arrayTwo): Interfaces.ApiI[] => {
   return arrayOne.filter(object1 => {
     return !arrayTwo.some(object2 => {
       return object1.path === object2.path;

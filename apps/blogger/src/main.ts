@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Express} from "express";
 import cors from "cors";
 import 'dotenv/config';
 import ErrorHandler from "@blogger/middleware-api-error";
@@ -9,7 +9,7 @@ import {generateSwaggerDocs} from "./config/swagger";
 import ArticleRouter from "./app/routers/article-router";
 import InternalRouter from "./app/routers/internal-router";
 
-const app = express();
+const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
