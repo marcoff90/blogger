@@ -48,7 +48,7 @@ const doesArticleExist = async (user: string | JwtPayload, articleId: number): P
 
 /**
  * Delete id from ids cache -> comments service needs updated data
- * Send rabbit message to comment service to delete comments accordingly
+ * Send rabbit message to comment servicecomment service to delete comments accordingly
  * Soft delete -> after article soft deleted, comments will delete through message, comments send message back that
  * article deleted -> we can hard delete
  */

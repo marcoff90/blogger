@@ -2,7 +2,8 @@ import swaggerJsdoc from '../../../../node_modules/swagger-jsdoc';
 import {version} from '../../../../package.json';
 import {Express} from "express";
 import Swagger from "@blogger/util-swagger-docs";
-import swaggerDocs from 'comments-service.json'
+import swaggerDocs from 'comments-service.json';
+import 'dotenv/config';
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -23,7 +24,11 @@ const options: swaggerJsdoc.Options = {
         "- When article is deleted in blogger service, the comments are no longer needed -> blogger sends message," +
         " comments service deletes the comments, sends message back and article is deleted too so no non existent" +
         " relations exist in db.\n\n" +
-        "- Public endpoints with no auth protection",
+        "- Public endpoints with no auth protection\n\n" +
+        "Internal API\n\n" +
+        "- not accessible through gateway\n\n" +
+        "- protected by x-api-key\n\n" +
+        "- for communication with votes service\n\n",
       contact: {
         name: 'Marek Slavicek',
       },
@@ -37,7 +42,8 @@ const options: swaggerJsdoc.Options = {
     ],
   },
   apis: [
-    'apps/comments-service/src/config/swagger-docs.js'
+    'apps/comments-service/src/config/swagger-docs.js',
+    'apps/comments-service/src/app/routers/internal-router.ts'
   ],
 };
 

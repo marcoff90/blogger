@@ -5,6 +5,9 @@ import logger from "@blogger/util-logger";
 import {createDatabase, createTables} from "./config/database-config";
 import registerToRegistry from "./config/register-to-registry";
 import {generateSwaggerDocs} from "./config/swagger";
+import VoteRouter from "./app/routers/vote-router";
+import MessageConsumer from "./app/middlewares/message-consumer";
+import 'dotenv/config';
 
 const app: Express = express();
 
@@ -15,6 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 createDatabase();
 createTables();
 
+app.use(MessageConsumer.consumeCommentsActiveQueue);
+app.use(VoteRouter);
 app.use(ErrorHandler.apiErrorHandler);
 
 registerToRegistry();

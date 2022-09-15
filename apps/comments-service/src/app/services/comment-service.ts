@@ -4,6 +4,9 @@ import CommentRepository from "../repositories/comment-repository";
 import RabbitManager from "@blogger/rabbitmq-manager";
 import {Interfaces} from '@blogger/global-interfaces';
 import ArticleService from "./article-service";
+import RedisManager from "@blogger/redis-manager";
+import 'dotenv/config';
+
 /**
  * The comments can go 4 levels deep, if the comment has a parent, we check it's depth, if the depth is 4, we set
  * the parent.parent_id to the new comment to stop the deeper nesting
@@ -39,6 +42,7 @@ const create = async (comment: CommentI, articleId: number, toPublish: boolean):
   comment.article_id = articleId;
 
   const savedComment = await CommentRepository.create(comment);
+  await updateCommentsIdsInCache(savedComment.id);
   logger.info(`Comment successfully created: id: ${savedComment.id}`)
   return savedComment;
 
@@ -76,26 +80,27 @@ const sort = (comment: CommentI): void => {
 
 /**
  * when article is deleted, comments service gets the message, deletes the comments and sends message back to hard
- * delete the article -> so no relationship exists anymore,
- * TODO sends message to vote service to delete votes
+ * delete the article -> so no relationship exists anymore, sends message to votes service to delete votes
  */
 const deleteByArticleId = async (articleId: number): Promise<void> => {
-
   try {
     await CommentRepository.deleteByArticleId(articleId);
+    await deleteCommentsIdsFromCache();
     logger.info(`Comments with article id ${articleId} successfully deleted`);
-    await notifyBloggerService(articleId);
+    await notifyServices(articleId);
   } catch (e: any) {
-    logger.error(`Deleting comments with article id ${articleId} failed`);
+    logger.error(`Deleting comments with article id ${articleId} failed ${e}`);
   }
 };
 
-const notifyBloggerService = async (articleId: number): Promise<void> => {
-  const routingKey = process.env['COMMENTS_ROUTING_KEY'];
+const notifyServices = async (articleId: number): Promise<void> => {
+  const routingBloggerKey = process.env['COMMENTS_ROUTING_KEY'];
+  const routingVotesKey = process.env['VOTES_COMMENTS_DELETED_ARTICLE_ROUTING_KEY'];
   const message: Interfaces.DeletedArticleMessage = {
     deletedId: articleId
   };
-  await RabbitManager.publishMessage(routingKey, message);
+  await RabbitManager.publishMessage(routingBloggerKey, message);
+  await RabbitManager.publishMessage(routingVotesKey, message);
 };
 
 const sendCheckBloggerLifeMessage = async (): Promise<void> => {
@@ -121,9 +126,44 @@ const validateNotPublishedComments = async (): Promise<void> => {
   }
 };
 
+const findCommentsIds = async (): Promise<number[]> => {
+  return await CommentRepository.findCommentsIds();
+};
+
+const updateCommentsIdsInCache = async (commentId: number): Promise<void> => {
+  const redisKey = process.env['REDIS_EXISTING_COMMENTS'];
+
+  try {
+    const cachedData = await RedisManager.getData(redisKey);
+    const ids = JSON.stringify(cachedData);
+    if (Array.isArray(ids)) {
+      ids.push(commentId);
+      await RedisManager.deleteKey(redisKey);
+      await RedisManager.storeToCache(redisKey, 864000, JSON.stringify(ids));
+      logger.info(`Comments ids in cache updated: ${JSON.stringify(ids)}`);
+    }
+  } catch (e: any) {
+    logger.error(`Comments ids not updated: ${e.message}`);
+  }
+};
+
+/**
+ * When deleting comments, its mass delete, it's easier for performance to delete the cache data then call to
+ * database to get deleted ids, then delete the comments and update cache
+ */
+const deleteCommentsIdsFromCache = async (): Promise<void> => {
+  try {
+    const redisKey = process.env['REDIS_EXISTING_COMMENTS'];
+    await RedisManager.deleteKey(redisKey);
+  } catch (e: any) {
+    logger.error(`Deleting cache for comment ids failed: ${e.message}`);
+  }
+};
+
 export default {
   create,
   findAllByArticleId,
   deleteByArticleId,
-  validateNotPublishedComments
+  validateNotPublishedComments,
+  findCommentsIds
 };

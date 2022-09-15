@@ -3,6 +3,7 @@ import UserService from "../services/user-service";
 import {GetUsersDataInput} from "../schemas/get-users-data-schema";
 import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api-error";
 import {Interfaces} from '@blogger/global-interfaces';
+import 'dotenv/config';
 
 const showUsersData = async (req: Request<GetUsersDataInput['headers']>, res: Response, next: NextFunction) => {
   const apiKey = req.headers['x-api-key'];

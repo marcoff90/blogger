@@ -3,6 +3,7 @@ import {version} from '../../../../package.json';
 import {Express} from "express";
 import Swagger from "@blogger/util-swagger-docs";
 import swaggerDocs from 'blogger-service.json'
+import 'dotenv/config';
 
 const options: swaggerJsdoc.Options = {
   definition: {

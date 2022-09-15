@@ -1,7 +1,16 @@
 import sequelize from "../../config/sequelize";
-import {DataTypes} from "sequelize";
+import {DataTypes, InferAttributes, InferCreationAttributes, Model} from "sequelize";
 
-const VoteModel = sequelize.define('vote', {
+export interface VoteI extends Model<InferAttributes<VoteI>, InferCreationAttributes<VoteI>>{
+  article_id: number;
+  comment_id: number;
+  ip_address: string;
+  upvote: boolean;
+  downvote: boolean;
+  published: boolean;
+}
+
+const VoteModel = sequelize.define<VoteI>('vote', {
   article_id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -17,16 +26,21 @@ const VoteModel = sequelize.define('vote', {
     allowNull: false,
     primaryKey: true
   },
-  like: {
+  upvote: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
     defaultValue: null
   },
-  dislike: {
+  downvote: {
     type: DataTypes.BOOLEAN,
     allowNull: true,
     defaultValue: null
   },
+  published: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  }
 }, {
   timestamps: false,
   indexes: [

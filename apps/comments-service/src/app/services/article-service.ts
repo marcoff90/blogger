@@ -23,7 +23,7 @@ const doesArticleExist = async (articleId: number) : Promise<boolean>=> {
   }
 
   if (cachedData) {
-    logger.info(`Loaded featured articles from cache: ${cachedData}`);
+    logger.info(`Loaded articles from cache: ${cachedData}`);
     ids = JSON.parse(cachedData);
     if (ids.length <= 0) {
       ids = await loadArticleIds();
@@ -53,12 +53,12 @@ const loadArticleIds = async (): Promise<number[]> => {
       await RedisManager.deleteKey(redisKey);
       await RedisManager.storeToCache(redisKey, 86400, JSON.stringify(ids));
     } catch (e: any) {
-      logger.error(`Data not cached: ${e.message}`);
+      logger.error(`Article ids not cached: ${e.message}`);
     }
-    logger.info(`Successfully loaded data: ${JSON.stringify(ids)}`);
+    logger.info(`Successfully loaded article ids: ${JSON.stringify(ids)}`);
     return ids;
   } catch (e: any) {
-    logger.error(`Can't load articles data: ${e.message}`);
+    logger.error(`Can't load articles ids: ${e.message}`);
     return null;
   }
 };

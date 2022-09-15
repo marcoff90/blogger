@@ -1,5 +1,7 @@
-import jwt, {Jwt, JwtPayload, SignOptions} from 'jsonwebtoken';
+import jwt, {JwtPayload, SignOptions} from 'jsonwebtoken';
 import { UserI } from '../app/models/user-model';
+import 'dotenv/config';
+
 
 const generateToken = async (user: UserI): Promise<string>  => {
   if (!user.username || !user.password) {

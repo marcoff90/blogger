@@ -2,6 +2,7 @@ import logger from "@blogger/util-logger";
 import axios, {AxiosResponse} from "axios";
 import {Interfaces} from '@blogger/global-interfaces';
 import RedisManager from "@blogger/redis-manager";
+import 'dotenv/config';
 
 /**
  * Since it's unexpected that the servers' data will change often, we cache the data for 24 hours to allow smoother

@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {GetArticleIdsInput} from "../schemas/get-article-ids-schema";
 import ArticleService from "../services/article-service";
 import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api-error";
+import 'dotenv/config';
 
 /**
  * Used for communication with comments service, so the mentioned service can verify, if the article, which comments

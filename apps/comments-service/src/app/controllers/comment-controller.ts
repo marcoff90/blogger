@@ -21,7 +21,7 @@ const create = async (req: Request<CreateCommentInput['params'], CreateCommentIn
 
   try {
     if (!await ArticleService.doesArticleExist(parseInt(articleId))) {
-      logger.error(`Article not found: ${articleId}`);
+      logger.error(`Article not found: id: ${articleId}`);
       next(ApiError.notFound({error: 'Article not found'}));
     } else {
       const comment = await CommentService.create(req.body, parseInt(articleId), true);

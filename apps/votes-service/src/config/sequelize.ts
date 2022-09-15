@@ -1,4 +1,5 @@
 import {Sequelize} from "sequelize";
+import 'dotenv/config';
 
 const {
   RDS_DB_NAME_VOTES,

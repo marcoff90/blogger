@@ -10,7 +10,7 @@ module.exports = {
           article_id: 1,
           comment_id: i,
           ip_address: `1.0.1.${i * j}`,
-          like: true
+          upvote: true
         }
         votes.push(vote);
       }
@@ -19,7 +19,7 @@ module.exports = {
           article_id: 1,
           comment_id: i,
           ip_address: `2.0.1.${i * k}`,
-          like: true
+          downvote: true
         }
         votes.push(vote);
       }

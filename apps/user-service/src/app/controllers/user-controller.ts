@@ -15,6 +15,7 @@ import {ForgottenUserPasswordInput} from "../schemas/forgotten-password-schema";
 import {ResetPasswordInput} from "../schemas/reset-password-schema";
 import {ActivateUserAccountInput} from "../schemas/activate-user-schema";
 import {IdentifyUserByResetTokenInput} from "../schemas/identify-user-schema";
+import 'dotenv/config';
 
 const storeUser = async (req: Request<CreateUserInput['body']>, res: Response, next: NextFunction) => {
   try {

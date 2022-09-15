@@ -1,4 +1,6 @@
 import CommentModel, {CommentI} from "../models/comment-model";
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 const create = async (comment: CommentI): Promise<CommentI> => {
   return await CommentModel.create(comment);
@@ -86,11 +88,22 @@ const findAllNotPublished = async (): Promise<CommentI[]> => {
   });
 };
 
+const findCommentsIds = async (): Promise<number[]> => {
+  return CommentModel.findAll({
+    where: {
+      published: true
+    },
+    attributes: ['id'],
+    raw: true
+  })
+  .then(comments => comments.map(comment => comment.id));
+};
 
 export default {
   findAllByArticleId,
   findById,
   create,
   deleteByArticleId,
-  findAllNotPublished
+  findAllNotPublished,
+  findCommentsIds
 };

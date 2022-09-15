@@ -2,7 +2,8 @@ import swaggerJsdoc from '../../../../node_modules/swagger-jsdoc';
 import {version} from '../../../../package.json';
 import {Express} from "express";
 import Swagger from "@blogger/util-swagger-docs";
-import swaggerDocs from 'user-service.json'
+import swaggerDocs from 'user-service.json';
+import 'dotenv/config';
 
 const options: swaggerJsdoc.Options = {
   definition: {

@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import 'dotenv';
+import 'dotenv/config';
 import logger from '@blogger/util-logger';
 import Mail from 'nodemailer/lib/mailer';
 

@@ -20,15 +20,20 @@ module.exports =  {
         allowNull: false,
         primaryKey: true
       },
-      like: {
+      upvote: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: null
       },
-      dislike: {
+      downvote: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
         defaultValue: null
+      },
+      published: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       }
     });
     await queryInterface.addConstraint('votes', {

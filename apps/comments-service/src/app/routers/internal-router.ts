@@ -1,23 +1,23 @@
 import {Router} from "express";
 import Validator from '@blogger/middleware-validator';
-import {getArticleIdsSchema} from "../schemas/get-article-ids-schema";
+import {getCommentsIdsSchema} from "../schemas/get-comments-ids-schema";
 import InternalController from "../controllers/internal-controller";
 
 const InternalRouter: Router = Router();
 
-InternalRouter.get('/blogger-service-api/internal/articles', Validator.validate(getArticleIdsSchema),
-  InternalController.showArticleIds);
+InternalRouter.get('/comments-service-api/internal/comments', Validator.validate(getCommentsIdsSchema),
+  InternalController.showCommentsIds);
 
 export default InternalRouter;
 
 /**
  *
  * @openapi
- * '/blogger-service-api/internal/articles':
+ * '/comments-service-api/internal/comments':
  *  get:
  *     tags:
- *     - InternalBloggerAPI
- *     summary: To retrieve article ids for comments service to check if article exists
+ *     - InternalCommentsAPI
+ *     summary: To retrieve comments ids for votes service to check if comment exists
  *     parameters:
  *      - in: header
  *        name: x-api-key
@@ -73,4 +73,3 @@ export default InternalRouter;
  *          type: string
  *
  */
-
