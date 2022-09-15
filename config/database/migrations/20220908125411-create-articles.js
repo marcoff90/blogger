@@ -52,6 +52,8 @@ module.exports =  {
         defaultValue: Math.floor(Date.now() / 1000)
       }
     });
+    await queryInterface.addIndex('articles', ['user_id', 'id']);
+    await queryInterface.addIndex('articles', ['user_id']);
   },
 
   async down(queryInterface, Sequelize) {

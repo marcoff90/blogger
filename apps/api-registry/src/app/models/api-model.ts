@@ -13,9 +13,22 @@ const ApiModel = sequelize.define<Interfaces.ApiI>('api', {
     path: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    server_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   },
-  {timestamps: false}
+  {
+    timestamps: false,
+    indexes: [
+      {
+        unique: false,
+        fields: ['server_id']
+      }
+    ]
+  },
+
 );
 
 export default ApiModel;

@@ -60,6 +60,7 @@ module.exports =  {
         defaultValue: null,
       },
     });
+    await queryInterface.addIndex('users', ['email']);
   },
 
   async down(queryInterface, Sequelize) {

@@ -21,7 +21,7 @@ export interface ApiI
   extends Model<InferAttributes<ApiI>, InferCreationAttributes<ApiI>> {
   id: number;
   path: string;
-  server_id?: number;
+  server_id: number;
 }
 
 export interface ApiRegistryMessage {

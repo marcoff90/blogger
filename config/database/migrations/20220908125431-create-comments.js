@@ -45,6 +45,8 @@ module.exports =  {
         defaultValue: true
       }
     });
+    await queryInterface.addIndex('comments',
+      ['id', 'article_id', 'parent_id', 'published']);
   },
 
   async down(queryInterface, Sequelize) {

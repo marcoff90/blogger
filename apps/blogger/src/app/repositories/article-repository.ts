@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime';
 import ArticleModel, {ArticleI, State} from "../models/article-model";
 import Sequelize from "../../config/sequelize";
 import {SequelizeMethod} from "sequelize/types/utils";
+import sequelize from "../../config/sequelize";
 
 const create = async (article: ArticleI): Promise<ArticleI> => {
   return await ArticleModel.create(article);
@@ -70,7 +71,7 @@ const findFiveFeaturedArticles = async (): Promise<ArticleI[]> => {
       state: State.DONE
     },
     order: [Sequelize.random()],
-    limit: 5
+    limit: 5,
   })
 };
 

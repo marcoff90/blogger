@@ -67,6 +67,18 @@ const ArticleModel = sequelize.define<ArticleI>('article', {
     allowNull: false,
     defaultValue: Math.floor(Date.now() / 1000)
   }
-}, {timestamps: false});
+}, {
+  timestamps: false,
+  indexes: [
+    {
+      unique: false,
+      fields: ['user_id', 'id']
+    },
+    {
+      unique: false,
+      fields: ['user_id']
+    }
+  ]
+});
 
 export default ArticleModel;

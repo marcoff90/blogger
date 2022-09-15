@@ -52,12 +52,7 @@ const findUsernamesIdAvatarsWhereActive = async (): Promise<Interfaces.UserData[
     where: {
       active: true
     },
-    attributes: {
-      exclude: [
-        'email', 'password', 'active','confirmationToken', 'confirmationTokenExpiration',
-        'forgottenPasswordToken', 'forgottenPasswordTokenExpiration'
-      ],
-    }
+    attributes: ['id', 'username', 'avatar']
   })
 };
 

@@ -37,7 +37,13 @@ ABOUT
     - comments are connected to article id passed in path
     - when adding new comment, the application loads all article ids (from cache or from blogger on internal api) 
       and compares if the article exists
-      - same for loading comments
+  - votes-service
+    - responsible for management of upvotes/downvotes on comments
+    - votes are unique per article id, comment id and ip address
+    - votes can be changed
+    - votes are automatically deleted when article is deleted
+    - when adding a new vote, the app loads all comments ids (from cache or from comments on internal api) and 
+      compares if the article exists
 
 PREREQUISITES
 - installed locally postgresql, redis and rabbitmq
@@ -57,6 +63,8 @@ DB
     - npm run db:seed:articles
   - for comments
     - npm run db:seed:comments
+  - for votes
+    - npm run db:seed:votes
 
 INIT PROJECT
 - for running locally
@@ -70,6 +78,12 @@ INIT PROJECT
       - npm run dev:user-service
     - api-gateway
       - npm run dev:api-gateway
+    - blogger-service
+      - npm run dev:blogger-service
+    - comments-service
+      - npm run dev:comments-service
+    - votes-service
+      - npm run dev:votes-service
     - or all together
       - npm run dev:all
 - for running in docker

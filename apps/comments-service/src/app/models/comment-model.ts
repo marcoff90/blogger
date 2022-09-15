@@ -53,7 +53,15 @@ const CommentModel = sequelize.define<CommentI>('comment', {
     allowNull: false,
     defaultValue: true
   }
-}, {timestamps: false});
+}, {
+  timestamps: false,
+  indexes: [
+    {
+      unique: false,
+      fields: ['id', 'article_id', 'parent_id', 'published']
+    }
+  ]
+});
 
 export default CommentModel;
 

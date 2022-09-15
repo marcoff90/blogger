@@ -21,6 +21,7 @@ module.exports =  {
         allowNull: false
       }
     });
+    await queryInterface.addIndex('apis', ['server_id']);
   },
 
   async down(queryInterface, Sequelize) {
