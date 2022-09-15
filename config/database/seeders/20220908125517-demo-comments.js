@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    //generate 5 activated users
     const comments = [];
 
     const comment1 = {

@@ -5,8 +5,7 @@ import ErrorHandler from "@blogger/middleware-api-error";
 import logger from '@blogger/util-logger';
 import registerToRegistry from "./config/register-to-registry";
 import {generateSwaggerDocs} from "./config/swagger";
-import {createDatabase} from "./config/database-config";
-import syncTables from "./config/sync-tables";
+import {createDatabase, createTables} from "./config/database-config";
 import CommentRouter from "./app/routers/comment-router";
 import MessageConsumer from "./app/middlewares/message-consumer";
 
@@ -17,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 createDatabase();
-syncTables();
+createTables();
 
 app.use(MessageConsumer.consumeBloggerActiveQueue);
 app.use(CommentRouter);

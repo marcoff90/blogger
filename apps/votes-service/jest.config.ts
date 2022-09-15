@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'middlewares-auth',
+  displayName: 'votes-service',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -9,8 +9,8 @@ export default {
   },
   testEnvironment: 'node',
   transform: {
-    '^.+\\.[tj]sx?$': 'ts-jest',
+    '^.+\\.[tj]s$': 'ts-jest',
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/middlewares-auth',
+  moduleFileExtensions: ['ts', 'js', 'html'],
+  coverageDirectory: '../../coverage/apps/votes-service',
 };

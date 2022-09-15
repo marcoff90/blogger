@@ -16,6 +16,7 @@
     "util-db-creator": "libs/util-db-creator",
     "util-logger": "libs/util-logger",
     "util-registry-registrator": "libs/util-registry-registrator",
-    "util-swagger-docs": "libs/util-swagger-docs"
+    "util-swagger-docs": "libs/util-swagger-docs",
+    "votes-service": "apps/votes-service"
   }
 }

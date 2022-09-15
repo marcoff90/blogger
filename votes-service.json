@@ -1,0 +1,1 @@
+{"openapi":"3.0.0","info":{"title":"Votes Service API docs","description":"TBD","contact":{"name":"Marek Slavicek"},"version":"1.0.0"},"servers":[{"url":"http://localhost:8080","description":"Votes Management Service"}],"paths":{},"components":{},"tags":[]}

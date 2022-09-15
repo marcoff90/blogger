@@ -2,7 +2,6 @@
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    //generate 5 activated users
     const articles = [];
     for (let i = 0; i < 5; i++) {
       articles.push({

@@ -63,5 +63,14 @@ module.exports = {
     "dialect": process.env.DIALECT,
     "migrationStorage": "json",
     "migrationStoragePath": "sequelizeMeta.json",
+  },
+  votes: {
+    "username": process.env.RDS_USERNAME,
+    "password": process.env.RDS_PASSWORD,
+    "database": process.env.RDS_DB_NAME_VOTES,
+    "host": process.env.RDS_HOSTNAME,
+    "dialect": process.env.DIALECT,
+    "migrationStorage": "json",
+    "migrationStoragePath": "sequelizeMeta.json"
   }
 }

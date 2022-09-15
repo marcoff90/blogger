@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'middleware-api-error',
+  displayName: 'middlewares-api-error',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -12,5 +12,5 @@ export default {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/libs/middleware-api-error',
+  coverageDirectory: '../../coverage/libs/middlewares-api-error',
 };

@@ -15,7 +15,7 @@ const options: swaggerJsdoc.Options = {
         "The application uses redis cache to optimize it's speed of loading in certain cases (more at specific" +
         " endpoints)\n\n\n\n" +
         "Admin side\n\n" +
-        "- protected by auth middleware -> jwt obtained upon login through user service\n\n" +
+        "- protected by auth middlewares -> jwt obtained upon login through user service\n\n" +
         "- all necessary data about user are in jwt (id, username, ...)\n\n" +
         "- the user must be logged in through user service in order to be use 4 admin endpoints representing CRUD" +
         " operations on user's articles\n\n" +
