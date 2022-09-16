@@ -4,6 +4,7 @@ import { Interfaces } from "@blogger/global-interfaces";
 import { NextFunction, Request, Response } from "express";
 import logger from "@blogger/util-logger";
 import generateSwaggerDocs from "../../config/swagger";
+import {app} from "../../main";
 
 /**
  * When services data is updated, the api gateway needs the current info in order to successfully forward the requests
@@ -25,7 +26,7 @@ const consumeMessages = async (req: Request, res: Response, next: NextFunction) 
     await rabbit.consume(queue.queue, (msg) => {
       const message: Interfaces.RabbitMessage = JSON.parse(msg.content.toString());
       logger.info(`Message consumed from exchange: ${exchangeName}, queue: ${queueName}, message: ${JSON.stringify(message)}`);
-      generateSwaggerDocs(global.app, port); // reloads api data, caches new values and rerenders swagger docs
+      generateSwaggerDocs(app, port); // reloads api data, caches new values and rerenders swagger docs
       rabbit.ack(msg);
     });
     next();

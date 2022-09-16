@@ -6,8 +6,7 @@ import generateSwaggerDocs from "./config/swagger";
 import ErrorHandler from "@blogger/middleware-api-error";
 import GatewayRouter from "./app/routers/gateway-router";
 
-const app: Express = express();
-global.app = app; // used for rerendering swagger docs in case of new api registration
+export const app: Express = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
