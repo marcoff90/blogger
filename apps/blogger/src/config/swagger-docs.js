@@ -91,6 +91,52 @@
  *                $ref: '#/components/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
+ *  get:
+ *     tags:
+ *      - BloggerServiceAPI
+ *     summary: Get article for user as admin
+ *     parameters:
+ *      - in: path
+ *        name: userId
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: articleId
+ *        required: true
+ *        schema:
+ *          type: string
+ *     security:
+ *      - bearerAuth: []
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/GetUserArticlesResponse'
+ *      401:
+ *        description: Unauthorized
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      404:
+ *        description: Not found - user id doesn't match the article
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ * @openapi
+ * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  put:
  *     tags:
  *      - BloggerServiceAPI
@@ -210,6 +256,44 @@
  *              type: array
  *              items:
  *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *      404:
+ *        description: Not found - Article not found based on id and user id
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ * @openapi
+ * '/blogger-service-api/blogs/{username}/articles/{articleId}':
+ *  get:
+ *     tags:
+ *      - BloggerServiceAPI
+ *     summary: Get one articles by username and article id -> public
+ *     parameters:
+ *      - in: path
+ *        name: username
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: articleId
+ *        required: true
+ *        schema:
+ *          type: string
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/GetUserArticlesResponse'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:

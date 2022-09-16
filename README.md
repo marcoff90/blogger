@@ -3,8 +3,10 @@
 This project was generated using [Nx](https://nx.dev).
 
 ABOUT
-- the project applies automated microservices architecture
+- the project applies microservices architecture
 - data validation is provided by zod validation
+- application use redis cache for caching data and rabbit mq for internal communication as well as direct api calls 
+  through axios
 - docs written with swagger
   - in local dev all the application use swagger jsdoc library for generating the docs from yaml comment
   - when the app starts on local env, the DOCKER env. variable is set to 'false' which lets the application save the generated docs to json file which is then used in docker containers for running the swagger ui
@@ -44,6 +46,12 @@ ABOUT
     - votes are automatically deleted when article is deleted
     - when adding a new vote, the app loads all comments ids (from cache or from comments on internal api) and 
       compares if the article exists
+  - graphql-service
+    - graphql endpoint which uses apollo server to connect through RestDataSource to blogger, comment and vote 
+      service in order to get full info about articles including comments and votes
+    - read only
+    - connected through gateway so there's still one entry point
+    - you can find Postman collection for graphql with queries in directory postman-graphql-api
 
 PREREQUISITES
 - installed locally postgresql, redis and rabbitmq

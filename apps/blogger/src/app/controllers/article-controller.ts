@@ -12,6 +12,9 @@ import {UpdateArticleResponse} from "../interfaces/update-article-response";
 import {DeleteArticleInput} from "../schemas/delete-article-schema";
 import {Interfaces} from '@blogger/global-interfaces';
 import {GetArticlesByUsernameInput} from "../schemas/get-articles-by-username-schema";
+import {GetArticleByUserIdArticleIdInput} from "../schemas/get-article-by-user-id-article-id";
+import ArticleRepository from "../repositories/article-repository";
+import {GetArticleByUsernameAndIdInput} from "../schemas/get-article-by-username-id-schema";
 
 const storeArticle = async (req: Request<CreateArticleInput['params'], CreateArticleInput['body']>,
                             res: Response, next: NextFunction) => {
@@ -49,6 +52,24 @@ const showAllByUserId = async (req: Request<GetArticlesByUserIdInput['params']>,
   } else {
     const response: GetUserArticleResponse[] = await ArticleService.findAllByUserId(req.user);
     res.send(response);
+  }
+};
+
+const showOneByUserIdAndId = async (req: Request<GetArticleByUserIdArticleIdInput['params']>, res: Response, next: NextFunction) => {
+  const {userId, articleId} = req.params;
+
+  if (userId != req.user['id']) {
+    logger.error(`Blocked access to user id: ${req.user['id']} to user id: ${userId} account`);
+    next(ApiError.notFound({error: 'Articles not found'}));
+
+  } else {
+    const response: GetUserArticleResponse = await ArticleService.findOneByUserIdAndIdAdmin(parseInt(userId),
+      parseInt(articleId));
+    if (response) {
+      res.send(response);
+    } else {
+      next(ApiError.notFound({error: 'Articles not found'}));
+    }
   }
 };
 
@@ -97,6 +118,21 @@ const deleteArticle = async (req: Request<DeleteArticleInput['params']>, res: Re
   }
 };
 
+const showOneByUsernameAndId = async (req: Request<GetArticleByUsernameAndIdInput['params']>, res: Response, next: NextFunction) => {
+  const {username, articleId} = req.params;
+
+  try {
+    const article = await ArticleService.findOneByUsernameAndIdPublic(username, parseInt(articleId));
+    if (article) {
+      res.send(article);
+    } else {
+      next(ApiError.notFound({error: 'Article not found'}))
+    }
+  } catch (e) {
+    next(ApiError.notFound({error: `Blog doesn't exist`}));
+  }
+};
+
 const showFiveFeaturedArticles = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const articles: GetUserArticleResponse[] = await ArticleService.getFiveFeaturedArticles();
@@ -124,5 +160,7 @@ export default {
   updateArticle,
   deleteArticle,
   showFiveFeaturedArticles,
-  findArticlesByUsername
+  findArticlesByUsername,
+  showOneByUsernameAndId,
+  showOneByUserIdAndId
 };

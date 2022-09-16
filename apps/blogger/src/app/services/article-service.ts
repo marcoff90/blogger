@@ -23,7 +23,7 @@ const create = async (article: ArticleI, user: string | JwtPayload): Promise<Art
   return savedArticle;
 };
 
-const findAllByUserId = async (user: string | JwtPayload | Interfaces.UserData): Promise<GetUserArticleResponse[]> => {
+const findAllByUserId = async (user: string | JwtPayload): Promise<GetUserArticleResponse[]> => {
   const articles: ArticleI[] = await ArticleRepository.findAllByUserId(user['id']);
   logger.info(`Successfully loaded ${articles.length} articles of ${user['username']}`);
   return convertAllArticleToResponse(articles, user['username'])
@@ -48,7 +48,7 @@ const doesArticleExist = async (user: string | JwtPayload, articleId: number): P
 
 /**
  * Delete id from ids cache -> comments service needs updated data
- * Send rabbit message to comment servicecomment service to delete comments accordingly
+ * Send rabbit message to comment service to delete comments accordingly
  * Soft delete -> after article soft deleted, comments will delete through message, comments send message back that
  * article deleted -> we can hard delete
  */
@@ -279,6 +279,31 @@ const deleteArticle = async (articleId: number): Promise<void> => {
   }
 };
 
+const findOneByUserIdAndIdAdmin = async (userId: number, id: number): Promise<GetUserArticleResponse> => {
+  const article = await ArticleRepository.findOneByIdAndUser(id, userId);
+  console.log(`Found article: ${article.id}`);
+  const user = await UserService.findUserDataById(userId);
+  return convertArticleToArticleResponse(article, user.username);
+};
+
+const findOneByUsernameAndIdPublic = async (username: string, id: number): Promise<GetUserArticleResponse> => {
+  const user: Interfaces.UserData = await UserService.findUserDataByUsername(username);
+  if (!user) {
+    throw new Error(`User ${username} not found`);
+  }
+
+  // const cachedArticles = await loadUserArticlesFromCache(username);
+  //
+  // if (cachedArticles) {
+  //   const article = cachedArticles.find(article => article.id === id);
+  //   if (article) {
+  //     return article;
+  //   }
+  // }
+  const article = await ArticleRepository.findOneByIdAndUserIdPublic(id, user.id);
+  return convertArticleToArticleResponse(article, user.username);
+}
+
 export default {
   create,
   findAllByUserId,
@@ -288,5 +313,7 @@ export default {
   getFiveFeaturedArticles,
   findArticlesByUsername,
   findArticleIds,
-  deleteArticle
+  deleteArticle,
+  findOneByUserIdAndIdAdmin,
+  findOneByUsernameAndIdPublic
 };

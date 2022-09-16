@@ -52,6 +52,17 @@ const findOneByIdAndUser = async (articleId: number, userId: number): Promise<Ar
   });
 };
 
+const findOneByIdAndUserIdPublic = async (articleId: number, userId: number): Promise<ArticleI> => {
+  return await ArticleModel.findOne({
+    where: {
+      id: articleId,
+      user_id: userId,
+      deleted: false,
+      state: State.DONE
+    }
+  });
+};
+
 const softDelete = async (articleId: number, userId: number): Promise<SequelizeMethod> => {
   return await ArticleModel.update({
     deleted: true
@@ -121,5 +132,6 @@ export default {
   findFiveFeaturedArticles,
   findArticleIds,
   findAllByUserIdPublic,
-  deleteArticle
+  deleteArticle,
+  findOneByIdAndUserIdPublic
 };

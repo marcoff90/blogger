@@ -8,6 +8,8 @@ import {updateArticleSchema} from "../schemas/update-article-schema";
 import {deleteArticleSchema} from "../schemas/delete-article-schema";
 import {getArticlesByUsernameSchema} from "../schemas/get-articles-by-username-schema";
 import MessageConsumer from "../middlewares/message-consumer";
+import {getArticleByUserIdArticleIdSchema} from "../schemas/get-article-by-user-id-article-id";
+import {getArticleByUsernameAndIdSchema} from "../schemas/get-article-by-username-id-schema";
 
 const ArticleRouter: Router = Router();
 
@@ -16,6 +18,9 @@ ArticleRouter.post('/blogger-service-api/bloggers/:userId/articles', Validator.v
 
 ArticleRouter.get('/blogger-service-api/bloggers/:userId/articles', Validator.validate(getArticlesByUserIdSchema),
   Auth.authorize, ArticleController.showAllByUserId);
+
+ArticleRouter.get('/blogger-service-api/bloggers/:userId/articles/:articleId', Validator.validate(getArticleByUserIdArticleIdSchema),
+  Auth.authorize, ArticleController.showOneByUserIdAndId);
 
 ArticleRouter.put('/blogger-service-api/bloggers/:userId/articles/:articleId', Validator.validate(updateArticleSchema),
   Auth.authorize, ArticleController.updateArticle);
@@ -31,5 +36,8 @@ ArticleRouter.get('/blogger-service-api/featured-blogs', MessageConsumer.consume
 
 ArticleRouter.get('/blogger-service-api/blogs/:username/articles', Validator.validate(getArticlesByUsernameSchema),
   MessageConsumer.consumeDeleteArticlesQueue, ArticleController.findArticlesByUsername);
+
+ArticleRouter.get('/blogger-service-api/blogs/:username/articles/:articleId', Validator.validate(getArticleByUsernameAndIdSchema),
+  MessageConsumer.consumeDeleteArticlesQueue, ArticleController.showOneByUsernameAndId);
 
 export default ArticleRouter;
