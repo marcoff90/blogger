@@ -1,0 +1,158 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    container_name: redis_blogger
+    command: --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./data:/data
+    ports:
+      - '6379:6379'
+    env_file:
+      - .env.docker
+
+  rabbitmq:
+    image: 'rabbitmq:3.10-management'
+    container_name: rabbitmq_blogger
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      AMQP_URL: 'amqp://rabbitmq?connection_attempts=5&retry_delay=5'
+      RABBITMQ_DEFAULT_USER: 'guest'
+      RABBITMQ_DEFAULT_PASS: 'guest'
+
+  postgres:
+    env_file:
+      - .env.docker
+    image: 'postgres:14.5-alpine'
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=${RDS_USERNAME}
+      - POSTGRES_PASSWORD=${RDS_PASSWORD}
+    volumes:
+      - ./config/db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  api-registry:
+    env_file:
+      - .env.docker
+    image: 'api-registry'
+    ports:
+      - '4444:4444'
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:4444" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  user-service:
+    env_file:
+      - .env.docker
+    image: 'user-service'
+    ports:
+        - '3000:3000'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  api-gateway:
+    env_file:
+      - .env.docker
+    image: 'api-gateway'
+    ports:
+        - '3333:3333'
+    depends_on:
+      - api-registry
+      - user-service
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3333" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - user-service
+      - api-registry
+      - blogger-service
+      - comments-service
+
+  blogger-service:
+    env_file:
+      - .env.docker
+    image: 'blogger-service'
+    ports:
+      - '5555:5555'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:5555" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  comments-service:
+    env_file:
+      - .env.docker
+    image: 'comments-service'
+    ports:
+      - '7777:7777'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:7777" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  votes-service:
+    env_file:
+      - .env.docker
+    image: 'votes-service'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - api-registry
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    links:
+      - postgres
+
+  graphql-service:
+    env_file:
+      - .env.docker
+    image: 'graphql-service'
+    ports:
+      - '8595:8595'
+    depends_on:
+      - api-registry
+      - api-gateway
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8595" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5

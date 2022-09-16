@@ -2,6 +2,22 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
-    "blogger-backend": "apps/blogger-backend"
+    "api-gateway": "apps/api-gateway",
+    "api-registry": "apps/api-registry",
+    "blogger": "apps/blogger",
+    "comments-service": "apps/comments-service",
+    "global-interfaces": "libs/global-interfaces",
+    "graphql-blogger": "apps/graphql-blogger",
+    "middleware-api-error": "libs/middleware-api-error",
+    "middleware-auth": "libs/middleware-auth",
+    "middleware-validator": "libs/middleware-validator",
+    "rabbitmq-manager": "libs/rabbitmq-manager",
+    "redis-manager": "libs/redis-manager",
+    "user-service": "apps/user-service",
+    "util-db-creator": "libs/util-db-creator",
+    "util-logger": "libs/util-logger",
+    "util-registry-registrator": "libs/util-registry-registrator",
+    "util-swagger-docs": "libs/util-swagger-docs",
+    "votes-service": "apps/votes-service"
   }
 }

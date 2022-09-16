@@ -1,0 +1,12 @@
+DROP DATABASE IF EXISTS postgres;
+DROP DATABASE IF EXISTS api_registry;
+DROP DATABASE IF EXISTS user_service;
+DROP DATABASE IF EXISTS blogger;
+DROP DATABASE IF EXISTS comments_service;
+DROP DATABASE IF EXISTS votes_service;
+CREATE DATABASE postgres;
+CREATE DATABASE api_registry;
+CREATE DATABASE user_service;
+CREATE DATABASE blogger;
+CREATE DATABASE comments_service;
+CREATE DATABASE votes_service;
