@@ -92,6 +92,8 @@ INIT PROJECT
       - npm run dev:comments-service
     - votes-service
       - npm run dev:votes-service
+    - graphql-api
+      - npm run dev:graphql-api
     - or all together
       - npm run dev:all
 - for running in docker
@@ -107,4 +109,4 @@ DOCS
 - each app has their own swagger docs at http://localhost:${PORT}/docs
 
 DIAGRAM
-![Alt text][https://github.com/marcoff90/blogger/blob/main/assets/app-diagram.png]
+![Alt text](https://github.com/marcoff90/blogger/blob/main/assets/app-diagram.png)
