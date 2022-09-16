@@ -105,3 +105,6 @@ INIT PROJECT
 
 DOCS
 - each app has their own swagger docs at http://localhost:${PORT}/docs
+
+DIAGRAM
+![Alt text][https://github.com/marcoff90/blogger/blob/main/assets/app-diagram.png]
