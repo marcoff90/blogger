@@ -3,7 +3,7 @@
  * '/comments-service-api/articles/{articleId}/comments':
  *  post:
  *     tags:
- *      - CommentsServiceAPI
+ *      - CommentsService
  *     summary: Create Comment for article
  *     parameters:
  *      - in: path
@@ -16,26 +16,26 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CreateCommentInput'
+ *            $ref: '#/styled/schemas/CreateCommentInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/CreateCommentResponse'
+ *              $ref: '#/styled/schemas/CreateCommentResponse'
  *      202:
  *        description: Accepted - article id not validated through blogger service
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiMessage'
+ *              $ref: '#/styled/schemas/ApiMessage'
  *      404:
  *        description: Not found - article not found by id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -43,12 +43,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/comments-service-api/articles/{articleId}/comments':
  *  get:
  *     tags:
- *      - CommentsServiceAPI
+ *      - CommentsService
  *     summary: Get comments for article
  *     parameters:
  *      - in: path
@@ -64,7 +64,7 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/GetCommentsResponse'
+ *                $ref: '#/styled/schemas/GetCommentsResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -72,10 +72,10 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *
  * @openapi
- * components:
+ * styled:
  *  schemas:
  *    CreateCommentInput:
  *      type: object
@@ -129,7 +129,7 @@
  *        children:
  *          type: array
  *          items:
- *            $ref: '#/components/schemas/GetCommentsResponse'
+ *            $ref: '#/styled/schemas/GetCommentsResponse'
  *    ApiError:
  *      type: object
  *      properties:

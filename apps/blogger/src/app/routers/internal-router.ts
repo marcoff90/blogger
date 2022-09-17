@@ -38,7 +38,7 @@ export default InternalRouter;
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad request
  *        content:
@@ -46,10 +46,10 @@ export default InternalRouter;
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *
  * @openapi
- * components:
+ * styled:
  *  schemas:
  *    ApiError:
  *      type: object

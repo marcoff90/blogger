@@ -3,21 +3,21 @@
  * '/user-service-api/users':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Register a user
  *     requestBody:
  *      required: true
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/components/schemas/CreateUserInput'
+ *              $ref: '#/styled/schemas/CreateUserInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/CreateUserResponse'
+ *              $ref: '#/styled/schemas/CreateUserResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -25,13 +25,13 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *      409:
  *        description: Conflict
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  */
 
 /**
@@ -39,21 +39,21 @@
  * '/user-service-api/users/login':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Logs in a user
  *     requestBody:
  *      required: true
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/components/schemas/LoginUserInput'
+ *              $ref: '#/styled/schemas/LoginUserInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/LoginUserResponse'
+ *              $ref: '#/styled/schemas/LoginUserResponse'
  *      400:
  *        description: Bad request
  *        content:
@@ -61,19 +61,19 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *      401:
  *        description: Unauthorized - some of the fields doesn't match
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      403:
  *        description: Forbidden - user is not active
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  */
 
 /**
@@ -81,21 +81,21 @@
  * '/user-service-api/users/forgotten-password':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Sends email with token to reset password
  *     requestBody:
  *      required: true
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/components/schemas/ForgottenPasswordUserSchema'
+ *              $ref: '#/styled/schemas/ForgottenPasswordUserSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiMessage'
+ *              $ref: '#/styled/schemas/ApiMessage'
  *      400:
  *        description: Bad Request
  *        content:
@@ -103,19 +103,19 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *      404:
  *        description: Not found - user email
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *
  * @openapi
  * '/user-service-api/users/recover':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Changes user's password
  *     parameters:
  *      - in: query
@@ -128,14 +128,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/components/schemas/ResetPasswordUserSchema'
+ *              $ref: '#/styled/schemas/ResetPasswordUserSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiMessage'
+ *              $ref: '#/styled/schemas/ApiMessage'
  *      400:
  *        description: Bad Request
  *        content:
@@ -144,26 +144,26 @@
  *              oneOf:
  *                - type: array
  *                  items:
- *                    $ref: '#/components/schemas/ValidationError'
- *                - $ref: '#/components/schemas/ApiError'
+ *                    $ref: '#/styled/schemas/ValidationError'
+ *                - $ref: '#/styled/schemas/ApiError'
  *      403:
  *        description: Forbidden - token expired or token not assigned to user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      404:
  *        description: Not found - user not found
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *
  * @openapi
  * '/user-service-api/users/activate':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Activates user account based on query token
  *     parameters:
  *      - in: query
@@ -176,14 +176,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/components/schemas/ActivateUserAccountSchema'
+ *              $ref: '#/styled/schemas/ActivateUserAccountSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ActivationResponse'
+ *              $ref: '#/styled/schemas/ActivationResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -191,19 +191,19 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *      403:
  *        description: Forbidden - token expired, token not assigned to user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *
  * @openapi
  * '/user-service-api/users/identify':
  *  get:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
  *     parameters:
  *      - in: query
@@ -217,7 +217,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiMessage'
+ *              $ref: '#/styled/schemas/ApiMessage'
  *      400:
  *        description: Bad Request
  *        content:
@@ -225,15 +225,15 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  *      403:
  *        description: Unauthorized - token not assigned to user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  * @openapi
- * components:
+ * styled:
  *  schemas:
  *    CreateUserInput:
  *      type: object

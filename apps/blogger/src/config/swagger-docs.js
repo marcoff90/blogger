@@ -3,7 +3,7 @@
  * '/blogger-service-api/bloggers/{userId}/articles':
  *  post:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Create Article
  *     parameters:
  *      - in: path
@@ -18,26 +18,26 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CreateUpdateArticleInput'
+ *            $ref: '#/styled/schemas/CreateUpdateArticleInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/CreateArticleResponse'
+ *              $ref: '#/styled/schemas/CreateArticleResponse'
  *      403:
  *        description: Forbidden - userId in path doesn't match userId from JWT
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -45,12 +45,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/bloggers/{userId}/articles':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get articles for user as admin
  *     parameters:
  *      - in: path
@@ -68,19 +68,19 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *                $ref: '#/styled/schemas/GetUserArticlesResponse'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      404:
  *        description: Not found - user id doesn't match the article
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -88,12 +88,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get article for user as admin
  *     parameters:
  *      - in: path
@@ -114,19 +114,19 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/GetUserArticlesResponse'
+ *              $ref: '#/styled/schemas/GetUserArticlesResponse'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      404:
  *        description: Not found - user id doesn't match the article
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -134,12 +134,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  put:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Update article
  *     parameters:
  *      - in: path
@@ -159,7 +159,7 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/CreateUpdateArticleInput'
+ *            $ref: '#/styled/schemas/CreateUpdateArticleInput'
  *     responses:
  *      200:
  *        description: Success
@@ -168,19 +168,19 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *                $ref: '#/styled/schemas/GetUserArticlesResponse'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -188,12 +188,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  delete:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Delete article
  *     parameters:
  *      - in: path
@@ -214,19 +214,19 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiMessage'
+ *              $ref: '#/styled/schemas/ApiMessage'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -234,12 +234,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/blogs/{username}/articles':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get all articles by username -> public
  *     parameters:
  *      - in: path
@@ -255,13 +255,13 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *                $ref: '#/styled/schemas/GetUserArticlesResponse'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -269,12 +269,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/blogs/{username}/articles/{articleId}':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get one articles by username and article id -> public
  *     parameters:
  *      - in: path
@@ -293,13 +293,13 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/GetUserArticlesResponse'
+ *              $ref: '#/styled/schemas/GetUserArticlesResponse'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -307,12 +307,12 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/ValidationError'
+ *                $ref: '#/styled/schemas/ValidationError'
  * @openapi
  * '/blogger-service-api/featured-blogs':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get featured articles
  *     responses:
  *      200:
@@ -322,16 +322,16 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *                $ref: '#/styled/schemas/GetUserArticlesResponse'
  *      500:
  *        description: Something went wrong
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ApiError'
+ *              $ref: '#/styled/schemas/ApiError'
  *
  * @openapi
- * components:
+ * styled:
  *  schemas:
  *    CreateUpdateArticleInput:
  *      type: object
