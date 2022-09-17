@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../components/user/LoginForm";
 import {Box} from "@mui/material";
 
 const LoginPage: React.FC = () => {

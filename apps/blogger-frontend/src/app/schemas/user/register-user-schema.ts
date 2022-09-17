@@ -7,4 +7,4 @@ export const registerUserSchema = object({
   username: string({
     required_error: 'Username is missing'
   })
-});
+}).strict();

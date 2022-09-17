@@ -13,4 +13,4 @@ export const loginUserSchema = object({
   avatar: string({
     required_error: 'Avatar is missing'
   })
-});
+}).strict();

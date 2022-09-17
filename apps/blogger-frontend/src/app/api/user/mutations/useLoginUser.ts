@@ -19,12 +19,13 @@ export const useLoginUserMutation = () => {
   }, {
     onSuccess: async (data: AxiosResponse) => {
       const response: LoginUserResponse = data.data;
-      const result = loginUserSchema.safeParse(response); // validates the data
-      if (result) {
+      try {
+        loginUserSchema.parse(response); // validates the data
         await auth?.login(response);
         enqueueSuccessSnackbar('Successfully logged in');
-      } else {
+      } catch (e: any) {
         enqueueErrorSnackbar('Something went wrong');
+
       }
     },
     onError: async (err: AxiosError) => {

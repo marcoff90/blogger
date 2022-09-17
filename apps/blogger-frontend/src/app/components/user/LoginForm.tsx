@@ -1,24 +1,21 @@
 import React from "react";
 import {Box, Button, FormControl, FormGroup, Link, TextField, Typography} from "@mui/material";
 import {useForm, Controller, FieldValues} from 'react-hook-form'
-import {useWarningSnackbar} from "../hooks/useWarningSnackbar";
-import { StyledForm } from "./styled/form.styled";
-import {useRegisterUserMutation} from "../api/user/mutations/useRegisterUser";
+import {useLoginUserMutation} from "../../api/user/mutations/useLoginUser";
+import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
+import { StyledForm } from "../styled/form.styled";
 
 const LoginForm: React.FC = () => {
   const {handleSubmit, control} = useForm();
-  const {mutate} = useRegisterUserMutation();
+  const {mutate} = useLoginUserMutation();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
 
-  const handleRegistration = (data: FieldValues) => {
-    const {email, username, password, passwordConfirmation} = data;
-    if (!email || !username || !password || !passwordConfirmation) {
-      enqueueWarningSnackbar('All fields needs to be filled');
-    }
-    if (password !== passwordConfirmation) {
-      enqueueWarningSnackbar(`Passwords doesn't match`);
+  const handleLogin = (data: FieldValues) => {
+    const {username, password} = data;
+    if (!username || !password) {
+      enqueueWarningSnackbar('Both fields must be filled');
     } else {
-      mutate({email, username, password, passwordConfirmation});
+      mutate({username, password});
     }
   };
 
@@ -27,31 +24,14 @@ const LoginForm: React.FC = () => {
       <FormControl variant={'filled'}>
         <StyledForm>
           <Typography component="h1" variant="h5">
-            Sign Up
+            Log in
           </Typography>
           <Box component="form"
                onSubmit={handleSubmit((data) => {
-                 handleRegistration(data)
+                 handleLogin(data)
                })}
                noValidate sx={{mt: 1}}>
             <FormGroup sx={{width: '20rem'}}>
-              <Controller
-                render={({field}) => (
-                  <TextField
-                    {...field}
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="email"
-                    label="Email"
-                    type="email"
-                    id="email"
-                    autoComplete="email"
-                  />
-                )}
-                name="email"
-                control={control}
-              />
               <Controller
                 render={({field}) => (
                   <TextField
@@ -86,36 +66,21 @@ const LoginForm: React.FC = () => {
                 name="password"
                 control={control}
               />
-              <Controller
-                render={({field}) => (
-                  <TextField
-                    {...field}
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="passwordConfirmation"
-                    label="Password Confirmation"
-                    type="password"
-                    id="passwordConfirmation"
-                  />
-                )}
-                name="passwordConfirmation"
-                control={control}
-              />
-              <Typography fontSize={8} style={{textAlign: "center"}}>Note: Password must contain 8 characters, 1 digit,
-                1 special symbol, 1 capital character, 1 lowercase character</Typography>
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{mt: 3, mb: 2}}
               >
-                Sign Up
+                Log In
               </Button>
             </FormGroup>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Link href={"/login"} variant="body2">
-                Login
+              <Link href={'/forgotten-password'} variant="body2">
+                Forgot password?
+              </Link>
+              <Link href={"/register"} variant="body2">
+                {"Don't have an account? Sign Up"}
               </Link>
             </Box>
           </Box>
