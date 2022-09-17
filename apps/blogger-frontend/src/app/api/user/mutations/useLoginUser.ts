@@ -6,6 +6,7 @@ import {useSuccessSnackbar} from "../../../hooks/useSuccessSnackbar";
 import {AxiosError, AxiosResponse} from "axios";
 import {loginUserSchema} from "../../../schemas/user/login-user-schema";
 import useAuth from "../../../auth/useAuth";
+import {handleError} from "../../error-handler/error-handler";
 
 export const useLoginUserMutation = () => {
   const {enqueueSuccessSnackbar} = useSuccessSnackbar();
@@ -28,8 +29,9 @@ export const useLoginUserMutation = () => {
     },
     onError: async (err: AxiosError) => {
       const response: any = err.response;
+      const data = response.data;
       await auth?.logout();
-      enqueueErrorSnackbar(response.data.error);
+      handleError(data, enqueueErrorSnackbar);
     }
   })
 };
