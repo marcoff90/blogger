@@ -1,11 +1,11 @@
 import {useSessionStorage} from "../hooks/useSessionStorage";
 import {useNavigate} from "react-router-dom";
-import { LoginUserResponse } from "libs/api-client/src/lib/api/api";
+import {LoginUserResponse} from "libs/api-client/src/lib/api/api";
 
 export interface UseAuthProviderI {
   login: (data: LoginUserResponse) => Promise<void>,
   logout: () => Promise<void>,
-  user: string | null;
+  user: LoginUserResponse | null;
 }
 
 const useAuthProvider = () => {

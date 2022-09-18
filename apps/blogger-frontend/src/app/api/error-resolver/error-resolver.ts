@@ -1,7 +1,7 @@
 import {validationErrorSchema} from "../../schemas/errors/validation-error";
 import {apiErrorSchema} from "../../schemas/errors/api-error";
 
-export const handleError = (data: any, enqueueErrorSnackbar: (message: string) => void) => {
+export const errorResolver = (data: any, enqueueErrorSnackbar: (message: string) => void) => {
   if (Array.isArray(data)) {
     const result = validationErrorSchema.safeParse(data[0]);
     if (result) {

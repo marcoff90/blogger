@@ -60,7 +60,7 @@ const LogoutMenu: React.FC = () => {
         onClick={handleToggle}
       >
         <ArrowDropDownIcon fontSize={'small'}/>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>
+        <Avatar alt={auth?.user?.username} src={auth?.user?.avatar}/>
       </NavigationButton>
       <Popper
         open={open}

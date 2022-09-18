@@ -3,22 +3,26 @@ import {Box, Button, FormControl, FormGroup, Link, TextField, Typography} from "
 import {useForm, Controller, FieldValues} from 'react-hook-form'
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
 import { StyledForm } from "../styled/form.styled";
-import {useRegisterUserMutation} from "../../api/user/mutations/useRegisterUser";
+import {useRecoverPasswordMutation} from "../../api/user/mutations/useRecoverPasswordMutation";
 
-const RegisterForm: React.FC = () => {
+type Props = {
+  token: string;
+};
+
+const RecoverForm: React.FC<Props> = ({token}) => {
   const {handleSubmit, control} = useForm();
-  const {mutate} = useRegisterUserMutation();
+  const {mutate} = useRecoverPasswordMutation();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
 
   const handleRegistration = (data: FieldValues) => {
-    const {email, username, password, passwordConfirmation} = data;
-    if (!email || !username || !password || !passwordConfirmation) {
+    const {email, password, passwordConfirmation} = data;
+    if (!email || !password || !passwordConfirmation) {
       enqueueWarningSnackbar('All fields must be filled');
     }
     if (password !== passwordConfirmation) {
       enqueueWarningSnackbar(`Passwords doesn't match`);
     } else {
-      mutate({email, username, password, passwordConfirmation});
+      mutate({token, userData: { email, password, passwordConfirmation}});
     }
   };
 
@@ -27,7 +31,7 @@ const RegisterForm: React.FC = () => {
       <FormControl variant={'filled'}>
         <StyledForm>
           <Typography component="h1" variant="h5">
-            Sign Up
+            Reset Password
           </Typography>
           <Box component="form"
                onSubmit={handleSubmit((data) => {
@@ -50,23 +54,6 @@ const RegisterForm: React.FC = () => {
                   />
                 )}
                 name="email"
-                control={control}
-              />
-              <Controller
-                render={({field}) => (
-                  <TextField
-                    {...field}
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Username"
-                    name="username"
-                    autoComplete="username"
-                    autoFocus
-                  />
-                )}
-                name="username"
                 control={control}
               />
               <Controller
@@ -110,14 +97,9 @@ const RegisterForm: React.FC = () => {
                 variant="contained"
                 sx={{mt: 3, mb: 2}}
               >
-                Sign Up
+                Submit
               </Button>
             </FormGroup>
-            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Link href={"/login"} variant="body2">
-                Login
-              </Link>
-            </Box>
           </Box>
         </StyledForm>
       </FormControl>
@@ -125,4 +107,4 @@ const RegisterForm: React.FC = () => {
   );
 };
 
-export default RegisterForm;
+export default RecoverForm;

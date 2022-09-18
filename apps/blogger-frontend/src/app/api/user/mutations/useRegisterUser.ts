@@ -5,7 +5,7 @@ import {CreateUserInput, CreateUserResponse,} from "../../../../../../../libs/ap
 import { ApiFactory } from "@blogger/api-client";
 import {AxiosError, AxiosResponse} from "axios";
 import {registerUserSchema} from "../../../schemas/user/register-user-schema";
-import {handleError} from "../../error-handler/error-handler";
+import {errorResolver} from "../../error-resolver/error-resolver";
 import { useNavigate } from "react-router-dom";
 
 export const useRegisterUserMutation = () => {
@@ -16,7 +16,7 @@ export const useRegisterUserMutation = () => {
   return useMutation(async (userData: CreateUserInput) => {
     const api = await ApiFactory.createUserServiceApi();
     return await api.userServiceApiUsersPost(userData);
-  },{
+  }, {
     onSuccess: async (data: AxiosResponse) => {
       const response: CreateUserResponse = data.data;
       try {
@@ -30,7 +30,8 @@ export const useRegisterUserMutation = () => {
     onError: async (err: AxiosError) => {
       const response: any = err.response;
       const data = response.data;
-      handleError(data, enqueueErrorSnackbar);
+      errorResolver(data, enqueueErrorSnackbar);
     }
   })
-}
+};
+
