@@ -25,12 +25,17 @@ const Navbar: React.FC = () => {
             <NavigationButton mainColor={true} isActive={location.pathname === routes.home} onClick={() => navigate('/')}>
               Home
             </NavigationButton>
-            <NavigationButton mainColor={true} isActive={false}>
-              Recent Articles
-            </NavigationButton>
-            <NavigationButton mainColor={true} isActive={false}>
-              About
-            </NavigationButton>
+            {
+              location.pathname.includes(routes.recentArticles) &&
+              <>
+                <NavigationButton mainColor={true} isActive={location.pathname.includes(routes.recentArticles)}>
+                  Recent Articles
+                </NavigationButton>
+                <NavigationButton mainColor={true} isActive={false}>
+                  About
+                </NavigationButton>
+              </>
+            }
           </Box>
           <Box>
             {!auth?.user ? <LoginButton navigate={navigate} location={location}/> : <AdminButtons navigate={navigate}/>}

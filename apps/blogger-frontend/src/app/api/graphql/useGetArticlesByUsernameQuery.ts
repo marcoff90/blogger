@@ -1,12 +1,12 @@
-import {GraphQLResponse} from "graphql-request/dist/types";
-import {useQuery} from "react-query";
-import {ArticleI} from "../../interfaces/articleI";
-import graphqlClient from "./client/graphql-client";
 import {gql} from "graphql-request";
+import {ArticleI} from "../../interfaces/articleI";
+import {useQuery} from "react-query";
+import {GraphQLResponse} from "graphql-request/dist/types";
+import graphqlClient from "./client/graphql-client";
 
-const getFeaturedArticlesGraphQLQuery = gql`
-  query Query {
-    getFeaturedArticles {
+const getArticlesByUsernameQuery = gql`
+  query Query($username: String) {
+    getArticlesByUsername(username: $username) {
       id
       title
       perex
@@ -64,21 +64,16 @@ const getFeaturedArticlesGraphQLQuery = gql`
 `;
 
 type Key = [string];
-export const articlesKey = (): Key => ['articles'];
+export const articlesKey = (): Key => ['userArticles'];
 
 interface ArticleResponse {
-  getFeaturedArticles: ArticleI[]
+  getArticlesByUsername: ArticleI[]
 }
 
-export const useGetFeaturedArticlesQuery = (disabled?: boolean) => {
+export const useGetArticlesByUsernameQuery = (username?: string, disabled?: boolean) => {
   return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(), async () => {
-    return graphqlClient.request(getFeaturedArticlesGraphQLQuery);
+    return graphqlClient.request(getArticlesByUsernameQuery, {username: username});
   }, {
     enabled: !disabled,
   })
 };
-
-
-
-
-
