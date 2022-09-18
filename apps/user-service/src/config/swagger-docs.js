@@ -10,14 +10,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/styled/schemas/CreateUserInput'
+ *              $ref: '#/components/schemas/CreateUserInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/CreateUserResponse'
+ *              $ref: '#/components/schemas/CreateUserResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -25,13 +25,13 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *      409:
  *        description: Conflict
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  */
 
 /**
@@ -46,14 +46,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/styled/schemas/LoginUserInput'
+ *              $ref: '#/components/schemas/LoginUserInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/LoginUserResponse'
+ *              $ref: '#/components/schemas/LoginUserResponse'
  *      400:
  *        description: Bad request
  *        content:
@@ -61,19 +61,19 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *      401:
  *        description: Unauthorized - some of the fields doesn't match
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      403:
  *        description: Forbidden - user is not active
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  */
 
 /**
@@ -88,14 +88,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/styled/schemas/ForgottenPasswordUserSchema'
+ *              $ref: '#/components/schemas/ForgottenPasswordUserSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      400:
  *        description: Bad Request
  *        content:
@@ -103,13 +103,13 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *      404:
  *        description: Not found - user email
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *
  * @openapi
  * '/user-service-api/users/recover':
@@ -128,14 +128,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/styled/schemas/ResetPasswordUserSchema'
+ *              $ref: '#/components/schemas/ResetPasswordUserSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      400:
  *        description: Bad Request
  *        content:
@@ -144,20 +144,20 @@
  *              oneOf:
  *                - type: array
  *                  items:
- *                    $ref: '#/styled/schemas/ValidationError'
- *                - $ref: '#/styled/schemas/ApiError'
+ *                    $ref: '#/components/schemas/ValidationError'
+ *                - $ref: '#/components/schemas/ApiError'
  *      403:
  *        description: Forbidden - token expired or token not assigned to user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      404:
  *        description: Not found - user not found
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *
  * @openapi
  * '/user-service-api/users/activate':
@@ -176,14 +176,14 @@
  *      content:
  *        application/json:
  *           schema:
- *              $ref: '#/styled/schemas/ActivateUserAccountSchema'
+ *              $ref: '#/components/schemas/ActivateUserAccountSchema'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ActivationResponse'
+ *              $ref: '#/components/schemas/LoginUserResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -191,16 +191,16 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *      403:
  *        description: Forbidden - token expired, token not assigned to user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *
  * @openapi
- * '/user-service-api/users/identify':
+ * '/user-service-api/users/reset-identify':
  *  get:
  *     tags:
  *     - UserService
@@ -217,7 +217,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      400:
  *        description: Bad Request
  *        content:
@@ -225,15 +225,48 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *      403:
  *        description: Unauthorized - token not assigned to user
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  * @openapi
- * styled:
+ * '/user-service-api/users/confirm-identify':
+ *  get:
+ *     tags:
+ *     - UserService
+ *     summary: Used for FE application when user is accessing the activation page, the request is sent in order to allow user to access the page
+ *     parameters:
+ *      - in: query
+ *        name: token
+ *        required: true
+ *        schema:
+ *          type: string
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiMessage'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *      403:
+ *        description: Unauthorized - token not assigned to user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ * @openapi
+ * components:
  *  schemas:
  *    CreateUserInput:
  *      type: object
@@ -322,17 +355,6 @@
  *        avatar:
  *          type: string
  *          default: assets/avatar.jpg
- *    ActivationResponse:
- *      type: object
- *      properties:
- *        username:
- *          type: string
- *        active:
- *          type: boolean
- *        avatar:
- *          type: string
- *        token:
- *          type: string
  *    ApiError:
  *      type: object
  *      properties:

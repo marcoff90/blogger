@@ -23,7 +23,7 @@ const sendPasswordResetMail = async (
     subject: 'Password reset link',
     html:
       `Dear ${username},\n\n` +
-      '<p>Click <a href="http://localhost:3000/users/recover?token=' +
+      '<p>Click <a href="http://localhost:4200/users/recovery?token=' +
       token +
       '">here</a> to reset your password.</p>' +
       `\n\nBlogger Team`,
@@ -50,7 +50,7 @@ const sendConfirmationMail = async (
     subject: 'Activate your account',
     html:
       `Dear ${username},\n\n` +
-      '<p>Click <a href="http://localhost:3000/users?confirmation=' +
+      '<p>Click <a href="http://localhost:4200/users/activate?token=' +
       token +
       '">here</a> to complete your registration.</p>' +
       `\n\nBlogger Team`,
@@ -74,7 +74,8 @@ const confirmPasswordChange = async (userEmail: string, username: string): Promi
     subject: 'Your account has been updated',
     html:
       `Dear ${username},\n\n` +
-      '<p>The password on your account has been changed. If you did not do this change. Change your <a href="http://localhost:3000">password</a></p>' +
+      '<p>The password on your account has been changed. If you did not do this change. Change your <a' +
+      ' href="http://localhost:4200">password</a></p>' +
       `\n\nBlogger Team`,
   };
 

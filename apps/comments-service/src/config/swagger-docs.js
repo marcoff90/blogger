@@ -16,26 +16,26 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/styled/schemas/CreateCommentInput'
+ *            $ref: '#/components/schemas/CreateCommentInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/CreateCommentResponse'
+ *              $ref: '#/components/schemas/CreateCommentResponse'
  *      202:
  *        description: Accepted - article id not validated through blogger service
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      404:
  *        description: Not found - article not found by id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -43,7 +43,7 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  * @openapi
  * '/comments-service-api/articles/{articleId}/comments':
  *  get:
@@ -64,7 +64,7 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/GetCommentsResponse'
+ *                $ref: '#/components/schemas/GetCommentsResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -72,10 +72,10 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *
  * @openapi
- * styled:
+ * components:
  *  schemas:
  *    CreateCommentInput:
  *      type: object
@@ -129,7 +129,7 @@
  *        children:
  *          type: array
  *          items:
- *            $ref: '#/styled/schemas/GetCommentsResponse'
+ *            $ref: '#/components/schemas/GetCommentsResponse'
  *    ApiError:
  *      type: object
  *      properties:

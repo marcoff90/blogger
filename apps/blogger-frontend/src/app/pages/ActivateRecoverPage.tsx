@@ -1,12 +1,17 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useSearchParams} from 'react-router-dom';
+import ActivateUserForm from "../components/user/ActivateUserForm";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
 import {useIdentifyUserQuery} from "../api/user/queries/useIdentifyUserQuery";
-import {AppLoader} from "../components/styled/AppLoader";
 import {Box, CircularProgress} from "@mui/material";
 import RecoverForm from "../components/user/RecoverForm";
-import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
+import {AppLoader} from "../components/styled/AppLoader";
 
-const RecoverPasswordPage: React.FC = () => {
+type Props = {
+  recovery: boolean
+}
+
+const ActivateRecoverPage: React.FC<Props> = ({recovery}) => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string>('');
@@ -28,14 +33,24 @@ const RecoverPasswordPage: React.FC = () => {
     enqueueErrorSnackbar('Something went wrong');
     navigate('/');
   }
+  /**
+   * Both Recovery Form and Activation Form uses token gotten from query, both validates the token, the only
+   * difference is shown form -> conditionally render one of them
+   */
 
   return (
     <>
       {
-        status === 'success' ?
+        status === 'success' && recovery ?
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
             <RecoverForm token={token}/>
           </Box>
+
+          : status === 'success' && !recovery ?
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+              <ActivateUserForm token={token}/>
+            </Box>
+
           :
           <AppLoader>
             <CircularProgress/>
@@ -45,7 +60,4 @@ const RecoverPasswordPage: React.FC = () => {
     </>
   );
 };
-
-export default RecoverPasswordPage;
-
-
+export default ActivateRecoverPage;

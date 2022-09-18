@@ -4,6 +4,8 @@ import { NavigationButton } from "../styled/header.styled";
 import useAuth from "../../auth/useAuth";
 import {useInfoSnackbar} from "../../hooks/useInfoSnackbar";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import memoji from '../../../assets/avatars/memoji-1.svg'
+
 
 const LogoutMenu: React.FC = () => {
   const [open, setOpen] = useState(false);
@@ -60,7 +62,7 @@ const LogoutMenu: React.FC = () => {
         onClick={handleToggle}
       >
         <ArrowDropDownIcon fontSize={'small'}/>
-        <Avatar alt={auth?.user?.username} src={auth?.user?.avatar}/>
+        <Avatar alt={auth?.user?.username} src={memoji}/>
       </NavigationButton>
       <Popper
         open={open}

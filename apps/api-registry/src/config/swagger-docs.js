@@ -16,26 +16,26 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/styled/schemas/CreateServerInput'
+ *            $ref: '#/components/schemas/CreateServerInput'
  *     responses:
  *      200:
  *        description: Success
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/CreateServerResponse'
+ *              $ref: '#/components/schemas/CreateServerResponse'
  *      409:
  *        description: Conflict
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      401:
  *        description: Conflict
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -43,7 +43,7 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *
  * @openapi
  * '/api-registry/servers':
@@ -63,19 +63,19 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/CreateServerResponse'
+ *              $ref: '#/components/schemas/CreateServerResponse'
  *      404:
  *        description: Servers not found
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      401:
  *        description: Unauthorized
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad request
  *        content:
@@ -83,10 +83,10 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *
  * @openapi
- * styled:
+ * components:
  *  schemas:
  *    CreateServerInput:
  *      type: object
@@ -108,7 +108,7 @@
  *        apis:
  *          type: array
  *          items:
- *            $ref: '#/styled/schemas/CreateApiInput'
+ *            $ref: '#/components/schemas/CreateApiInput'
  *    CreateApiInput:
  *      type: object
  *      properties:
@@ -127,7 +127,7 @@
  *    ShowAllServersResponse:
  *      type: array
  *      items:
- *        $ref: '#/styled/schemas/CreateServerResponse'
+ *        $ref: '#/components/schemas/CreateServerResponse'
  *    CreateServerResponse:
  *      type: object
  *      properties:
@@ -142,7 +142,7 @@
  *        apis:
  *          type: array
  *          items:
- *            $ref: '#/styled/schemas/CreateApiResponse'
+ *            $ref: '#/components/schemas/CreateApiResponse'
  *    ApiError:
  *      type: object
  *      properties:

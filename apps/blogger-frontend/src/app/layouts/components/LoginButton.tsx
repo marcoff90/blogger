@@ -14,7 +14,7 @@ type Props = {
 
 const LoginButton: React.FC<Props> = ({navigate, location}) => {
   return (
-    <NavigationButton mainColor={false} isActive={location.pathname === routes.login} onClick={() => navigate('/login')}>
+    <NavigationButton mainColor={false} isActive={location.pathname === routes.login} onClick={() => navigate('/users/login')}>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
         Log in
         <ArrowForwardIcon fontSize={'small'}/>

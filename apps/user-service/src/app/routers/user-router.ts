@@ -41,9 +41,15 @@ UserRouter.post(
 );
 
 UserRouter.get(
-  '/user-service-api/users/identify',
+  '/user-service-api/users/reset-identify',
   Validator.validate(identifyUserByResetTokenSchema),
   UserController.identifyUserByResetToken
+);
+
+UserRouter.get(
+  '/user-service-api/users/confirm-identify',
+  Validator.validate(identifyUserByResetTokenSchema),
+  UserController.identifyUserByActivationToken
 );
 
 export default UserRouter;

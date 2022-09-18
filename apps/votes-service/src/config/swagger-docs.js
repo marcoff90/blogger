@@ -21,32 +21,32 @@
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/styled/schemas/CreateVoteInput'
+ *            $ref: '#/components/schemas/CreateVoteInput'
  *     responses:
  *      200:
  *        description: Success - Vote annulled - both values send null
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      201:
  *        description: Created - Vote created/updated
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      202:
  *        description: Accepted - comment id not validated through comments service
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiMessage'
+ *              $ref: '#/components/schemas/ApiMessage'
  *      404:
  *        description: Not found - Comment not found by id
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -54,7 +54,7 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  * @openapi
  * '/votes-service-api/articles/{articleId}/comments/{commentId}/votes':
  *  get:
@@ -80,13 +80,13 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/VotesCount'
+ *                $ref: '#/components/schemas/VotesCount'
  *      500:
  *        description: Server Error
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -94,7 +94,7 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  * @openapi
  * '/votes-service-api/articles/{articleId}/comments-votes':
  *  get:
@@ -115,13 +115,13 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/VotesCount'
+ *                $ref: '#/components/schemas/VotesCount'
  *      500:
  *        description: Server Error
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/styled/schemas/ApiError'
+ *              $ref: '#/components/schemas/ApiError'
  *      400:
  *        description: Bad Request
  *        content:
@@ -129,10 +129,10 @@
  *            schema:
  *              type: array
  *              items:
- *                $ref: '#/styled/schemas/ValidationError'
+ *                $ref: '#/components/schemas/ValidationError'
  *
  * @openapi
- * styled:
+ * components:
  *  schemas:
  *    CreateVoteInput:
  *      type: object

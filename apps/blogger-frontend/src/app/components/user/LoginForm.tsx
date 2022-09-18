@@ -76,10 +76,10 @@ const LoginForm: React.FC = () => {
               </Button>
             </FormGroup>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Link href={'/forgotten-password'} variant="body2">
+              <Link href={'/users/forgotten-password'} variant="body2">
                 Forgot password?
               </Link>
-              <Link href={"/register"} variant="body2">
+              <Link href={"/users/register"} variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Box>

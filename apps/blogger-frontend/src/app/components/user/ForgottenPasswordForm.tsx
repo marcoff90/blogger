@@ -59,7 +59,7 @@ const ForgottenPasswordForm: React.FC = () => {
               </Button>
             </FormGroup>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Link href={"/login"} variant="body2">
+              <Link href={"/users/login"} variant="body2">
                 Login
               </Link>
             </Box>
