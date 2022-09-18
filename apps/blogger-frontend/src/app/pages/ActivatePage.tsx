@@ -2,16 +2,11 @@ import React, {useEffect, useState} from "react";
 import ActivateUserForm from "../components/user/ActivateUserForm";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
-import {useIdentifyUserQuery} from "../api/user/queries/useIdentifyUserQuery";
 import {Box, CircularProgress} from "@mui/material";
-import RecoverForm from "../components/user/RecoverForm";
 import {AppLoader} from "../components/styled/AppLoader";
+import {useIdentifyConfirmUserQuery} from "../api/user/queries/useIdentifyConfirmUserQuery";
 
-type Props = {
-  recovery: boolean
-}
-
-const ActivateRecoverPage: React.FC<Props> = ({recovery}) => {
+const ActivatePage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string>('');
@@ -27,29 +22,20 @@ const ActivateRecoverPage: React.FC<Props> = ({recovery}) => {
       navigate('/');
     }
   }, []);
-  const {status} = useIdentifyUserQuery(token, loading);
+  const {status} = useIdentifyConfirmUserQuery(token, loading);
 
   if (status === 'error') {
     enqueueErrorSnackbar('Something went wrong');
     navigate('/');
   }
-  /**
-   * Both Recovery Form and Activation Form uses token gotten from query, both validates the token, the only
-   * difference is shown form -> conditionally render one of them
-   */
 
   return (
     <>
       {
-        status === 'success' && recovery ?
+        status === 'success' ?
           <Box sx={{display: 'flex', justifyContent: 'center'}}>
-            <RecoverForm token={token}/>
+            <ActivateUserForm token={token}/>
           </Box>
-
-          : status === 'success' && !recovery ?
-            <Box sx={{display: 'flex', justifyContent: 'center'}}>
-              <ActivateUserForm token={token}/>
-            </Box>
 
           :
           <AppLoader>
@@ -60,4 +46,4 @@ const ActivateRecoverPage: React.FC<Props> = ({recovery}) => {
     </>
   );
 };
-export default ActivateRecoverPage;
+export default ActivatePage;

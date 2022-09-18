@@ -13,7 +13,7 @@ interface Params {
   avatar: ActivateUserAccountSchema
 }
 
-export const userActivateUser = () => {
+export const useActivateUser = () => {
   const {enqueueSuccessSnackbar} = useSuccessSnackbar();
   const {enqueueErrorSnackbar} = useErrorSnackbar();
   const auth = useAuth();
@@ -27,7 +27,7 @@ export const userActivateUser = () => {
       try {
         loginUserSchema.parse(response); // validates the data
         await auth?.login(response);
-        enqueueSuccessSnackbar(`Welcome to Blogger ${auth?.user?.username}`);
+        enqueueSuccessSnackbar(`Welcome to Blogger`);
       } catch (e: any) {
         enqueueErrorSnackbar('Something went wrong');
 

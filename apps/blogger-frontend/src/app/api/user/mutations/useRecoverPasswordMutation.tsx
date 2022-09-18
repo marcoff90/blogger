@@ -30,7 +30,7 @@ export const useRecoverPasswordMutation = () => {
       try {
         apiMessageSchema.parse(response);
         enqueueSuccessSnackbar(`${response.message}`);
-        navigate('/login');
+        navigate('/users/login');
       } catch (e: any) {
         enqueueErrorSnackbar('Something went wrong');
       }

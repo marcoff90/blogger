@@ -4,8 +4,9 @@ import {Route, Routes} from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ForgottenPasswordPage from "./pages/ForgottenPasswordPage";
-import ActivateRecoverPage from "./pages/ActivateRecoverPage";
+import ActivatePage from "./pages/ActivatePage";
 import Home from "./pages/Home";
+import RecoverPage from "./pages/RecoverPage";
 
 const App: React.FC = () => {
   return (
@@ -17,8 +18,8 @@ const App: React.FC = () => {
           <Route path={'/users/login'} element={<LoginPage/>}/>
           <Route path={'/users/register'} element={<RegisterPage/>}/>
           <Route path={'/users/forgotten-password'} element={<ForgottenPasswordPage/>}/>
-          <Route path={'/users/recovery'} element={<ActivateRecoverPage recovery={true}/>}/>
-          <Route path={'/users/activate'} element={<ActivateRecoverPage recovery={false}/>}/>
+          <Route path={'/users/recovery'} element={<RecoverPage/>}/>
+          <Route path={'/users/activate'} element={<ActivatePage/>}/>
         </Routes>
       </Layout>
     </>

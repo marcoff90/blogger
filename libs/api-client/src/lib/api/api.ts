@@ -37,37 +37,6 @@ export interface ActivateUserAccountSchema {
 /**
  * 
  * @export
- * @interface ActivationResponse
- */
-export interface ActivationResponse {
-    /**
-     * 
-     * @type {string}
-     * @memberof ActivationResponse
-     */
-    'username'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ActivationResponse
-     */
-    'active'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof ActivationResponse
-     */
-    'avatar'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ActivationResponse
-     */
-    'token'?: string;
-}
-/**
- * 
- * @export
  * @interface ApiError
  */
 export interface ApiError {
@@ -1593,6 +1562,43 @@ export const UserServiceApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @summary Used for FE application when user is accessing the activation page, the request is sent in order to allow user to access the page
+         * @param {string} token 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userServiceApiUsersConfirmIdentifyGet: async (token: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'token' is not null or undefined
+            assertParamExists('userServiceApiUsersConfirmIdentifyGet', 'token', token)
+            const localVarPath = `/user-service-api/users/confirm-identify`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (token !== undefined) {
+                localVarQueryParameter['token'] = token;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Sends email with token to reset password
          * @param {ForgottenPasswordUserSchema} forgottenPasswordUserSchema 
          * @param {*} [options] Override http request option.
@@ -1621,43 +1627,6 @@ export const UserServiceApiAxiosParamCreator = function (configuration?: Configu
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(forgottenPasswordUserSchema, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
-         * @param {string} token 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userServiceApiUsersIdentifyGet: async (token: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'token' is not null or undefined
-            assertParamExists('userServiceApiUsersIdentifyGet', 'token', token)
-            const localVarPath = `/user-service-api/users/identify`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            if (token !== undefined) {
-                localVarQueryParameter['token'] = token;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1779,6 +1748,43 @@ export const UserServiceApiAxiosParamCreator = function (configuration?: Configu
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
+         * @param {string} token 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userServiceApiUsersResetIdentifyGet: async (token: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'token' is not null or undefined
+            assertParamExists('userServiceApiUsersResetIdentifyGet', 'token', token)
+            const localVarPath = `/user-service-api/users/reset-identify`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (token !== undefined) {
+                localVarQueryParameter['token'] = token;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -1797,8 +1803,19 @@ export const UserServiceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userServiceApiUsersActivatePost(token: string, activateUserAccountSchema: ActivateUserAccountSchema, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ActivationResponse>> {
+        async userServiceApiUsersActivatePost(token: string, activateUserAccountSchema: ActivateUserAccountSchema, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LoginUserResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userServiceApiUsersActivatePost(token, activateUserAccountSchema, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Used for FE application when user is accessing the activation page, the request is sent in order to allow user to access the page
+         * @param {string} token 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userServiceApiUsersConfirmIdentifyGet(token: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiMessage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userServiceApiUsersConfirmIdentifyGet(token, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1810,17 +1827,6 @@ export const UserServiceApiFp = function(configuration?: Configuration) {
          */
         async userServiceApiUsersForgottenPasswordPost(forgottenPasswordUserSchema: ForgottenPasswordUserSchema, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiMessage>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userServiceApiUsersForgottenPasswordPost(forgottenPasswordUserSchema, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
-         * @param {string} token 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async userServiceApiUsersIdentifyGet(token: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiMessage>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userServiceApiUsersIdentifyGet(token, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1857,6 +1863,17 @@ export const UserServiceApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.userServiceApiUsersRecoverPost(token, resetPasswordUserSchema, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
+         * @param {string} token 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userServiceApiUsersResetIdentifyGet(token: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ApiMessage>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userServiceApiUsersResetIdentifyGet(token, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -1875,8 +1892,18 @@ export const UserServiceApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userServiceApiUsersActivatePost(token: string, activateUserAccountSchema: ActivateUserAccountSchema, options?: any): AxiosPromise<ActivationResponse> {
+        userServiceApiUsersActivatePost(token: string, activateUserAccountSchema: ActivateUserAccountSchema, options?: any): AxiosPromise<LoginUserResponse> {
             return localVarFp.userServiceApiUsersActivatePost(token, activateUserAccountSchema, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Used for FE application when user is accessing the activation page, the request is sent in order to allow user to access the page
+         * @param {string} token 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userServiceApiUsersConfirmIdentifyGet(token: string, options?: any): AxiosPromise<ApiMessage> {
+            return localVarFp.userServiceApiUsersConfirmIdentifyGet(token, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1887,16 +1914,6 @@ export const UserServiceApiFactory = function (configuration?: Configuration, ba
          */
         userServiceApiUsersForgottenPasswordPost(forgottenPasswordUserSchema: ForgottenPasswordUserSchema, options?: any): AxiosPromise<ApiMessage> {
             return localVarFp.userServiceApiUsersForgottenPasswordPost(forgottenPasswordUserSchema, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
-         * @param {string} token 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        userServiceApiUsersIdentifyGet(token: string, options?: any): AxiosPromise<ApiMessage> {
-            return localVarFp.userServiceApiUsersIdentifyGet(token, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1929,6 +1946,16 @@ export const UserServiceApiFactory = function (configuration?: Configuration, ba
         userServiceApiUsersRecoverPost(token: string, resetPasswordUserSchema: ResetPasswordUserSchema, options?: any): AxiosPromise<ApiMessage> {
             return localVarFp.userServiceApiUsersRecoverPost(token, resetPasswordUserSchema, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
+         * @param {string} token 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userServiceApiUsersResetIdentifyGet(token: string, options?: any): AxiosPromise<ApiMessage> {
+            return localVarFp.userServiceApiUsersResetIdentifyGet(token, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -1954,6 +1981,18 @@ export class UserServiceApi extends BaseAPI {
 
     /**
      * 
+     * @summary Used for FE application when user is accessing the activation page, the request is sent in order to allow user to access the page
+     * @param {string} token 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserServiceApi
+     */
+    public userServiceApiUsersConfirmIdentifyGet(token: string, options?: AxiosRequestConfig) {
+        return UserServiceApiFp(this.configuration).userServiceApiUsersConfirmIdentifyGet(token, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary Sends email with token to reset password
      * @param {ForgottenPasswordUserSchema} forgottenPasswordUserSchema 
      * @param {*} [options] Override http request option.
@@ -1962,18 +2001,6 @@ export class UserServiceApi extends BaseAPI {
      */
     public userServiceApiUsersForgottenPasswordPost(forgottenPasswordUserSchema: ForgottenPasswordUserSchema, options?: AxiosRequestConfig) {
         return UserServiceApiFp(this.configuration).userServiceApiUsersForgottenPasswordPost(forgottenPasswordUserSchema, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
-     * @param {string} token 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UserServiceApi
-     */
-    public userServiceApiUsersIdentifyGet(token: string, options?: AxiosRequestConfig) {
-        return UserServiceApiFp(this.configuration).userServiceApiUsersIdentifyGet(token, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2011,6 +2038,18 @@ export class UserServiceApi extends BaseAPI {
      */
     public userServiceApiUsersRecoverPost(token: string, resetPasswordUserSchema: ResetPasswordUserSchema, options?: AxiosRequestConfig) {
         return UserServiceApiFp(this.configuration).userServiceApiUsersRecoverPost(token, resetPasswordUserSchema, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
+     * @param {string} token 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserServiceApi
+     */
+    public userServiceApiUsersResetIdentifyGet(token: string, options?: AxiosRequestConfig) {
+        return UserServiceApiFp(this.configuration).userServiceApiUsersResetIdentifyGet(token, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

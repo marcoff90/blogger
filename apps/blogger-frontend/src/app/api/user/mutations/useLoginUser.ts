@@ -31,7 +31,6 @@ export const useLoginUserMutation = () => {
     onError: async (err: AxiosError) => {
       const response: any = err.response;
       const data = response.data;
-      await auth?.logout();
       errorResolver(data, enqueueErrorSnackbar);
     }
   })

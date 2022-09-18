@@ -1,10 +1,9 @@
-import React, {useState} from "react";
+import React from "react";
 import {Avatar, Box, Button, FormControl, FormGroup, Typography} from "@mui/material";
 import {StyledForm} from "../styled/form.styled";
 import {Controller, FieldValues, useForm} from "react-hook-form";
-import {useUserForgottenPassword} from "../../api/user/mutations/useUserForgottenPassword";
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
-import {userActivateUser} from "../../api/user/mutations/useActivateUser";
+import {useActivateUser} from "../../api/user/mutations/useActivateUser";
 
 type Props = {
   token: string;
@@ -12,7 +11,7 @@ type Props = {
 
 const ActivateUserForm: React.FC<Props> = ({token}) => {
   const {handleSubmit, setValue, control} = useForm();
-  const {mutate} = userActivateUser();
+  const {mutate} = useActivateUser();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
 
   const avatars = [
@@ -34,7 +33,7 @@ const ActivateUserForm: React.FC<Props> = ({token}) => {
     if (!avatar) {
       enqueueWarningSnackbar('Choose avatar before submitting');
     } else {
-      mutate({token, avatar});
+      mutate({token, avatar: {avatar}});
     }
   };
   return (
