@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from 'react-router-dom';
 import {Box, CircularProgress, Pagination, Typography} from "@mui/material";
 import {useGetArticlesByUsernameQuery} from "../api/graphql/useGetArticlesByUsernameQuery";
-import Article from "../components/article/Article";
+import ArticlePreview from "../components/article/ArticlePreview";
 import {AppLoader} from "../components/styled/AppLoader";
 import {useWarningSnackbar} from "../hooks/useWarningSnackbar";
 
@@ -41,7 +41,7 @@ const UserArticlesPage: React.FC = () => {
       {status === 'success' ?
         <>
           {data.getArticlesByUsername.slice(endPagination - pageSize, endPagination).map((article) => {
-            return <Article article={article}/>
+            return <ArticlePreview article={article}/>
           })}
           <Box sx={{display: 'flex', justifyContent: 'center'}} py={5}>
             <Pagination count={Math.ceil(data.getArticlesByUsername.length / pageSize)}

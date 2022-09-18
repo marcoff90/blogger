@@ -22,7 +22,7 @@ const App: React.FC = () => {
           <Route path={'/users/recovery'} element={<RecoverPage/>}/>
           <Route path={'/users/activate'} element={<ActivatePage/>}/>
           <Route path={'/blogs/:username/articles'} element={<UserArticlesPage/>}/>
-          <Route path={'/blogs/:username/articles/:id'} element={<ArticlePage/>}/>
+          <Route path={'/blogs/:username/articles/:articleId'} element={<ArticlePage/>}/>
         </Routes>
       </Layout>
     </>

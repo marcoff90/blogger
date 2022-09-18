@@ -1,11 +1,17 @@
 import React from "react";
 import {CircularProgress, Typography} from "@mui/material";
 import {useGetFeaturedArticlesQuery} from "../api/graphql/useGetFeaturedArticles";
-import Article from "../components/article/Article";
+import Article from "../components/article/ArticlePreview";
 import {AppLoader} from "../components/styled/AppLoader";
+import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
 
 const Home: React.FC = () => {
-  const {data, status} = useGetFeaturedArticlesQuery();
+  const {data, status, error} = useGetFeaturedArticlesQuery();
+  const {enqueueErrorSnackbar} = useErrorSnackbar();
+
+  if (error) {
+    enqueueErrorSnackbar('Something went wrong. Try later');
+  }
 
   return (
     <>
