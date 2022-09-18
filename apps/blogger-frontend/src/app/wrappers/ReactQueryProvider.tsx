@@ -16,6 +16,7 @@ export const ReactQueryProvider: React.FC<Props> = ({children}) => {
         queries: {
           refetchOnWindowFocus: false,
           retry: false,
+          staleTime: 5 * 1000
         }
       }
     })

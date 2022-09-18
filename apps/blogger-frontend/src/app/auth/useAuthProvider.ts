@@ -15,7 +15,7 @@ const useAuthProvider = () => {
 
   const login = async (data: LoginUserResponse): Promise<void> => {
     setUser(data);
-    navigate("/login");
+    navigate("/users/login");
   };
 
   const logout = async (): Promise<void> => {

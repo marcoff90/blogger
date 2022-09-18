@@ -13,6 +13,6 @@ export const identifyConfirmUser = async (token: string) => {
 
 export const useIdentifyConfirmUserQuery = (token: string, disabled?: boolean) => {
   return useQuery(identifyUserKey(), () => identifyConfirmUser(token), {
-    enabled: !disabled
+    enabled: disabled
   });
 };
