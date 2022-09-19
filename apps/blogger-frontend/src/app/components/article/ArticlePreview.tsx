@@ -3,7 +3,7 @@ import {ArticleI} from "../../interfaces/articleI";
 import {Box, Link, Typography} from "@mui/material";
 import {countComments} from "../../utils/count-comments";
 import {useNavigate} from "react-router-dom";
-import {Image} from "../styled/Image";
+import {Image} from "../styled/image.styled";
 
 type Props = {
   article: ArticleI
@@ -13,7 +13,7 @@ const ArticlePreview: React.FC<Props> = ({article}) => {
   const navigate = useNavigate();
 
   const handleReadArticle = () => {
-    navigate(`/blogs/${article.username}/articles/${article.id}`, {state: article});
+    navigate(`/blogs/${article.username}/articles/${article.id}`);
   }
 
   const handleShowUsersArticles = () => {
@@ -31,7 +31,7 @@ const ArticlePreview: React.FC<Props> = ({article}) => {
           <Box sx={{display: 'flex', flexDirection: 'row'}}>
             <Link onClick={handleShowUsersArticles} fontSize={10}>{article.username}</Link>
             <Typography fontSize={10}>
-              &nbsp;•&nbsp;{new Date(article.created_at * 1000).toLocaleDateString("en-US")}
+              &nbsp;•&nbsp;{new Date(article.updated_at * 1000).toLocaleDateString("en-US")}
             </Typography>
           </Box>
           <Typography my={2} fontSize={15}>{article.perex}</Typography>
@@ -41,7 +41,6 @@ const ArticlePreview: React.FC<Props> = ({article}) => {
           </Box>
         </Box>
       </Box>
-
     </>
   )
 };

@@ -3,7 +3,7 @@ import { useNavigate, useParams} from 'react-router-dom';
 import {Box, CircularProgress, Pagination, Typography} from "@mui/material";
 import {useGetArticlesByUsernameQuery} from "../api/graphql/useGetArticlesByUsernameQuery";
 import ArticlePreview from "../components/article/ArticlePreview";
-import {AppLoader} from "../components/styled/AppLoader";
+import {AppLoaderStyled} from "../components/styled/app-loader.styled";
 import {useWarningSnackbar} from "../hooks/useWarningSnackbar";
 import routes from "../constants/routes";
 
@@ -22,7 +22,7 @@ const UserArticlesPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<unknown>, pageNumber: number) => {
     setEndPagination(pageNumber * pageSize);
-  }
+  };
 
   if (error) {
     enqueueWarningSnackbar(`Blog by ${username} doesn't exist`);
@@ -49,9 +49,9 @@ const UserArticlesPage: React.FC = () => {
           </Box>
         </>
         :
-        <AppLoader>
+        <AppLoaderStyled>
           <CircularProgress/>
-        </AppLoader>
+        </AppLoaderStyled>
       }
     </>
   );

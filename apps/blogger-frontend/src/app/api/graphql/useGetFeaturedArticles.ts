@@ -10,51 +10,18 @@ const getFeaturedArticlesGraphQLQuery = gql`
       id
       title
       perex
-      content
       image
       created_at
       updated_at
       username
       comments {
         id
-        author
-        content
-        created_at
-        parent_id
-        votes {
-          upvotes
-          downvotes
-        }
         children {
           id
-          author
-          content
-          parent_id
-          created_at
-          votes {
-            upvotes
-            downvotes
-          }
           children {
             id
-            author
-            content
-            parent_id
-            created_at
-            votes {
-              upvotes
-              downvotes
-            }
             children {
               id
-              author
-              content
-              parent_id
-              created_at
-              votes {
-                upvotes
-                downvotes
-              }
             }
           }
         }

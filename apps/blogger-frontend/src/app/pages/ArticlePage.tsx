@@ -1,43 +1,26 @@
-import React, {useEffect, useState} from "react";
-import {ArticleI, isArticle} from "../interfaces/articleI";
-import Article from "../components/article/Article";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import React, {useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import {useWarningSnackbar} from "../hooks/useWarningSnackbar";
-import {AppLoader} from "../components/styled/AppLoader";
-import {CircularProgress} from "@mui/material";
+import {AppLoaderStyled} from "../components/styled/app-loader.styled";
+import {Button, CircularProgress, Grid, Typography} from "@mui/material";
 import {useGetArticleByUsernameAndIdQuery} from "../api/graphql/useGetArticleByUsernameAndIdQuery";
 import routes from "../constants/routes";
-
-/**
- * If the user goes to the article through the link in the preview, we don't need to load the article from api, it's
- * sent through useNavigate hook in state. If the user would be accessing the article directly through link, we load
- * it from api
- */
+import Article from "../components/article/Article";
+import RelatedArticles from "../components/article/RelatedArticles";
+import CommentsList from "../components/comment/CommentsList";
+import Reply from "../components/comment/Reply";
 
 const ArticlePage: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [stateArticle, setStateArticle] = useState<ArticleI | undefined>(undefined);
-  const location = useLocation();
   const navigate = useNavigate();
   const {username, articleId} = useParams();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
+  const [toggleReply, setToggleReply] = useState(false);
   const {data, status, error} =
-    useGetArticleByUsernameAndIdQuery(username, articleId ? parseInt(articleId) : undefined, loading);
+    useGetArticleByUsernameAndIdQuery(username, articleId ? parseInt(articleId) : undefined);
 
-
-  // The query is run when there is no state with article or there's no state
-  useEffect(() => {
-    if (location.state) {
-      if (!isArticle(location.state)) {
-        setLoading(!loading);
-      } else {
-        setStateArticle(location.state);
-        location.state = undefined;
-      }
-    } else {
-      setLoading(!loading);
-    }
-  }, []);
+  const handleToggleReply = () => {
+    setToggleReply(!toggleReply);
+  }
 
   if (error) {
     enqueueWarningSnackbar('Article does not exist');
@@ -46,16 +29,38 @@ const ArticlePage: React.FC = () => {
 
   return (
     <>
-      {
-        stateArticle ? <Article article={stateArticle}/>
+      {status === 'success' ?
+        <>
+          <Grid container spacing={10} rowSpacing={3}>
+            <Grid item xs={8} p={10} sx={{borderBottom: 1, borderColor: 'secondary.main'}}>
+              <Article article={data.getArticleByUsernameAndId}/>
+            </Grid>
+            <Grid item xs={4} mt={3} sx={{borderLeft: 1, height: '50vh', borderColor: 'secondary.main'}}>
+              <Typography variant={'h5'}>Related articles</Typography>
+              <RelatedArticles limit={4} username={data.getArticleByUsernameAndId.username}
+                               articleId={data.getArticleByUsernameAndId.id}/>
+            </Grid>
+            <Grid item xs={8} pb={3} sx={{borderBottom: 1, borderColor: 'secondary.main'}}>
+              <Button variant="contained" onClick={handleToggleReply}>Add Comment</Button>
+              {
+                toggleReply && <Reply newComment={true}/>
+              }
+            </Grid>
 
-        : status === 'success' ?
+            {
+              data.getArticleByUsernameAndId.comments &&
+              <Grid item xs={8}>
+                <CommentsList comments={data.getArticleByUsernameAndId.comments} pagination={true}/>
+              </Grid>
+            }
+          </Grid>
 
-          <Article article={data.getArticleByUsernameAndId}/>
-          :
-          <AppLoader>
-            <CircularProgress/>
-          </AppLoader>
+        </>
+
+        :
+        <AppLoaderStyled>
+          <CircularProgress/>
+        </AppLoaderStyled>
       }
 
     </>

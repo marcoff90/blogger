@@ -4,7 +4,7 @@ import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
 import {useIdentifyResetPasswordUserQuery} from "../api/user/queries/useIdentifyResetPasswordUserQuery";
 import {Box, CircularProgress} from "@mui/material";
 import RecoverForm from "../components/user/RecoverForm";
-import {AppLoader} from "../components/styled/AppLoader";
+import {AppLoaderStyled} from "../components/styled/app-loader.styled";
 import routes from "../constants/routes";
 
 const ActivateRecoverPage: React.FC = () => {
@@ -39,9 +39,9 @@ const ActivateRecoverPage: React.FC = () => {
           </Box>
 
           :
-          <AppLoader>
+          <AppLoaderStyled>
             <CircularProgress/>
-          </AppLoader>
+          </AppLoaderStyled>
 
       }
     </>

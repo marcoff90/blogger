@@ -1,9 +1,9 @@
 import React from "react";
 import {CircularProgress, Typography} from "@mui/material";
 import {useGetFeaturedArticlesQuery} from "../api/graphql/useGetFeaturedArticles";
-import Article from "../components/article/ArticlePreview";
-import {AppLoader} from "../components/styled/AppLoader";
+import {AppLoaderStyled} from "../components/styled/app-loader.styled";
 import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
+import ArticlePreview from "../components/article/ArticlePreview";
 
 const Home: React.FC = () => {
   const {data, status, error} = useGetFeaturedArticlesQuery();
@@ -19,15 +19,14 @@ const Home: React.FC = () => {
 
       {status === 'success' ?
         data.getFeaturedArticles.map(article => {
-          return <Article article={article}/>
+          return <ArticlePreview article={article}/>
         })
         :
-        <AppLoader>
+        <AppLoaderStyled>
           <CircularProgress/>
-        </AppLoader>
+        </AppLoaderStyled>
       }
     </>
-
   );
 };
 

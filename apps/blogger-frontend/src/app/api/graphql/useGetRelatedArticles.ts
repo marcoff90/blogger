@@ -4,27 +4,12 @@ import {useQuery} from "react-query";
 import {GraphQLResponse} from "graphql-request/dist/types";
 import graphqlClient from "./client/graphql-client";
 
-const getArticlesByUsernameQuery = gql`
+const getRelatedArticlesQuery = gql`
   query Query($username: String) {
     getArticlesByUsername(username: $username) {
       id
       title
       perex
-      image
-      created_at
-      updated_at
-      username
-      comments {
-        children {
-          id
-          children {
-            id
-            children {
-              id
-            }
-          }
-        }
-      }
     }
   }
 `;
@@ -35,11 +20,11 @@ interface ArticleResponse {
   getArticlesByUsername: ArticleI[]
 }
 
-export const useGetArticlesByUsernameQuery = (username?: string, disabled?: boolean) => {
-  const articlesKey = (): Key => [`${username}Articles`];
+export const useGetRelatedArticlesQuery = (username?: string, disabled?: boolean) => {
+  const articlesKey = (): Key => [`${username}RelatedArticles`];
 
   return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(), async () => {
-    return graphqlClient.request(getArticlesByUsernameQuery, {username: username});
+    return graphqlClient.request(getRelatedArticlesQuery, {username: username});
   }, {
     enabled: !disabled,
   })

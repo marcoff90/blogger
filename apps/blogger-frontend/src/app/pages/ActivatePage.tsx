@@ -3,7 +3,7 @@ import ActivateUserForm from "../components/user/ActivateUserForm";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {useErrorSnackbar} from "../hooks/useErrorSnackbar";
 import {Box, CircularProgress} from "@mui/material";
-import {AppLoader} from "../components/styled/AppLoader";
+import {AppLoaderStyled} from "../components/styled/app-loader.styled";
 import {useIdentifyConfirmUserQuery} from "../api/user/queries/useIdentifyConfirmUserQuery";
 
 const ActivatePage: React.FC = () => {
@@ -38,10 +38,9 @@ const ActivatePage: React.FC = () => {
           </Box>
 
           :
-          <AppLoader>
+          <AppLoaderStyled>
             <CircularProgress/>
-          </AppLoader>
-
+          </AppLoaderStyled>
       }
     </>
   );

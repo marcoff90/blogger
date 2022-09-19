@@ -10,7 +10,7 @@ const Layout: React.FC<Props> = ({children}) => {
   return (
     <>
       <Navbar/>
-      <Box px={30} py={3}>
+      <Box px={30} py={10}>
         <Container maxWidth={'xl'}>
           {children}
         </Container>

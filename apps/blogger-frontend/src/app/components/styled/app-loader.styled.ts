@@ -1,6 +1,6 @@
 import {Box, BoxProps, styled} from "@mui/material";
 
-export const AppLoader = styled(Box)<BoxProps>(({theme}) => ({
+export const AppLoaderStyled = styled(Box)<BoxProps>(({theme}) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '100%',

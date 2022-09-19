@@ -9,7 +9,6 @@ const getArticlesByUsernameAndIdQuery = gql`
     getArticleByUsernameAndId(username: $username, articleId: $articleId) {
       id
       title
-      perex
       content
       image
       created_at
