@@ -1,7 +1,8 @@
 const routes = {
   home: '/',
   login: '/users/login',
-  recentArticles: '/blogs/'
+  forgottenPassword: '/users/forgotten-password',
+  register: '/users/register'
 }
 
 export default routes;

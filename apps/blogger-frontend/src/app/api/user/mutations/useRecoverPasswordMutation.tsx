@@ -10,6 +10,7 @@ import {AxiosError, AxiosResponse} from "axios";
 import {errorResolver} from "../../error-resolver/error-resolver";
 import {useNavigate} from "react-router-dom";
 import { apiMessageSchema } from "../../../schemas/user/api-message-schema";
+import routes from "../../../constants/routes";
 
 interface Params {
   token: string;
@@ -30,7 +31,7 @@ export const useRecoverPasswordMutation = () => {
       try {
         apiMessageSchema.parse(response);
         enqueueSuccessSnackbar(`${response.message}`);
-        navigate('/users/login');
+        navigate(routes.login);
       } catch (e: any) {
         enqueueErrorSnackbar('Something went wrong');
       }

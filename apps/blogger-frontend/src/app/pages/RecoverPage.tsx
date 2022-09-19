@@ -5,6 +5,7 @@ import {useIdentifyResetPasswordUserQuery} from "../api/user/queries/useIdentify
 import {Box, CircularProgress} from "@mui/material";
 import RecoverForm from "../components/user/RecoverForm";
 import {AppLoader} from "../components/styled/AppLoader";
+import routes from "../constants/routes";
 
 const ActivateRecoverPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -19,14 +20,14 @@ const ActivateRecoverPage: React.FC = () => {
       setToken(query);
       setLoading(!loading);
     } else {
-      navigate('/');
+      navigate(routes.home);
     }
   }, []);
   const {status} = useIdentifyResetPasswordUserQuery(token, loading);
 
   if (status === 'error') {
     enqueueErrorSnackbar('Something went wrong');
-    navigate('/');
+    navigate(routes.home);
   }
 
   return (

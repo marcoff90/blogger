@@ -1,27 +1,32 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams} from 'react-router-dom';
 import {Box, CircularProgress, Pagination, Typography} from "@mui/material";
 import {useGetArticlesByUsernameQuery} from "../api/graphql/useGetArticlesByUsernameQuery";
 import ArticlePreview from "../components/article/ArticlePreview";
 import {AppLoader} from "../components/styled/AppLoader";
 import {useWarningSnackbar} from "../hooks/useWarningSnackbar";
+import routes from "../constants/routes";
 
 /**
  * If username in the path doesn't exist => query will throw error => user is redirected to home page
  */
 
 const UserArticlesPage: React.FC = () => {
-  const [loading, setLoading] = useState(true);
   const pageSize = 5;
+  const [loading, setLoading] = useState(true);
   const [endPagination, setEndPagination] = useState(pageSize);
   const navigate = useNavigate();
   const {username} = useParams();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
-
-  const {data, status, error} = useGetArticlesByUsernameQuery(username, loading);
+  const {data, status, error} = useGetArticlesByUsernameQuery(username);
 
   const handleChange = (e: React.ChangeEvent<unknown>, pageNumber: number) => {
     setEndPagination(pageNumber * pageSize);
+  }
+
+  if (error) {
+    enqueueWarningSnackbar(`Blog by ${username} doesn't exist`);
+    navigate(routes.home)
   }
 
   useEffect(() => {
@@ -30,16 +35,11 @@ const UserArticlesPage: React.FC = () => {
     }
   }, [username]);
 
-  if (error) {
-    enqueueWarningSnackbar(`Blog by ${username} doesn't exist`);
-    navigate('/')
-  }
-
   return (
     <>
-      <Typography m={0} variant={'h3'}>{`${username} blog`}</Typography>
       {status === 'success' ?
         <>
+          <Typography m={0} variant={'h3'}>{`${username} blog`}</Typography>
           {data.getArticlesByUsername.slice(endPagination - pageSize, endPagination).map((article) => {
             return <ArticlePreview article={article}/>
           })}
@@ -48,8 +48,6 @@ const UserArticlesPage: React.FC = () => {
                         onChange={handleChange}/>
           </Box>
         </>
-
-
         :
         <AppLoader>
           <CircularProgress/>

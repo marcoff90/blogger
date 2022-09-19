@@ -13,8 +13,12 @@ type Props = {
 }
 
 const LoginButton: React.FC<Props> = ({navigate, location}) => {
+  const handleLoginNavigation = () => {
+    navigate(routes.login);
+  }
+
   return (
-    <NavigationButton mainColor={false} isActive={location.pathname === routes.login} onClick={() => navigate('/users/login')}>
+    <NavigationButton mainColor={false} isActive={location.pathname === routes.login} onClick={handleLoginNavigation}>
       <Box sx={{display: 'flex', alignItems: 'center'}}>
         Log in
         <ArrowForwardIcon fontSize={'small'}/>

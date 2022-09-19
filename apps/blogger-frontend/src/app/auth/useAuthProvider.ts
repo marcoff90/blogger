@@ -1,6 +1,7 @@
 import {useSessionStorage} from "../hooks/useSessionStorage";
 import {useNavigate} from "react-router-dom";
 import {LoginUserResponse} from "libs/api-client/src/lib/api/api";
+import routes from "../constants/routes";
 
 export interface UseAuthProviderI {
   login: (data: LoginUserResponse) => Promise<void>,
@@ -13,6 +14,7 @@ const useAuthProvider = () => {
 
   const navigate = useNavigate();
 
+  // TODO navigate to My Articles
   const login = async (data: LoginUserResponse): Promise<void> => {
     setUser(data);
     navigate("/users/login");
@@ -20,7 +22,7 @@ const useAuthProvider = () => {
 
   const logout = async (): Promise<void> => {
     setUser(null);
-    navigate("/", {replace: true});
+    navigate(routes.home, {replace: true});
   };
 
   return {

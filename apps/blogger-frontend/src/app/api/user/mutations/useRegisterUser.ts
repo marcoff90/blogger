@@ -7,6 +7,7 @@ import {AxiosError, AxiosResponse} from "axios";
 import {registerUserSchema} from "../../../schemas/user/register-user-schema";
 import {errorResolver} from "../../error-resolver/error-resolver";
 import { useNavigate } from "react-router-dom";
+import routes from "../../../constants/routes";
 
 export const useRegisterUserMutation = () => {
   const {enqueueSuccessSnackbar} = useSuccessSnackbar();
@@ -22,7 +23,7 @@ export const useRegisterUserMutation = () => {
       try {
         registerUserSchema.parse(response);
         enqueueSuccessSnackbar(`User ${response.username} created successfully! Email sent!`);
-        navigate('/');
+        navigate(routes.home);
       } catch (e: any) {
         enqueueErrorSnackbar('Something went wrong');
       }

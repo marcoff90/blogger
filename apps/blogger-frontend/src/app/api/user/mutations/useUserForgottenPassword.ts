@@ -7,6 +7,7 @@ import {AxiosError, AxiosResponse} from "axios";
 import {errorResolver} from "../../error-resolver/error-resolver";
 import { useNavigate } from "react-router-dom";
 import {apiMessageSchema} from "../../../schemas/user/api-message-schema";
+import routes from "../../../constants/routes";
 
 export const useUserForgottenPassword = () => {
   const {enqueueSuccessSnackbar} = useSuccessSnackbar();
@@ -22,7 +23,7 @@ export const useUserForgottenPassword = () => {
       try {
         apiMessageSchema.parse(response);
         enqueueSuccessSnackbar(`${response.message}`);
-        navigate('/');
+        navigate(routes.home);
       } catch (e) {
         enqueueErrorSnackbar('Something went wrong');
       }

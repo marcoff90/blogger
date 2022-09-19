@@ -1,18 +1,15 @@
-import {NavigateFunction} from "react-router/lib/hooks";
 import React from "react";
 import {NavigationButton} from "../styled/header.styled";
 import {Box} from "@mui/material";
 import LogoutMenu from "./LogoutMenu";
 
-type Props = {
-  navigate: NavigateFunction
-}
+// TODO add navigation functions through routes
 
-const AdminButtons: React.FC<Props> = ({navigate}) => {
+const AdminButtons: React.FC = () => {
   return (
     <>
       <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-        <NavigationButton mainColor={true} isActive={false} onClick={() => navigate('/')}>
+        <NavigationButton mainColor={true} isActive={false}>
           My Articles
         </NavigationButton>
         <NavigationButton mainColor={false} isActive={false}>

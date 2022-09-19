@@ -1,14 +1,13 @@
-import { ApiFactory } from "@blogger/api-client";
+import {ApiFactory} from "@blogger/api-client";
 import {useQuery} from "react-query";
 
 type Key = [string];
 
-export const identifyUserKey = (): Key => ['identifier'];
+export const identifyUserKey = (): Key => ['resetIdentifier'];
 
 export const identifyResetPasswordUser = async (token: string) => {
   const api = await ApiFactory.createUserServiceApi();
-  const res = await api.userServiceApiUsersResetIdentifyGet(token);
-  return res;
+  return await api.userServiceApiUsersResetIdentifyGet(token);
 }
 
 export const useIdentifyResetPasswordUserQuery = (token: string, disabled?: boolean) => {

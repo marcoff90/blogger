@@ -4,6 +4,7 @@ import {useForm, Controller, FieldValues} from 'react-hook-form'
 import {useLoginUserMutation} from "../../api/user/mutations/useLoginUser";
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
 import { StyledForm } from "../styled/form.styled";
+import routes from "../../constants/routes";
 
 const LoginForm: React.FC = () => {
   const {handleSubmit, control} = useForm();
@@ -76,10 +77,10 @@ const LoginForm: React.FC = () => {
               </Button>
             </FormGroup>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Link href={'/users/forgotten-password'} variant="body2">
+              <Link href={routes.forgottenPassword} variant="body2">
                 Forgot password?
               </Link>
-              <Link href={"/users/register"} variant="body2">
+              <Link href={routes.register} variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Box>

@@ -64,14 +64,15 @@ const getArticlesByUsernameAndIdQuery = gql`
 `;
 
 type Key = [string];
-export const articlesKey = (): Key => ['userArticles'];
 
 interface ArticleResponse {
   getArticleByUsernameAndId: ArticleI
 }
 
 export const useGetArticleByUsernameAndIdQuery = (username?: string, articleId?: number, disabled?: boolean) => {
-  return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(), async () => {
+  const articleKey = (): Key => [`${username}Article${articleId}`];
+
+  return useQuery<GraphQLResponse, Error, ArticleResponse>(articleKey(), async () => {
     return graphqlClient.request(getArticlesByUsernameAndIdQuery, {username: username, articleId: articleId});
   }, {
     enabled: !disabled,

@@ -1,14 +1,13 @@
-import { ApiFactory } from "@blogger/api-client";
+import {ApiFactory} from "@blogger/api-client";
 import {useQuery} from "react-query";
 
 type Key = [string];
 
-export const identifyUserKey = (): Key => ['identifier'];
+export const identifyUserKey = (): Key => ['confirmIdentifier'];
 
 export const identifyConfirmUser = async (token: string) => {
   const api = await ApiFactory.createUserServiceApi();
-  const res = await api.userServiceApiUsersConfirmIdentifyGet(token);
-  return res;
+  return await api.userServiceApiUsersConfirmIdentifyGet(token);
 }
 
 export const useIdentifyConfirmUserQuery = (token: string, disabled?: boolean) => {

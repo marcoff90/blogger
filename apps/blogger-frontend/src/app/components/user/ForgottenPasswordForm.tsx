@@ -4,6 +4,7 @@ import {useForm, Controller, FieldValues} from 'react-hook-form'
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
 import { StyledForm } from "../styled/form.styled";
 import {useUserForgottenPassword} from "../../api/user/mutations/useUserForgottenPassword";
+import routes from "../../constants/routes";
 
 const ForgottenPasswordForm: React.FC = () => {
   const {handleSubmit, control} = useForm();
@@ -59,7 +60,7 @@ const ForgottenPasswordForm: React.FC = () => {
               </Button>
             </FormGroup>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              <Link href={"/users/login"} variant="body2">
+              <Link href={routes.login} variant="body2">
                 Login
               </Link>
             </Box>

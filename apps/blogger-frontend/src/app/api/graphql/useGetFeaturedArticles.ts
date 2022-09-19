@@ -64,7 +64,7 @@ const getFeaturedArticlesGraphQLQuery = gql`
 `;
 
 type Key = [string];
-export const articlesKey = (): Key => ['articles'];
+export const articlesKey = (): Key => ['featuredArticles'];
 
 interface ArticleResponse {
   getFeaturedArticles: ArticleI[]
