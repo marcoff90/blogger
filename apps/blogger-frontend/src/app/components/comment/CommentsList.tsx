@@ -5,7 +5,7 @@ import {Box, Pagination} from "@mui/material";
 
 type Props = {
   comments: CommentI[],
-  pagination: boolean
+  pagination: boolean;
 }
 
 const CommentList: React.FC<Props> = ({comments, pagination}) => {
@@ -22,7 +22,7 @@ const CommentList: React.FC<Props> = ({comments, pagination}) => {
         return <Comment comment={comment}/>
       })}
       {
-        pagination &&
+        pagination && comments.length > 0 &&
         <Box sx={{display: 'flex', justifyContent: 'center'}} py={5}>
           <Pagination count={Math.ceil(comments.length / pageSize)}
                       onChange={handleChange}/>

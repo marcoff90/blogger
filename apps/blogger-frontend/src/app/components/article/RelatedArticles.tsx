@@ -11,7 +11,7 @@ type Props ={
 }
 
 const RelatedArticles: React.FC<Props>= ({limit, username, articleId}) => {
-  const {data, status, error} = useGetRelatedArticlesQuery(username);
+  const {data, status, error} = useGetRelatedArticlesQuery({username});
   const {enqueueWarningSnackbar} = useWarningSnackbar();
 
   if (error) {

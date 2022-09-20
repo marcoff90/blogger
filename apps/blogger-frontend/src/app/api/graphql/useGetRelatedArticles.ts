@@ -14,17 +14,21 @@ const getRelatedArticlesQuery = gql`
   }
 `;
 
-type Key = [string];
+type Key = [string, Params];
+
+interface Params {
+  username?: string;
+}
+
+const articlesKey = (params: Params): Key => ['relatedArticles', params ?? {}];
 
 interface ArticleResponse {
   getArticlesByUsername: ArticleI[]
 }
 
-export const useGetRelatedArticlesQuery = (username?: string, disabled?: boolean) => {
-  const articlesKey = (): Key => [`${username}RelatedArticles`];
-
-  return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(), async () => {
-    return graphqlClient.request(getRelatedArticlesQuery, {username: username});
+export const useGetRelatedArticlesQuery = (params: Params, disabled?: boolean) => {
+  return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(params), async () => {
+    return graphqlClient.request(getRelatedArticlesQuery, params);
   }, {
     enabled: !disabled,
   })

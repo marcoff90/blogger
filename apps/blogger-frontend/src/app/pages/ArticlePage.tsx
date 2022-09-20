@@ -9,18 +9,35 @@ import Article from "../components/article/Article";
 import RelatedArticles from "../components/article/RelatedArticles";
 import CommentsList from "../components/comment/CommentsList";
 import Reply from "../components/comment/Reply";
+import {Slide} from "react-awesome-reveal";
+import {FieldValues, useForm} from "react-hook-form";
+import {useAddComment} from "../api/comment/mutations/useAddComment";
 
 const ArticlePage: React.FC = () => {
   const navigate = useNavigate();
   const {username, articleId} = useParams();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
   const [toggleReply, setToggleReply] = useState(false);
+  const {handleSubmit, control} = useForm();
+  const {mutate} = useAddComment();
+
   const {data, status, error} =
-    useGetArticleByUsernameAndIdQuery(username, articleId ? parseInt(articleId) : undefined);
+
+    useGetArticleByUsernameAndIdQuery({username: username, articleId: articleId ? parseInt(articleId) : undefined});
 
   const handleToggleReply = () => {
     setToggleReply(!toggleReply);
-  }
+  };
+
+  const handleAddComment = (data: FieldValues) => {
+    console.log('hello')
+    const {author, content} = data;
+    if (!author || !content || !articleId) {
+      enqueueWarningSnackbar('Both fields must be filled');
+    } else {
+      mutate({articleId: articleId, commentData: {author: author, content: content}});
+    }
+  };
 
   if (error) {
     enqueueWarningSnackbar('Article does not exist');
@@ -43,7 +60,10 @@ const ArticlePage: React.FC = () => {
             <Grid item xs={8} pb={3} sx={{borderBottom: 1, borderColor: 'secondary.main'}}>
               <Button variant="contained" onClick={handleToggleReply}>Add Comment</Button>
               {
-                toggleReply && <Reply newComment={true}/>
+                toggleReply &&
+                <Slide direction={'down'}>
+                  <Reply newComment={true} control={control} handleSubmit={handleSubmit} handler={handleAddComment}/>
+                </Slide>
               }
             </Grid>
 

@@ -6,6 +6,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {avatars} from "../../constants/avatars";
 import Reply from '../comment/Reply';
+import {Slide} from "react-awesome-reveal";
+import {FieldValues, useForm} from "react-hook-form";
+import {useAddComment} from "../../api/comment/mutations/useAddComment";
+import {useParams} from "react-router-dom";
+import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
 
 type Props = {
   comment: CommentI;
@@ -14,6 +19,26 @@ type Props = {
 const Comment: React.FC<Props> = ({comment}) => {
   const [toggleChildren, setToggleChildren] = useState(false);
   const [toggleReply, setToggleReply] = useState(false);
+  const {handleSubmit, control} = useForm();
+  const {enqueueWarningSnackbar} = useWarningSnackbar();
+  const {mutate} = useAddComment();
+  const {articleId} = useParams();
+
+  const handleAddComment = (data: FieldValues) => {
+    const {author, content} = data;
+    if (!author || !content || !articleId) {
+      enqueueWarningSnackbar('Both fields must be filled');
+    } else {
+      mutate({
+        articleId: articleId,
+        commentData: {
+          author: author,
+          content: content,
+          parent_id: comment.parent_id
+        }
+      });
+    }
+  };
 
   const handleToggleChildren = () => {
     setToggleChildren(!toggleChildren);
@@ -62,12 +87,12 @@ const Comment: React.FC<Props> = ({comment}) => {
                 <KeyboardArrowDownIcon fontSize={'large'}/>
               </Grid>
             </Grid>
-            <Button variant="outlined" size={'small'} onClick={handleToggleReply}>Join</Button>
+            <Button variant="contained" size={'small'} onClick={handleToggleReply}>{toggleReply ? 'Hide' : 'Join'}</Button>
           </Box>
         </Box>
       </Box>
 
-     <Grid container xs={12} columns={2}>
+     <Grid container xs={12}>
        {
          comment.children?.length > 0 &&
          <Grid item xs={2}>
@@ -82,7 +107,12 @@ const Comment: React.FC<Props> = ({comment}) => {
 
        }
        {
-         toggleReply && <Grid item xs={10}><Reply parentId={comment.parent_id} newComment={false}/></Grid>
+         toggleReply &&
+           <Grid item xs={comment.children?.length > 0 ? 10 : 12}>
+             <Slide duration={2000} direction={'left'}>
+               <Reply newComment={false} control={control} handleSubmit={handleSubmit} handler={handleAddComment}/>
+             </Slide>
+           </Grid>
        }
      </Grid>
       {
@@ -90,9 +120,12 @@ const Comment: React.FC<Props> = ({comment}) => {
           <>
             {
               toggleChildren &&
-              <Box sx={{paddingLeft: '3rem'}}>
-                <CommentList comments={comment.children} pagination={false}/>
-              </Box>
+              <Slide duration={2000} direction={'left'}>
+                <Box sx={{paddingLeft: '3rem'}}>
+                  <CommentList comments={comment.children} pagination={false}/>
+                </Box>
+              </Slide>
+
             }
           </>
         )

@@ -62,17 +62,22 @@ const getArticlesByUsernameAndIdQuery = gql`
   }
 `;
 
-type Key = [string];
+interface Params {
+  username?: string;
+  articleId?: number;
+}
+
+const articleKey = (params?: Params): Key => ['article', params ?? {}];
+
+type Key = [string, Params];
 
 interface ArticleResponse {
   getArticleByUsernameAndId: ArticleI
 }
 
-export const useGetArticleByUsernameAndIdQuery = (username?: string, articleId?: number, disabled?: boolean) => {
-  const articleKey = (): Key => [`${username}Article${articleId}`];
-
-  return useQuery<GraphQLResponse, Error, ArticleResponse>(articleKey(), async () => {
-    return graphqlClient.request(getArticlesByUsernameAndIdQuery, {username: username, articleId: articleId});
+export const useGetArticleByUsernameAndIdQuery = (params: Params, disabled?: boolean) => {
+  return useQuery<GraphQLResponse, Error, ArticleResponse>(articleKey(params), async () => {
+    return graphqlClient.request(getArticlesByUsernameAndIdQuery, params);
   }, {
     enabled: !disabled,
   })

@@ -29,17 +29,21 @@ const getArticlesByUsernameQuery = gql`
   }
 `;
 
-type Key = [string];
+interface Params {
+  username?: string
+}
+
+type Key = [string, Params];
 
 interface ArticleResponse {
   getArticlesByUsername: ArticleI[]
 }
 
-export const useGetArticlesByUsernameQuery = (username?: string, disabled?: boolean) => {
-  const articlesKey = (): Key => [`${username}Articles`];
+const articlesKey = (param?: Params): Key => ['articles', param ?? {}];
 
-  return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(), async () => {
-    return graphqlClient.request(getArticlesByUsernameQuery, {username: username});
+export const useGetArticlesByUsernameQuery = (param: Params, disabled?: boolean) => {
+  return useQuery<GraphQLResponse, Error, ArticleResponse>(articlesKey(param), async () => {
+    return graphqlClient.request(getArticlesByUsernameQuery, param);
   }, {
     enabled: !disabled,
   })

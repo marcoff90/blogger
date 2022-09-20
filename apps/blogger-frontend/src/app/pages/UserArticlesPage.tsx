@@ -18,7 +18,7 @@ const UserArticlesPage: React.FC = () => {
   const navigate = useNavigate();
   const {username} = useParams();
   const {enqueueWarningSnackbar} = useWarningSnackbar();
-  const {data, status, error} = useGetArticlesByUsernameQuery(username);
+  const {data, status, error} = useGetArticlesByUsernameQuery({username});
 
   const handleChange = (e: React.ChangeEvent<unknown>, pageNumber: number) => {
     setEndPagination(pageNumber * pageSize);
