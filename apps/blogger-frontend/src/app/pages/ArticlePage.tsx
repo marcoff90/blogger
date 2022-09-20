@@ -21,9 +21,10 @@ const ArticlePage: React.FC = () => {
   const {handleSubmit, control} = useForm();
   const {mutate} = useAddComment();
 
-  const {data, status, error} =
-
-    useGetArticleByUsernameAndIdQuery({username: username, articleId: articleId ? parseInt(articleId) : undefined});
+  const {data, status, error} = useGetArticleByUsernameAndIdQuery({
+    username: username,
+    articleId: articleId ? parseInt(articleId) : undefined
+  });
 
   const handleToggleReply = () => {
     setToggleReply(!toggleReply);

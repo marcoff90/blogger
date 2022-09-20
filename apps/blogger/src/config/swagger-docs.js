@@ -166,9 +166,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              type: array
- *              items:
- *                $ref: '#/components/schemas/GetUserArticlesResponse'
+ *              $ref: '#/components/schemas/GetUserArticlesResponse'
  *      404:
  *        description: Not found - Article not found based on id and user id
  *        content:
@@ -368,7 +366,7 @@
  *          type: string
  *        image:
  *          type: string
- *        createdAt:
+ *        created_at:
  *          type: date
  *    ApiError:
  *      type: object
@@ -405,9 +403,9 @@
  *          type: string
  *        image:
  *          type: string
- *        createdAt:
+ *        created_at:
  *          type: date
- *        updatedAt:
+ *        updated_at:
  *          type: date
  *        username:
  *          type: string
@@ -426,9 +424,9 @@
  *          type: string
  *        image:
  *          type: string
- *        createdAt:
+ *        created_at:
  *          type: date
- *        updatedAt:
+ *        updated_at:
  *          type: date
  *    ApiMessage:
  *      type: object

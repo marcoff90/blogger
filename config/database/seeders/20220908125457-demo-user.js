@@ -10,7 +10,7 @@ module.exports = {
         email: `user${i + 1}@example.com`,
         active: true,
         password: bcrypt.hashSync('Password123!', 5),
-        avatar: `user${i + 1}/avatar.jpg`,
+        avatar: `../../../assets/avatars/memoji-${i + 1}.svg`,
       });
     }
     await queryInterface.bulkInsert('users', users, {});

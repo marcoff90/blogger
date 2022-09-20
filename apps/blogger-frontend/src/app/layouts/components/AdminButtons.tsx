@@ -16,13 +16,17 @@ const AdminButtons: React.FC<Props> = ({navigate, location}) => {
     navigate('/admin/my-articles')
   };
 
+  const handleNewArticleNavigation = () => {
+    navigate('/admin/new-article')
+  };
+
   return (
     <>
       <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <NavigationButton mainColor={true} isActive={location.pathname === routes.adminArticles} onClick={handleMyArticlesNavigation}>
           My Articles
         </NavigationButton>
-        <NavigationButton mainColor={false} isActive={false}>
+        <NavigationButton mainColor={false} isActive={location.pathname === routes.newArticle} onClick={handleNewArticleNavigation}>
           Create Article
         </NavigationButton>
         <LogoutMenu/>

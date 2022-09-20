@@ -10,9 +10,12 @@ import {
 import {countComments} from "../../utils/count-comments";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
 import useAuth from "../../auth/useAuth";
 import {useDeleteArticle} from "../../api/article/mutations/useDeleteArticle";
+import { useNavigate } from "react-router-dom";
+import routes from "../../constants/routes";
 
 type Props = {
   articles: ArticleI[]
@@ -25,6 +28,7 @@ const MyArticles: React.FC<Props> = ({articles}) => {
   const {enqueueWarningSnackbar} = useWarningSnackbar();
   const {mutate} = useDeleteArticle();
   const auth = useAuth();
+  const navigate = useNavigate();
 
   articlesState.forEach(article => {
     article.commentsCount = countComments(article);
@@ -33,36 +37,51 @@ const MyArticles: React.FC<Props> = ({articles}) => {
   const handleEdit = (params: GridCellParams) => {
     if (checkboxSelection.length > 1) {
       enqueueWarningSnackbar('Please select just one article to edit');
-    } else if (checkboxSelection.length === 1) {
-      const id = checkboxSelection[0];
-      // TODO send to edit page
-      console.log(id);
     } else {
       const id = params.row.id;
-      // TODO send to edit page
       console.log(id);
+      navigate(`${routes.editArticle}/${id}`);
     }
   };
 
   const handleDelete = (params: GridCellParams) => {
-    if (checkboxSelection.length === 0) {
-      const id = params.row.id;
-      mutate({userId: `${auth?.user?.id}` ?? '', articleId: id, token: auth?.user?.token ?? ''});
-      setArticleState(articlesState.filter(article => article.id !== id));
-
-    } else if (checkboxSelection.length === 1) {
-      mutate({
-        userId: `${auth?.user?.id}` ?? '',
-        articleId: checkboxSelection[0].toString(),
-        token: auth?.user?.token ?? ''
-      });
-      setArticleState(articlesState.filter(article => article.id !== checkboxSelection[0]));
-
-    } else {
+    if (checkboxSelection.length > 1) {
       checkboxSelection.forEach(id => {
         mutate({userId: `${auth?.user?.id}` ?? '', articleId: id.toString(), token: auth?.user?.token ?? ''});
         setArticleState(articlesState.filter(article => article.id !== id));
       })
+    } else {
+      const id = params.row.id;
+      mutate({userId: `${auth?.user?.id}` ?? '', articleId: id, token: auth?.user?.token ?? ''});
+      setArticleState(articlesState.filter(article => article.id !== id));
+    }
+  };
+
+  const handleReadArticle = (params: GridCellParams) => {
+    if (auth?.user) {
+      if (checkboxSelection.length > 1) {
+        enqueueWarningSnackbar('Please select just one article to read');
+      } else {
+        const id = params.row.id;
+        if (isArticleReadable(id)) {
+          navigate(`/blogs/${auth?.user.username}/articles/${id}`);
+        } else {
+          enqueueWarningSnackbar('Can not open draft article');
+        }
+      }
+    }
+  };
+
+  const handleNewArticleNavigation = () => {
+    navigate(routes.newArticle);
+  };
+
+  const isArticleReadable = (id: number) => {
+    const article = articlesState.find(article => article.id === id);
+    if (article) {
+      return article.state === 'done';
+    } else {
+      return false;
     }
   };
 
@@ -72,6 +91,7 @@ const MyArticles: React.FC<Props> = ({articles}) => {
         <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
           <EditIcon onClick={() => handleEdit(params)} sx={{cursor: 'pointer'}}/>
           <DeleteIcon onClick={() => handleDelete(params)} sx={{cursor: 'pointer'}}/>
+          <OpenInNewIcon onClick={() => handleReadArticle(params)} sx={{cursor: 'pointer'}}/>
         </Box>
       </>
     )
@@ -91,7 +111,7 @@ const MyArticles: React.FC<Props> = ({articles}) => {
     <>
       <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <Typography variant={'h4'} mr={10}>My Articles</Typography>
-        <Button variant={'contained'} size={'small'}>Create Article</Button>
+        <Button variant={'contained'} size={'small'} onClick={handleNewArticleNavigation}>Create Article</Button>
       </Box>
       <Box my={10}>
         <DataGrid checkboxSelection
