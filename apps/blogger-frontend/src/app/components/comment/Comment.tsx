@@ -11,6 +11,7 @@ import {FieldValues, useForm} from "react-hook-form";
 import {useAddComment} from "../../api/comment/mutations/useAddComment";
 import {useParams} from "react-router-dom";
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
+import Vote from "../Vote";
 
 type Props = {
   comment: CommentI;
@@ -34,7 +35,7 @@ const Comment: React.FC<Props> = ({comment}) => {
         commentData: {
           author: author,
           content: content,
-          parent_id: comment.parent_id
+          parent_id: comment.id
         }
       });
     }
@@ -47,14 +48,6 @@ const Comment: React.FC<Props> = ({comment}) => {
   const handleToggleReply = () => {
     setToggleReply(!toggleReply);
   }
-
-  const votesCount = () => {
-    const result = comment.votes[0].upvotes - comment.votes[0].downvotes;
-    if (result > 0) {
-      return `+${result}`;
-    }
-    return result;
-  };
 
   return (
     <>
@@ -76,17 +69,7 @@ const Comment: React.FC<Props> = ({comment}) => {
             alignItems: 'center',
             marginRight: '1rem'
           }}>
-            <Grid container xs={12} pt={1} columns={3} columnGap={1} sx={{alignItems: 'center'}} pr={2}>
-              <Grid item>
-                <Typography>{votesCount()}</Typography>
-              </Grid>
-              <Grid item sx={{cursor: 'pointer'}}>
-                <KeyboardArrowUpIcon fontSize={'large'}/>
-              </Grid>
-              <Grid item sx={{cursor: 'pointer'}}>
-                <KeyboardArrowDownIcon fontSize={'large'}/>
-              </Grid>
-            </Grid>
+            <Vote votesCount={comment.votes[0].upvotes - comment.votes[0].downvotes} articleId={articleId ?? ''} commentId={comment.id}/>
             <Button variant="contained" size={'small'} onClick={handleToggleReply}>{toggleReply ? 'Hide' : 'Join'}</Button>
           </Box>
         </Box>
