@@ -15,6 +15,14 @@ type Props = {
   article?: ArticleI;
 }
 
+/**
+ * Reused for editing and creating article -> when editing prefills the data, based on if article is present, sends
+ * the request to updateArticle or createArticle
+ * @param pageTitle
+ * @param article
+ * @constructor
+ */
+
 const AdminArticle: React.FC<Props> = ({pageTitle, article}) => {
   const [value, setMarkDownValue] = useState<string | undefined>(article?.content ?? 'Supports markdown. Yay');
   const [showImage, setShowImage] = useState(true);

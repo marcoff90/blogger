@@ -8,6 +8,14 @@ type Props = {
   pagination: boolean;
 }
 
+/**
+ * Renders comments from array, if the comments have children, the comment component renders them under with padding
+ * to create the nesting
+ * @param comments
+ * @param pagination
+ * @constructor
+ */
+
 const CommentList: React.FC<Props> = ({comments, pagination}) => {
   const pageSize = 5;
   const [endPagination, setEndPagination] = useState(pageSize);
