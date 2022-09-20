@@ -1,0 +1,16 @@
+inputSpec: libs/api-client/src/lib/config/api.json
+outputDir: libs/api-client/src/lib/api
+generatorName: typescript-axios
+additionalProperties:
+  supportsES6: true
+  nullSafeAdditionalProps: true
+  typescriptThreePlus: true
+  withoutRuntimeChecks: true
+  ensureUniqueParams: false
+  useSingleRequestParameter: false
+  strictSpec: true
+  languageSpecificPrimitive: true
+  removeOperationIdPrefix: false
+  skipOperationExample: true
+  sortModelPropertiesByRequiredFlag: true
+  sortParamsByRequiredFlag: true

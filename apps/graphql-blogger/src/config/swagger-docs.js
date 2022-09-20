@@ -3,6 +3,9 @@
  * '/graphql-service-api/graphql':
  *  post:
  *     tags:
- *      - GraphQL API
+ *      - GraphQLService
  *     summary: Gateway for bundling article, comments and votes, read only
+ *     responses:
+ *      200:
+ *        description: Success
  */

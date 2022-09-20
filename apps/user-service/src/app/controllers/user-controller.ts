@@ -9,7 +9,6 @@ import bcrypt from 'bcryptjs';
 import ApiError from "../../../../../libs/middleware-api-error/src/lib/error/api-error";
 import {CreateUserResponse} from "../interfaces/create-user-response";
 import {LoginUserResponse} from "../interfaces/login-user-response";
-import {ActivationResponse} from "../interfaces/activation-response";
 import {LoginUserInput} from "../schemas/login-user-schema";
 import {ForgottenUserPasswordInput} from "../schemas/forgotten-password-schema";
 import {ResetPasswordInput} from "../schemas/reset-password-schema";
@@ -118,11 +117,11 @@ const activateAccount = async (req: Request<ActivateUserAccountInput['body'], Ac
   } else {
     const activeUser: UserI = await UserService.confirmAccount(user, req.body.avatar);
     const token: string = await generateToken(user);
-    const response: ActivationResponse = {
+    const response: LoginUserResponse = {
+      token: token,
+      id: activeUser.id,
       username: activeUser.username,
-      active: activeUser.active,
-      avatar: activeUser.avatar,
-      token,
+      avatar: activeUser.avatar
     };
     res.json(response);
   }
@@ -142,6 +141,20 @@ const identifyUserByResetToken = async (req: Request<IdentifyUserByResetTokenInp
   }
 };
 
+const identifyUserByActivationToken = async (req: Request<IdentifyUserByResetTokenInput['query']>, res: Response,
+                                        next: NextFunction) => {
+  const user: UserI = await UserService.findByConfirmationToken(req.query.token.toString());
+
+  if (!user) {
+    next(ApiError.forbidden({error: 'Invalid token'}));
+  } else {
+    const response: Interfaces.ApiMessage = {
+      message: 'ok',
+    };
+    res.json(response);
+  }
+};
+
 export default {
   storeUser,
   showLogin,
@@ -149,4 +162,5 @@ export default {
   resetPassword,
   activateAccount,
   identifyUserByResetToken,
+  identifyUserByActivationToken
 };

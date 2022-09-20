@@ -3,7 +3,7 @@
  * '/comments-service-api/articles/{articleId}/comments':
  *  post:
  *     tags:
- *      - CommentsServiceAPI
+ *      - CommentsService
  *     summary: Create Comment for article
  *     parameters:
  *      - in: path
@@ -48,7 +48,7 @@
  * '/comments-service-api/articles/{articleId}/comments':
  *  get:
  *     tags:
- *      - CommentsServiceAPI
+ *      - CommentsService
  *     summary: Get comments for article
  *     parameters:
  *      - in: path

@@ -37,7 +37,7 @@ const ArticleModel = sequelize.define<ArticleI>('article', {
     allowNull: false,
   },
   content: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
   deleted: {

@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@blogger/api-client": ["libs/api-client/src/index.ts"],
       "@blogger/global-interfaces": ["libs/global-interfaces/src/index.ts"],
       "@blogger/middleware-api-error": [
         "libs/middleware-api-error/src/index.ts"

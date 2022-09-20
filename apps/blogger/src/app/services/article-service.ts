@@ -281,7 +281,7 @@ const deleteArticle = async (articleId: number): Promise<void> => {
 
 const findOneByUserIdAndIdAdmin = async (userId: number, id: number): Promise<GetUserArticleResponse> => {
   const article = await ArticleRepository.findOneByIdAndUser(id, userId);
-  console.log(`Found article: ${article.id}`);
+  logger.info(`Found article: ${article.id}`);
   const user = await UserService.findUserDataById(userId);
   return convertArticleToArticleResponse(article, user.username);
 };
@@ -292,14 +292,14 @@ const findOneByUsernameAndIdPublic = async (username: string, id: number): Promi
     throw new Error(`User ${username} not found`);
   }
 
-  // const cachedArticles = await loadUserArticlesFromCache(username);
-  //
-  // if (cachedArticles) {
-  //   const article = cachedArticles.find(article => article.id === id);
-  //   if (article) {
-  //     return article;
-  //   }
-  // }
+  const cachedArticles = await loadUserArticlesFromCache(username);
+
+  if (cachedArticles) {
+    const article = cachedArticles.find(article => article.id === id);
+    if (article) {
+      return article;
+    }
+  }
   const article = await ArticleRepository.findOneByIdAndUserIdPublic(id, user.id);
   return convertArticleToArticleResponse(article, user.username);
 }

@@ -92,7 +92,7 @@ INIT PROJECT
       - npm run dev:comments-service
     - votes-service
       - npm run dev:votes-service
-    - graphql-api
+    - graphql-service
       - npm run dev:graphql-api
     - or all together
       - npm run dev:all

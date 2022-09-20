@@ -1,0 +1,22 @@
+#!/bin/bash
+apiUrl="$1"
+
+apiDocsFile="./libs/api-client/src/lib/config/api.json"
+
+apiOutputDir="./libs/api-client/src/lib/api"
+
+rm -rf "$apiOutputDir"
+
+curl "$apiUrl" -o "$apiDocsFile"
+
+echo ">> Generating api client into src/api"
+npx @openapitools/openapi-generator-cli batch libs/api-client/src/lib/config/*.yml
+
+echo ">> removing indexes"
+rm "$apiOutputDir/index.ts"
+rm "$apiOutputDir/apis/index.ts"
+
+node ./libs/api-client/src/lib/generateApiFactoryClass.js "$apiOutputDir"
+
+echo ">> removing downloaded JSON files"
+rm ./libs/api-client/src/lib/config/*.json

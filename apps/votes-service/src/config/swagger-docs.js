@@ -3,7 +3,7 @@
  * '/votes-service-api/articles/{articleId}/comments/{commentId}/votes':
  *  post:
  *     tags:
- *      - VotesServiceAPI
+ *      - VotesService
  *     summary: Create Vote for comment
  *     parameters:
  *      - in: path
@@ -59,7 +59,7 @@
  * '/votes-service-api/articles/{articleId}/comments/{commentId}/votes':
  *  get:
  *     tags:
- *      - VotesServiceAPI
+ *      - VotesService
  *     summary: Get Vote count for comment
  *     parameters:
  *      - in: path
@@ -99,7 +99,7 @@
  * '/votes-service-api/articles/{articleId}/comments-votes':
  *  get:
  *     tags:
- *      - VotesServiceAPI
+ *      - VotesService
  *     summary: Get All Vote count for article id
  *     parameters:
  *      - in: path

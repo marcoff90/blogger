@@ -2,9 +2,12 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "api-client": "libs/api-client",
     "api-gateway": "apps/api-gateway",
     "api-registry": "apps/api-registry",
     "blogger": "apps/blogger",
+    "blogger-frontend": "apps/blogger-frontend",
+    "blogger-frontend-e2e": "apps/blogger-frontend-e2e",
     "comments-service": "apps/comments-service",
     "global-interfaces": "libs/global-interfaces",
     "graphql-blogger": "apps/graphql-blogger",

@@ -3,7 +3,7 @@
  * '/blogger-service-api/bloggers/{userId}/articles':
  *  post:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Create Article
  *     parameters:
  *      - in: path
@@ -50,7 +50,7 @@
  * '/blogger-service-api/bloggers/{userId}/articles':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get articles for user as admin
  *     parameters:
  *      - in: path
@@ -93,7 +93,7 @@
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get article for user as admin
  *     parameters:
  *      - in: path
@@ -139,7 +139,7 @@
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  put:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Update article
  *     parameters:
  *      - in: path
@@ -193,7 +193,7 @@
  * '/blogger-service-api/bloggers/{userId}/articles/{articleId}':
  *  delete:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Delete article
  *     parameters:
  *      - in: path
@@ -239,7 +239,7 @@
  * '/blogger-service-api/blogs/{username}/articles':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get all articles by username -> public
  *     parameters:
  *      - in: path
@@ -274,7 +274,7 @@
  * '/blogger-service-api/blogs/{username}/articles/{articleId}':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get one articles by username and article id -> public
  *     parameters:
  *      - in: path
@@ -312,7 +312,7 @@
  * '/blogger-service-api/featured-blogs':
  *  get:
  *     tags:
- *      - BloggerServiceAPI
+ *      - BloggerService
  *     summary: Get featured articles
  *     responses:
  *      200:

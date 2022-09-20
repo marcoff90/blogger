@@ -3,7 +3,7 @@
  * '/user-service-api/users':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Register a user
  *     requestBody:
  *      required: true
@@ -39,7 +39,7 @@
  * '/user-service-api/users/login':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Logs in a user
  *     requestBody:
  *      required: true
@@ -81,7 +81,7 @@
  * '/user-service-api/users/forgotten-password':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Sends email with token to reset password
  *     requestBody:
  *      required: true
@@ -115,7 +115,7 @@
  * '/user-service-api/users/recover':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Changes user's password
  *     parameters:
  *      - in: query
@@ -163,7 +163,7 @@
  * '/user-service-api/users/activate':
  *  post:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Activates user account based on query token
  *     parameters:
  *      - in: query
@@ -183,7 +183,7 @@
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/ActivationResponse'
+ *              $ref: '#/components/schemas/LoginUserResponse'
  *      400:
  *        description: Bad Request
  *        content:
@@ -200,11 +200,44 @@
  *              $ref: '#/components/schemas/ApiError'
  *
  * @openapi
- * '/user-service-api/users/identify':
+ * '/user-service-api/users/reset-identify':
  *  get:
  *     tags:
- *     - UserServiceAPI
+ *     - UserService
  *     summary: Used for FE application when user is accessing the reset password page, the request is sent in order to allow user to access the page
+ *     parameters:
+ *      - in: query
+ *        name: token
+ *        required: true
+ *        schema:
+ *          type: string
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiMessage'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/ValidationError'
+ *      403:
+ *        description: Unauthorized - token not assigned to user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ApiError'
+ * @openapi
+ * '/user-service-api/users/confirm-identify':
+ *  get:
+ *     tags:
+ *     - UserService
+ *     summary: Used for FE application when user is accessing the activation page, the request is sent in order to allow user to access the page
  *     parameters:
  *      - in: query
  *        name: token
@@ -322,17 +355,6 @@
  *        avatar:
  *          type: string
  *          default: assets/avatar.jpg
- *    ActivationResponse:
- *      type: object
- *      properties:
- *        username:
- *          type: string
- *        active:
- *          type: boolean
- *        avatar:
- *          type: string
- *        token:
- *          type: string
  *    ApiError:
  *      type: object
  *      properties:

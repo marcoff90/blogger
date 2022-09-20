@@ -3,7 +3,7 @@
  * '/api-registry/servers':
  *  post:
  *     tags:
- *      - RegistryAPI
+ *      - Registry
  *     summary: Store a server's data or update if server exists
  *     parameters:
  *      - in: header
@@ -49,7 +49,7 @@
  * '/api-registry/servers':
  *  get:
  *     tags:
- *     - RegistryAPI
+ *     - Registry
  *     summary: Get all available servers' data
  *     parameters:
  *      - in: header
