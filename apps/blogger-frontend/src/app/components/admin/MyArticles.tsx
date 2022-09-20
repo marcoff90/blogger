@@ -1,5 +1,5 @@
 import {Box, Button, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ArticleI} from "../../interfaces/articleI";
 import {
   DataGrid,
@@ -11,6 +11,8 @@ import {countComments} from "../../utils/count-comments";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import {useWarningSnackbar} from "../../hooks/useWarningSnackbar";
+import useAuth from "../../auth/useAuth";
+import {useDeleteArticle} from "../../api/article/mutations/useDeleteArticle";
 
 type Props = {
   articles: ArticleI[]
@@ -18,9 +20,13 @@ type Props = {
 
 const MyArticles: React.FC<Props> = ({articles}) => {
   const [checkboxSelection, setCheckboxSelection] = useState<GridRowId[]>([]);
-  const {enqueueWarningSnackbar} = useWarningSnackbar();
+  const [articlesState, setArticleState] = useState(articles);
 
-  articles.forEach(article => {
+  const {enqueueWarningSnackbar} = useWarningSnackbar();
+  const {mutate} = useDeleteArticle();
+  const auth = useAuth();
+
+  articlesState.forEach(article => {
     article.commentsCount = countComments(article);
   });
 
@@ -41,11 +47,22 @@ const MyArticles: React.FC<Props> = ({articles}) => {
   const handleDelete = (params: GridCellParams) => {
     if (checkboxSelection.length === 0) {
       const id = params.row.id;
-      console.log(id);
-      // TODO send delete request
+      mutate({userId: `${auth?.user?.id}` ?? '', articleId: id, token: auth?.user?.token ?? ''});
+      setArticleState(articlesState.filter(article => article.id !== id));
+
+    } else if (checkboxSelection.length === 1) {
+      mutate({
+        userId: `${auth?.user?.id}` ?? '',
+        articleId: checkboxSelection[0].toString(),
+        token: auth?.user?.token ?? ''
+      });
+      setArticleState(articlesState.filter(article => article.id !== checkboxSelection[0]));
+
     } else {
-      // TODO for each checkbox selection id send delete request
-      console.log(checkboxSelection);
+      checkboxSelection.forEach(id => {
+        mutate({userId: `${auth?.user?.id}` ?? '', articleId: id.toString(), token: auth?.user?.token ?? ''});
+        setArticleState(articlesState.filter(article => article.id !== id));
+      })
     }
   };
 
@@ -62,9 +79,10 @@ const MyArticles: React.FC<Props> = ({articles}) => {
 
   const columns: GridColumns = [
     {field: 'id', headerName: 'Id', width: 50},
-    {field: 'title', headerName: 'Article title', width: 250},
+    {field: 'title', headerName: 'Article title', width: 200},
     {field: 'perex', headerName: 'Perex', width: 350},
-    {field: 'username', headerName: 'Author', width: 150},
+    {field: 'username', headerName: 'Author', width: 100},
+    {field: 'state', headerName: 'State', width: 100},
     {field: 'commentsCount', headerName: '# of comments', width: 150},
     {field: 'actions', headerName: 'Actions', renderCell: actionsButtons},
   ];
@@ -81,9 +99,17 @@ const MyArticles: React.FC<Props> = ({articles}) => {
                   onSelectionModelChange={(itm) => setCheckboxSelection(itm)}
                   columns={columns}
                   pageSize={10}
-                  rows={articles}
-                  loading={!articles.length}
+                  rows={articlesState}
                   autoHeight
+                  components={{
+                    NoRowsOverlay: () => (
+                      <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+                        <Typography>
+                          Time to write some articles :)
+                        </Typography>
+                      </Box>
+                    )
+                  }}
                   sx={{
                     boxShadow: 2,
                     border: 2,
@@ -93,9 +119,6 @@ const MyArticles: React.FC<Props> = ({articles}) => {
     </>
   );
 };
-
-
-
 
 
 export default MyArticles;

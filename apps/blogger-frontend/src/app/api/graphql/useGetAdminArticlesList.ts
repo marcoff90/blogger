@@ -13,6 +13,7 @@ const getAdminArticlesQuery = gql`
       created_at
       updated_at
       username
+      state
       comments {
         id
         children {
