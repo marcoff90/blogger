@@ -26,7 +26,7 @@ const CommentModel = sequelize.define<CommentI>('comment', {
     allowNull: false
   },
   content: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
   article_id: {

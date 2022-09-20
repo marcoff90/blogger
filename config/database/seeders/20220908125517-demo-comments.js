@@ -4,77 +4,49 @@ const bcrypt = require('bcryptjs');
 module.exports = {
   async up(queryInterface, Sequelize) {
     const comments = [];
+    const content = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In convallis. Maecenas lorem.';
+    for (let i = 0; i < 25; i++) {
 
-    const comment1 = {
-      id: 1,
-      author: 'user1',
-      content: 'hello world',
-      article_id: 1,
-      depth: 1
+      const level1 = {
+        author: 'user1',
+        content: content,
+        article_id: i + 1,
+        depth: 1
+      }
+      comments.push(level1);
     }
-    const comment2 = {
-      id: 2,
-      author: 'user2',
-      content: 'hello world',
-      article_id: 1,
-      depth: 2,
-      parent_id: 1
+    for (let i = 0; i < 25; i++) {
+      const level2 = {
+        author: 'user2',
+        content: content,
+        article_id: i + 1,
+        parent_id: i + 1,
+        depth: 2
+      }
+      comments.push(level2);
     }
-    const comment3 = {
-      id: 3,
-      author: 'user3',
-      content: 'hello world',
-      article_id: 1,
-      depth: 3,
-      parent_id: 2
+    for (let i = 0; i < 25; i++) {
+      const level3 = {
+        author: 'user3',
+        content: content,
+        article_id: i + 1,
+        parent_id: 26 + i,
+        depth: 3
+      }
+      comments.push(level3);
     }
-    const comment4 = {
-      id: 4,
-      author: 'user4',
-      content: 'hello world',
-      article_id: 1,
-      depth: 4,
-      parent_id: 3
+
+    for (let i = 0; i < 25; i++) {
+      const level4 = {
+        author: 'user4',
+        content: content,
+        article_id: i + 1,
+        parent_id: 51 + i,
+        depth: 4
+      }
+
+      comments.push(level4);
     }
-    const comment5 = {
-      id: 5,
-      author: 'user5',
-      content: 'hello world',
-      article_id: 1,
-      depth: 2,
-      parent_id: 1
-    }
-    const comment6 = {
-      id: 6,
-      author: 'user6',
-      content: 'hello world',
-      article_id: 1,
-      depth: 1
-    }
-    const comment7 = {
-      id: 7,
-      author: 'user7',
-      content: 'hello world',
-      article_id: 1,
-      depth: 2,
-      parent_id: 6
-    }
-    const comment8 = {
-      id: 8,
-      author: 'user8',
-      content: 'hello world',
-      article_id: 1,
-      depth: 3,
-      parent_id: 7
-    }
-    comments.push(comment1);
-    comments.push(comment2);
-    comments.push(comment3);
-    comments.push(comment4);
-    comments.push(comment5);
-    comments.push(comment6);
-    comments.push(comment7);
-    comments.push(comment8);
 
     await queryInterface.bulkInsert('comments', comments, {});
   },

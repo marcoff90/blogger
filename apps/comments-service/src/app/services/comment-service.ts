@@ -6,6 +6,7 @@ import {Interfaces} from '@blogger/global-interfaces';
 import ArticleService from "./article-service";
 import RedisManager from "@blogger/redis-manager";
 import 'dotenv/config';
+import {CreateCommentResponse} from "../../../../../libs/api-client/src/lib/api/api";
 
 /**
  * The comments can go 4 levels deep, if the comment has a parent, we check it's depth, if the depth is 4, we set
@@ -13,7 +14,7 @@ import 'dotenv/config';
  * In case of wrongly passed parent id, we allow the comment as a new comment for better user experience
  */
 
-const create = async (comment: CommentI, articleId: number, toPublish: boolean): Promise<CommentI> => {
+const create = async (comment: CommentI, articleId: number, toPublish: boolean): Promise<CreateCommentResponse> => {
   let parentComment = null;
 
   if (comment.parent_id) {
@@ -44,7 +45,16 @@ const create = async (comment: CommentI, articleId: number, toPublish: boolean):
   const savedComment = await CommentRepository.create(comment);
   await updateCommentsIdsInCache(savedComment.id);
   logger.info(`Comment successfully created: id: ${savedComment.id}`)
-  return savedComment;
+  const result = {
+    id: savedComment.id,
+    depth: savedComment.depth,
+    created_at: savedComment.created_at,
+    author: savedComment.author,
+    content: savedComment.content,
+    parent_id: savedComment.parent_id,
+    article_id: savedComment.article_id
+  };
+  return result;
 
 };
 
