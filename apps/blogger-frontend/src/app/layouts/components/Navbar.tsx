@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
             }
           </Box>
           <Box>
-            {!auth?.user ? <LoginButton navigate={navigate} location={location}/> : <AdminButtons/>}
+            {!auth?.user ? <LoginButton navigate={navigate} location={location}/> : <AdminButtons navigate={navigate} location={location}/>}
           </Box>
         </Box>
       </Toolbar>

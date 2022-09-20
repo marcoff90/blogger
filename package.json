@@ -28,6 +28,7 @@
     "@emotion/styled": "11.10.4",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
+    "@mui/x-data-grid": "^5.17.3",
     "amqplib": "^0.10.3",
     "apollo-datasource-rest": "^3.7.0",
     "apollo-server": "^3.10.2",

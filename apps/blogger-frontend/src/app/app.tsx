@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import RecoverPage from "./pages/RecoverPage";
 import UserArticlesPage from "./pages/UserArticlesPage";
 import ArticlePage from "./pages/ArticlePage";
+import PrivateRoute from "./auth/PrivateRoute";
+import MyArticlesPage from "./pages/admin/MyArticlesPage";
 
 const App: React.FC = () => {
   return (
@@ -23,6 +25,7 @@ const App: React.FC = () => {
           <Route path={'/users/activate'} element={<ActivatePage/>}/>
           <Route path={'/blogs/:username/articles'} element={<UserArticlesPage/>}/>
           <Route path={'/blogs/:username/articles/:articleId'} element={<ArticlePage/>}/>
+          <Route path={'/admin/my-articles'} element={<PrivateRoute><MyArticlesPage/></PrivateRoute>}/>
         </Routes>
       </Layout>
     </>

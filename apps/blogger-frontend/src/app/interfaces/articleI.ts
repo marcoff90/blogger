@@ -9,6 +9,7 @@ export interface ArticleI {
   created_at: number;
   updated_at: number;
   username: string;
+  commentsCount?: number;
   comments?: CommentI[]
 }
 
