@@ -2,7 +2,7 @@
 
 This project was generated using [Nx](https://nx.dev).
 
-ABOUT
+ABOUT BACKEND
 - the project applies microservices architecture
 - data validation is provided by zod validation
 - application use redis cache for caching data and rabbit mq for internal communication as well as direct api calls 
@@ -110,3 +110,102 @@ DOCS
 
 DIAGRAM
 ![Alt text](https://github.com/marcoff90/blogger/blob/main/assets/app-diagram.png)
+
+ABOUT FRONTEND
+- app is build in React using Nx
+- to start the app
+  - npm run dev:blogger-frontend
+- Api Client (axios/typescript) is generated through open api tools
+  - npm run generate:api {address to docs.json = http://localhost:3333/docs.json}
+  - when the client is generated, it's necessary to manually add 'override' to name of Error class in the api folder
+- The project uses React Query for fetching the data
+- UI is build with MUI library
+
+- The app is divided into two parts
+  - Public
+    - routes
+      - '/'
+        - home page -> Five featured articles obtained from API
+        - the articles show title, perex, link in username which takes to user's blog page where more of articles 
+          by the user can be read
+        - link in Read whole article which takes to the whole content of article
+        - both of the links start up condition to render 'Recent articles' in menu which is specifically for 
+          specific blogger based on username in path
+      - '/blogs/:username/articles'
+        - list of articles by one of the bloggers
+        - articles are sorted by date
+        - articles are listed by 5 per page with pagination
+      - '/blogs/:username/articles/:articleId'
+        - one article by specific user
+        - related articles on side -> link in title of the article
+        - articles are written in Markdown and rendered using ReactMarkdown library
+        - add the bottom of the page comment section
+          - comments are nested
+          - user can add comment as a parent comment or join the discussion
+          - nested comments are hidden and are visible after clicking 'Show more' and can be rolled back
+          - same for joining the conversation
+          - the root comments are paginated by 5
+      - '/users/login'
+        - login page with simple login form
+        - react-hook-form library used for all forms
+        - user can log in, reset password or register through the links in the form
+      - '/users/forgotten-password'
+        - takes email and notifies user he needs to check his mail
+      - '/users/register'
+        - sign up form
+      - after succesfull registration user gets email with link which takes him to activation page, where he chooses 
+        avatar
+      - after reset the link in mail takes user to reset password form
+  - Admin
+    - accessible only after succesfull auth
+    - the routes are protected using useContext and AuthProvider
+    - after succesfull login the response containing user id, token, username and avatar is stored in the context 
+      and used across the application
+    - after login
+      - '/admin/my-articles'
+        - shows list of articles in data grid by MUI allowing sorting, selecting more
+        - the admin user can read the article by choosing corresponding button in the data grid
+        - edit the article
+        - delete the article or more articles at once
+      - 'admin/new-article'
+        - uses same component for editing and creating new article
+        - takes all the info about article
+        - editor in markdown using @uiw/react-md-editor library
+        - the article can be saved either as draft or directly published
+      - '/admin/edit-article/:articleId'
+        - edits the article within the same component
+        - prefills the data of the article
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -14,10 +14,9 @@ const useAuthProvider = () => {
 
   const navigate = useNavigate();
 
-  // TODO navigate to My Articles
   const login = async (data: LoginUserResponse): Promise<void> => {
     setUser(data);
-    navigate("/users/login");
+    navigate(routes.adminArticles);
   };
 
   const logout = async (): Promise<void> => {

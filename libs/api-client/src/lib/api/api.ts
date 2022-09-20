@@ -95,7 +95,7 @@ export interface CreateArticleResponse {
      * @type {string}
      * @memberof CreateArticleResponse
      */
-    'createdAt'?: string;
+    'created_at'?: string;
 }
 /**
  * 
@@ -392,13 +392,13 @@ export interface GetUserArticlesResponse {
      * @type {string}
      * @memberof GetUserArticlesResponse
      */
-    'createdAt'?: string;
+    'created_at'?: string;
     /**
      * 
      * @type {string}
      * @memberof GetUserArticlesResponse
      */
-    'updatedAt'?: string;
+    'updated_at'?: string;
     /**
      * 
      * @type {string}
@@ -528,13 +528,13 @@ export interface UpdateArticleResponse {
      * @type {string}
      * @memberof UpdateArticleResponse
      */
-    'createdAt'?: string;
+    'created_at'?: string;
     /**
      * 
      * @type {string}
      * @memberof UpdateArticleResponse
      */
-    'updatedAt'?: string;
+    'updated_at'?: string;
 }
 /**
  * @type UserServiceApiUsersRecoverPost400Response
@@ -964,7 +964,7 @@ export const BloggerServiceApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async bloggerServiceApiBloggersUserIdArticlesArticleIdPut(userId: string, articleId: string, createUpdateArticleInput: CreateUpdateArticleInput, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<GetUserArticlesResponse>>> {
+        async bloggerServiceApiBloggersUserIdArticlesArticleIdPut(userId: string, articleId: string, createUpdateArticleInput: CreateUpdateArticleInput, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetUserArticlesResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.bloggerServiceApiBloggersUserIdArticlesArticleIdPut(userId, articleId, createUpdateArticleInput, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1065,7 +1065,7 @@ export const BloggerServiceApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        bloggerServiceApiBloggersUserIdArticlesArticleIdPut(userId: string, articleId: string, createUpdateArticleInput: CreateUpdateArticleInput, options?: any): AxiosPromise<Array<GetUserArticlesResponse>> {
+        bloggerServiceApiBloggersUserIdArticlesArticleIdPut(userId: string, articleId: string, createUpdateArticleInput: CreateUpdateArticleInput, options?: any): AxiosPromise<GetUserArticlesResponse> {
             return localVarFp.bloggerServiceApiBloggersUserIdArticlesArticleIdPut(userId, articleId, createUpdateArticleInput, options).then((request) => request(axios, basePath));
         },
         /**
