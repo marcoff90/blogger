@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Avatar, Box, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@mui/material";
+import {Avatar, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper} from "@mui/material";
 import { NavigationButton } from "../styled/header.styled";
 import useAuth from "../../auth/useAuth";
 import {useInfoSnackbar} from "../../hooks/useInfoSnackbar";

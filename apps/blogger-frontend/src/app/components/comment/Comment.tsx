@@ -2,8 +2,6 @@ import React, {useState} from "react";
 import {CommentI} from "../../interfaces/commentI";
 import {Avatar, Box, Button, Grid, Typography} from "@mui/material";
 import CommentList from "./CommentsList";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {avatars} from "../../constants/avatars";
 import Reply from '../comment/Reply';
 import {Slide} from "react-awesome-reveal";

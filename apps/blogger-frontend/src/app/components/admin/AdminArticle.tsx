@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Box, Button, TextField, Typography} from "@mui/material";
 import {ArticleI} from "../../interfaces/articleI";
 import {Image} from '../styled/image.styled';
@@ -64,8 +64,6 @@ const AdminArticle: React.FC<Props> = ({pageTitle, article}) => {
         })
       }
     }
-
-
   };
 
   const handleClickOpen = () => {

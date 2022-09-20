@@ -1,8 +1,7 @@
 import React from "react";
-import {Avatar, Box, Dialog, Grid, IconButton} from "@mui/material";
+import { Box, Dialog, IconButton} from "@mui/material";
 import {Image} from '../styled/image.styled';
 import CloseIcon from '@mui/icons-material/Close';
-import {avatars} from "../../constants/avatars";
 import {Controller, FieldValues} from "react-hook-form";
 import {Control, UseFormSetValue} from "react-hook-form/dist/types/form";
 

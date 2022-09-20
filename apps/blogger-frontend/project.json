@@ -4,6 +4,7 @@
   "projectType": "application",
   "targets": {
     "build": {
+      "generatePackageJson": true,
       "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
